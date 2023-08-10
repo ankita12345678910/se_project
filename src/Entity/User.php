@@ -6,11 +6,19 @@ use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Gedmo\Mapping\Annotation\Timestampable as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table("web_user")]
+
+#[UniqueEntity(
+    fields: ['email'],
+    errorPath: 'email',
+    message: 'This email is already exist try with another email',
+)]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -48,11 +56,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $enable = null;
 
-    #[ORM\Column(type:'datetime')]
+    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'create')]
     private $created;
 
-    #[ORM\Column(type:'datetime')]
+    #[ORM\Column(type: 'datetime')]
     #[Gedmo\Timestampable(on: 'update')]
     private $updated;
 
