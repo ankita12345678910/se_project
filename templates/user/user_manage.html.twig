@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+{% block bootstrap %}
+	{{parent()}}
+{% endblock %}
+{% block body %}
+
+	<div class="row">
+		<div class="col-7">
+			<div class="py-4 px-5 m-5 bg-light">
+				<h1 class="bg-secondary py-2 m-3 text-center text-white">Register Yourself</h1>
+				{{ form_start(form) }}
+
+				<div class="row mt-4">
+					<div class="col-4 my-3">
+						{{ form_row(form.email) }}
+					</div>
+					<div class="col-4 my-3">
+						{{ form_row(form.cellphone) }}
+					</div>
+					<div class="col-4">
+						{{ form_row(form.roles) }}
+					</div>
+
+				</div>
+				<div class="row mt-4">
+					<div class="col-4">
+						{{ form_row(form.firstname) }}
+					</div>
+					<div class="col-4">
+						{{ form_row(form.lastname) }}
+					</div>
+					<div class="col-4">
+						{{ form_row(form.address) }}
+
+					</div>
+
+				</div>
+				<div class="row mt-4">
+					<div class="col-4">
+						<label for="password">Password</label>
+						<input type="password" name="pass" class="form-control form-control-lg">
+					</div>
+
+					<div class="col-4">
+						{{ form_row(form.status) }}
+					</div>
+					<div class="col-4">
+						{{ form_row(form.enable) }}
+					</div>
+
+				</div>
+				<div class="row mt-3">
+					<div class="col-6 my-4 p-2">
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</div>
+				{{ form_rest(form) }}
+				{{ form_end(form) }}
+			</div>
+		</div>
+		<div class="col-5">
+
+			<img src="https://static.vecteezy.com/system/resources/previews/008/166/680/original/girl-working-with-computer-icons-free-vector.jpg" alt="" style="width:95%;height:450px">
+			<p>Already sign up?</p>
+			<a href="index.php">Sign in</a>
+
+		</div>
+	</div>
+
+{% endblock %}

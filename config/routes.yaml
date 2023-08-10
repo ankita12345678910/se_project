@@ -1,3 +1,36 @@
-app_user:
-   path: /abc/ab
-   controller: App\Controller\UserController::index
+manage_user:
+   path: /manage/user
+   controller: App\Controller\UserController::manageUser
+
+app_login:
+   path: /login
+   controller: App\Controller\AuthController::login
+
+app_logout:
+   path: /logout
+   controller: App\Controller\AuthController::logout
+
+web_redirect:
+   path: /redirect
+   controller: App\Controller\FrontController::redirectPage
+
+web_admin_dashboard:
+   path: /admin/dashboard
+   controller: App\Controller\UserController::adminDashboard
+
+web_shopkeeper_dashboard:
+   path: /shopkeeper/dashboard
+   controller: App\Controller\UserController::shopkeeperDashboard
+
+web_vendor_dashboard:
+   path: /vendor/dashboard
+   controller: App\Controller\UserController::vendorDashboard
+
+web_customer_dashboard:
+   path: /customer/dashboard
+   controller: App\Controller\UserController::customerDashboard
+
+web_home:
+   path: /
+   controller: App\Controller\HomeController::index
+
