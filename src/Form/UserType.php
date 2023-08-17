@@ -17,43 +17,44 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', TextType::class, [
-                'attr' => ['class' => 'form-control', 'placeholder' => 'First name ']
+                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Email']
             ])
             ->add('firstname', TextType::class, [
-                'attr' => ['class' => 'form-control', 'placeholder' => 'First name ']
+                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'First name ']
             ])
             ->add('lastname', TextType::class, [
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Last name ']
+                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Last name ']
             ])
             ->add('cellphone', TextType::class, [
-                'attr' => ['class' => 'form-control', 'placeholder' => 'cellphone no']
+                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Cellphone no']
             ])
             ->add('address', TextareaType::class, [
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Address']
+                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Address']
             ])
             ->add('roles', ChoiceType::class, [
                 'label' => 'Usertype: ',
                 'choices' => [
                     '' => '',
-                    'Admin' => 'ROLE_ADMIN',
                     'Shopkeeper' => 'ROLE_SHOPKEEPER',
                     'Customer' => 'ROLE_CUSTOMER',
                     'Vendor' => 'ROLE_VENDOR',
-                ]
+                ],
+                'attr' => ['class' => 'form-control form-control-lg']
+
             ])
             ->add('enable', ChoiceType::class, [
                 'choices' => [
                     'Yes' => 1,
                     'No' => 0,
                 ],
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control form-control-lg']
             ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
                     'Active' => 'Active',
                     'Deleted' => 'Deleted',
                 ],
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control form-control-lg']
             ]);
         $builder->get('roles')
             ->addModelTransformer(new CallbackTransformer(

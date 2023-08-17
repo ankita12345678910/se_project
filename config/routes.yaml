@@ -1,6 +1,14 @@
 manage_user:
    path: /manage/user
-   controller: App\Controller\UserController::manageUser
+   controller: App\Controller\ShopkeeperController::manageUser
+
+web_user_manage:
+   path: /shopkeeper/user/manage/{id}
+   controller: App\Controller\ShopkeeperController::userManage
+
+user_list:
+   path: /shopkeeper/user/list
+   controller: App\Controller\ShopkeeperController::userList
 
 app_login:
    path: /login
@@ -33,4 +41,3 @@ web_customer_dashboard:
 web_home:
    path: /
    controller: App\Controller\HomeController::index
-

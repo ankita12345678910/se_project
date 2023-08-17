@@ -1,0 +1,17 @@
+{% extends 'base_shopkeeper.html.twig' %}
+{% block stylesheets %}
+	{{parent()}}
+{% endblock %}
+{% block bootstrap %}
+	{{parent()}}
+{% endblock %}
+{% block body %}
+	{% if 'ROLE_SHOPKEEPER' in app.user.roles %}
+		{{3+2}}
+	{% else %}
+		{{6+5}}
+	{% endif %}
+{% endblock %}
+{% block javascripts %}
+	{{parent()}}
+{% endblock %}
