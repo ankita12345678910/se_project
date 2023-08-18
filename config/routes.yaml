@@ -1,43 +1,43 @@
-manage_user:
-   path: /manage/user
-   controller: App\Controller\ShopkeeperController::manageUser
+# manage_user:
+#    path: /manage/user
+#    controller: App\Controller\ShopkeeperController::manageUser
 
-web_user_manage:
-   path: /shopkeeper/user/manage/{id}
-   controller: App\Controller\ShopkeeperController::userManage
+# # web_user_manage:
+# #    path: /shopkeeper/user/manage/{id}
+# #    controller: App\Controller\ShopkeeperController::userManage
 
-user_list:
-   path: /shopkeeper/user/list
-   controller: App\Controller\ShopkeeperController::userList
+# user_list:
+#    path: /shopkeeper/user/list
+#    controller: App\Controller\ShopkeeperController::userList
 
-app_login:
-   path: /login
-   controller: App\Controller\AuthController::login
+# app_login:
+#    path: /login
+#    controller: App\Controller\AuthController::login
 
-app_logout:
-   path: /logout
-   controller: App\Controller\AuthController::logout
+# app_logout:
+#    path: /logout
+#    controller: App\Controller\AuthController::logout
 
-web_redirect:
-   path: /redirect
-   controller: App\Controller\FrontController::redirectPage
+# web_redirect:
+#    path: /redirect
+#    controller: App\Controller\FrontController::redirectPage
 
-web_admin_dashboard:
-   path: /admin/dashboard
-   controller: App\Controller\UserController::adminDashboard
+# web_admin_dashboard:
+#    path: /admin/dashboard
+#    controller: App\Controller\UserController::adminDashboard
 
-web_shopkeeper_dashboard:
-   path: /shopkeeper/dashboard
-   controller: App\Controller\UserController::shopkeeperDashboard
+# web_shopkeeper_dashboard:
+#    path: /shopkeeper/dashboard
+#    controller: App\Controller\UserController::shopkeeperDashboard
 
-web_vendor_dashboard:
-   path: /vendor/dashboard
-   controller: App\Controller\UserController::vendorDashboard
+# web_vendor_dashboard:
+#    path: /vendor/dashboard
+#    controller: App\Controller\UserController::vendorDashboard
 
-web_customer_dashboard:
-   path: /customer/dashboard
-   controller: App\Controller\UserController::customerDashboard
+# web_customer_dashboard:
+#    path: /customer/dashboard
+#    controller: App\Controller\UserController::customerDashboard
 
-web_home:
-   path: /
-   controller: App\Controller\HomeController::index
+# web_home:
+#    path: /
+#    controller: App\Controller\HomeController::index

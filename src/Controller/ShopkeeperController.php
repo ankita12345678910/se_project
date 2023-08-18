@@ -43,21 +43,15 @@ class ShopkeeperController extends AbstractController
 
         $em = $doctrine->getManager();
         $user = $doctrine->getRepository("App\Entity\User")->findOneBy(["id" => $id]);
-
         $val = "edit user";
-
         $msg = "User updated successfully";
+
         if (!$user) {
             $user = new User();
             $msg = "User created successfully";
             $val = "new user";
-        } else {
-            $name = $user->getId();
-            $query = $em->createQuery("SELECT u.id from App:User u where u.id = :dId");
-            $query->setParameter('dId', $name);
-            $path_id = $query->getResult();
         }
-
+        
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($request->getMethod() == "POST") {
@@ -74,7 +68,7 @@ class ShopkeeperController extends AbstractController
         return $this->render('shopkeeper/manage_user.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-            'path_id' => $path_id
+            
         ]);
     }
     #[Route('shopkeeper/user/list', name: 'user_list')]

@@ -8,7 +8,7 @@
 			{% block title %}Web-
 			{% endblock %}
 		</title>
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 		{% block stylesheets %}
 			<link rel="stylesheet" type="text/css" href="/css/backend/app.css">
 			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -31,7 +31,7 @@
 							<span class="align-middle ms-1">Home</span>
 						</li>
 
-						<li class="sidebar-item active">
+						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{path('web_shopkeeper_dashboard')}}">
 								<span class="align-middle ms-3">Dashboard</span>
 							</a>
@@ -43,7 +43,7 @@
 						</li>
 
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{path('web_user_manage',{'id': 1})}}">
+							<a class="sidebar-link" href="{{path('web_user_manage')}}">
 								<span class="align-middle ms-3">Add User</span>
 							</a>
 						</li>
@@ -57,7 +57,7 @@
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="book"></i>
 							<span class="align-middle ms-1">Manage
-																                            Book</span>
+																								                            Book</span>
 						</li>
 
 						<li class="sidebar-item">
@@ -75,7 +75,7 @@
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="bell"></i>
 							<span class="align-middle ms-1">Manage
-																                            Notice</span>
+																								                            Notice</span>
 						</li>
 
 						<li class="sidebar-item">
@@ -93,7 +93,7 @@
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="align-justify"></i>
 							<span class="align-middle ms-1">Manage
-																                            Department</span>
+																								                            Department</span>
 						</li>
 
 						<li class="sidebar-item">
@@ -150,7 +150,7 @@
 												<div class="col-10">
 													<div class="text-dark">Update completed</div>
 													<div class="text-muted small mt-1">Restart server 12 to complete the
-																												                                                    update.</div>
+																																										                                                    update.</div>
 													<div class="text-muted small mt-1">30m ago</div>
 												</div>
 											</div>
@@ -163,7 +163,7 @@
 												<div class="col-10">
 													<div class="text-dark">Lorem ipsum</div>
 													<div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate
-																												                                                    hendrerit et.</div>
+																																										                                                    hendrerit et.</div>
 													<div class="text-muted small mt-1">2h ago</div>
 												</div>
 											</div>
@@ -219,7 +219,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">Vanessa Tucker</div>
 													<div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu
-																												                                                    tortor.</div>
+																																										                                                    tortor.</div>
 													<div class="text-muted small mt-1">15m ago</div>
 												</div>
 											</div>
@@ -232,7 +232,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">William Harris</div>
 													<div class="text-muted small mt-1">Curabitur ligula sapien euismod
-																												                                                    vitae.</div>
+																																										                                                    vitae.</div>
 													<div class="text-muted small mt-1">2h ago</div>
 												</div>
 											</div>
@@ -258,7 +258,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">Sharon Lessman</div>
 													<div class="text-muted small mt-1">Aenean tellus metus, bibendum sed,
-																												                                                    posuere ac, mattis non.</div>
+																																										                                                    posuere ac, mattis non.</div>
 													<div class="text-muted small mt-1">5h ago</div>
 												</div>
 											</div>
@@ -354,6 +354,13 @@
 		</div>
 		{% block javascripts %}
 			<script src="/js/backend/app.js"></script>
+			<script>
+$(document).ready(function(){
+  $(".sidebar-item").click(function(){
+	console.log("abc");
+  });
+});
+</script>
 		{% endblock %}
 	</body>
 
