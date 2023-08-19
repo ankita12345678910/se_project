@@ -45,6 +45,9 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $available_book = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $file = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created = null;
 
@@ -172,6 +175,18 @@ class Book
     public function setAvailableBook(string $available_book): static
     {
         $this->available_book = $available_book;
+
+        return $this;
+    }
+
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    public function setFile(string $file): self
+    {
+        $this->file = $file;
 
         return $this;
     }
