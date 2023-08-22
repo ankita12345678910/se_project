@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
-use Gedmo\Mapping\Annotation\Timestampable as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -12,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table("web_user")]
+#[ORM\HasLifecycleCallbacks]
 
 #[UniqueEntity(
     fields: ['email'],
@@ -56,12 +56,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $enable = null;
 
-    #[ORM\Column(type: 'datetime')]
-    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private $created;
 
-    #[ORM\Column(type: 'datetime')]
-    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private $updated;
 
     public function __construct()
@@ -230,27 +228,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
+    #[ORM\PrePersist]
+    public function setCreated(): void
     {
-        return $this->created;
+        $this->created = new \DateTimeImmutable();
+        $this->setUpdated();
     }
 
-    public function setCreated(\DateTimeInterface $created): self
+    #[ORM\PreUpdate]
+    public function setUpdated(): void
     {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    public function getUpdated(): ?\DateTimeInterface
-    {
-        return $this->updated;
-    }
-
-    public function setUpdated(\DateTimeInterface $updated): self
-    {
-        $this->updated = $updated;
-
-        return $this;
+        $this->updated = new \DateTimeImmutable();
     }
 }

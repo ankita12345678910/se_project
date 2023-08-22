@@ -21,7 +21,6 @@
 						<th>Cellphone</th>
 						<th>Roles</th>
 						<th>Address</th>
-						<th>Created</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -40,7 +39,6 @@
 								{{roleArr[0]}}
 							</td>
 							<td>{{record.address}}</td>
-							<td>{{record.created|date('d-m-y h:i:s')}}</td>
 							<td>
 								<a href="{{path('web_user_manage',{id: record.id})}}">
 									<i class="fa fa-pencil" aria-hidden="true"></i>

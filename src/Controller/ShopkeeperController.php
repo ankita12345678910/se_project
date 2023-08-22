@@ -19,7 +19,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ShopkeeperController extends AbstractController
 {
-    #[Route('/manage/user', name: 'manage_user')]
+    #[Route('/sign/up', name: 'web_sign_up')]
     public function manageUser(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher): Response
     {
         $em = $doctrine->getManager();
@@ -34,10 +34,10 @@ class ShopkeeperController extends AbstractController
                 $em->persist($user);
                 $em->flush();
                 $this->addFlash('success', 'User created successfully');
-                return $this->redirectToRoute('manage_user');
+                return $this->redirectToRoute('web_sign_up');
             }
         }
-        return $this->render('shopkeeper/user_manage.html.twig', [
+        return $this->render('shopkeeper/sign_up.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

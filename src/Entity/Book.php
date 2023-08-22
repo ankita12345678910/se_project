@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\Table("web_book")]
+#[ORM\HasLifecycleCallbacks]
+
 class Book
 {
     #[ORM\Id]
@@ -191,28 +193,16 @@ class Book
         return $this;
     }
 
-    public function getCreated(): ?\DateTimeInterface
+    #[ORM\PrePersist]
+    public function setCreated(): void
     {
-        return $this->created;
+        $this->created = new \DateTimeImmutable();
+        $this->setUpdated();
     }
 
-    public function setCreated(\DateTimeInterface $created): static
+    #[ORM\PreUpdate]
+    public function setUpdated(): void
     {
-        $this->created = $created;
-
-        return $this;
+        $this->updated = new \DateTimeImmutable();
     }
-
-    public function getUpdated(): ?\DateTimeInterface
-    {
-        return $this->updated;
-    }
-
-    public function setUpdated(\DateTimeInterface $updated): static
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
 }
