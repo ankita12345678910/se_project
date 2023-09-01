@@ -5,7 +5,7 @@
 {% block body %}
 
 	<section class="vh-100 gradient-custom" style="background-color: #248f8f;>
-								<div class=" container py-5 h-60">
+																<div class=" container py-5 h-60">
 		<div class="row justify-content-center align-items-center h-100">
 			<div class="col-10 col-lg-9 col-xl-7">
 				<div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
@@ -17,66 +17,47 @@
 						<div class="row">
 							<div class="col-md-6 mb-4">
 
-								<div class="form-outline">
-									{{ form_row(form.firstname) }}
-								</div>
+								{{ form_row(form.firstname) }}
 
 							</div>
 							<div class="col-md-6 mb-4">
 
-								<div class="form-outline">
-									{{ form_row(form.lastname) }}
-								</div>
+								{{ form_row(form.lastname) }}
 
 							</div>
 						</div>
 
 						<div class="row">
-							<div class="col-md-6 mb-4 d-flex align-items-center">
-
-								<div class="form-outline datepicker w-100">
-									{{ form_row(form.email) }}
-								</div>
+							<div class="col-md-6 mb-4 ">
+								{{ form_row(form.email) }}
 
 							</div>
 							<div class="col-md-6 mb-4">
 								{{ form_row(form.cellphone) }}
 							</div>
 						</div>
-						<div class="row">
-
-							<div class="col-md-6 mb-4">
-
-								{{ form_row(form.roles) }}
-							</div>
-
-							<div class="col-md-6 mb-4">
-								{{ form_row(form.status) }}
-							</div>
-						</div>
-
 
 						<div class="row">
-							<div class="col-md-6 mb-4">
-								<label class="form-label" for="_password">Password</label>
-								<input type="password" id="_password" name="pass" class="form-control form-control-lg"/>
 
-							</div>
-							<div class="col-md-6 mb-4">
-								{{ form_row(form.enable) }}
-							</div>
-						</div>
+							<div class="col-md-12 mb-6">
 
-						<div class="row">
-							<div class="col-md-8 mb-6">
 								{{ form_row(form.address) }}
 							</div>
-							<div class="col-md-4 py-5 mb-6">
-								<input class="btn btn-primary btn-lg" type="submit" value="Submit"/>
+
+						</div>
+
+						<div class="row">
+
+							<div class="col-md-6 mb-4 py-3">
+								<label class="form-label" for="_password">Password</label>
+								<input type="password" id="_password" name="pass" class="form-control form-control-lg"/>
+							</div>
+
+							<div class="col-md-5 py-5 mb-6">
+								<input class="btn btn-primary btn-lg p-2" type="submit" value="Submit"/>
 							</div>
 						</div>
 					</div>
-					{{ form_rest(form) }}
 					{{ form_end(form) }}
 				</div>
 			</div>

@@ -35,4 +35,28 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+
+    #[Route('/sign/up', name: 'web_sign_up')]
+    public function manageUser(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $em = $doctrine->getManager();
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($request->getMethod() == "POST") {
+
+            if ($form->isSubmitted() and $form->isValid()) {
+
+                $user->setPassword($passwordHasher->hashPassword($user, $request->get("pass")));
+                $em->persist($user);
+                $em->flush();
+                $this->addFlash('success', 'User created successfully');
+                return $this->redirectToRoute('web_sign_up');
+            }
+        }
+        return $this->render('user/sign_up.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
 }

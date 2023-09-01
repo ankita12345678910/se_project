@@ -5,10 +5,17 @@ namespace App\Entity;
 use App\Repository\BookRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 #[ORM\Table("web_book")]
 #[ORM\HasLifecycleCallbacks]
+
+#[UniqueEntity(
+    fields: ['isbn_no'],
+    errorPath: 'isbn_no',
+    message: 'This port is already in use on that host.',
+)]
 
 class Book
 {
@@ -16,6 +23,9 @@ class Book
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(length: 255, unique: true)]
+    private ?string $isbn_no = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -59,6 +69,17 @@ class Book
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getIsbnNo(): ?string
+    {
+        return $this->isbn_no;
+    }
+
+    public function setIsbnNo(string $isbn_no): static
+    {
+        $this->isbn_no = $isbn_no;
+        return $this;
     }
 
     public function getTitle(): ?string

@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Book;
 use App\Entity\User;
 use App\Form\BookType;
-use App\Form\UserType;
+use App\Form\UserShopkeeperType;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,29 +19,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ShopkeeperController extends AbstractController
 {
-    #[Route('/sign/up', name: 'web_sign_up')]
-    public function manageUser(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher): Response
-    {
-        $em = $doctrine->getManager();
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        if ($request->getMethod() == "POST") {
-
-            if ($form->isSubmitted() and $form->isValid()) {
-
-                $user->setPassword($passwordHasher->hashPassword($user, $request->get("pass")));
-                $em->persist($user);
-                $em->flush();
-                $this->addFlash('success', 'User created successfully');
-                return $this->redirectToRoute('web_sign_up');
-            }
-        }
-        return $this->render('shopkeeper/sign_up.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
     #[Route('shopkeeper/user/manage/{id}', name: 'web_user_manage')]
     public function userManage(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, $id = -1): Response
     {
@@ -57,7 +34,7 @@ class ShopkeeperController extends AbstractController
             $val = "new user";
         }
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserShopkeeperType::class, $user);
         $form->handleRequest($request);
         if ($request->getMethod() == "POST") {
             if ($form->isSubmitted() and $form->isValid()) {
@@ -135,6 +112,7 @@ class ShopkeeperController extends AbstractController
                     }
                     $book->setFile($newFilename);
                     $em->persist($book);
+
                     $em->flush();
                     $this->addFlash('success', $msg);
                     return $this->redirectToRoute('shopkeeper_book_manage', ['id' => $id]);
@@ -153,6 +131,14 @@ class ShopkeeperController extends AbstractController
             'book' => $book,
             'form' => $form->createView(),
 
+        ]);
+    }
+
+    #[Route('shopkeeper/add/genre', name: 'add_genre')]
+    public function addGenre(): Response
+    {
+        return $this->render('shopkeeper/add_genre.html.twig', [
+            'controller_name' => 'UserController',
         ]);
     }
 }

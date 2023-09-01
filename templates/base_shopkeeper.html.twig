@@ -31,7 +31,7 @@
 							<span class="align-middle ms-1">Home</span>
 						</li>
 
-						<li class="sidebar-item">
+						<li class="sidebar-item active">
 							<a class="sidebar-link" href="{{path('web_shopkeeper_dashboard')}}">
 								<span class="align-middle ms-3">Dashboard</span>
 							</a>
@@ -57,7 +57,7 @@
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="book"></i>
 							<span class="align-middle ms-1">Manage
-																								                            Book</span>
+																																																                            Book</span>
 						</li>
 
 						<li class="sidebar-item">
@@ -74,13 +74,12 @@
 
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="bell"></i>
-							<span class="align-middle ms-1">Manage
-																								                            Notice</span>
+							<span class="align-middle ms-1">Manag Genre</span>
 						</li>
 
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="#">
-								<span class="align-middle ms-3">Add Notice</span>
+							<a class="sidebar-link" href="{{path('add_genre')}}">
+								<span class="align-middle ms-3">Add Genre</span>
 							</a>
 						</li>
 
@@ -93,7 +92,7 @@
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="align-justify"></i>
 							<span class="align-middle ms-1">Manage
-																								                            Department</span>
+																																																                            Department</span>
 						</li>
 
 						<li class="sidebar-item">
@@ -150,7 +149,7 @@
 												<div class="col-10">
 													<div class="text-dark">Update completed</div>
 													<div class="text-muted small mt-1">Restart server 12 to complete the
-																																										                                                    update.</div>
+																																																																																				                                                    update.</div>
 													<div class="text-muted small mt-1">30m ago</div>
 												</div>
 											</div>
@@ -163,7 +162,7 @@
 												<div class="col-10">
 													<div class="text-dark">Lorem ipsum</div>
 													<div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate
-																																										                                                    hendrerit et.</div>
+																																																																																				                                                    hendrerit et.</div>
 													<div class="text-muted small mt-1">2h ago</div>
 												</div>
 											</div>
@@ -219,7 +218,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">Vanessa Tucker</div>
 													<div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu
-																																										                                                    tortor.</div>
+																																																																																				                                                    tortor.</div>
 													<div class="text-muted small mt-1">15m ago</div>
 												</div>
 											</div>
@@ -232,7 +231,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">William Harris</div>
 													<div class="text-muted small mt-1">Curabitur ligula sapien euismod
-																																										                                                    vitae.</div>
+																																																																																				                                                    vitae.</div>
 													<div class="text-muted small mt-1">2h ago</div>
 												</div>
 											</div>
@@ -258,7 +257,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">Sharon Lessman</div>
 													<div class="text-muted small mt-1">Aenean tellus metus, bibendum sed,
-																																										                                                    posuere ac, mattis non.</div>
+																																																																																				                                                    posuere ac, mattis non.</div>
 													<div class="text-muted small mt-1">5h ago</div>
 												</div>
 											</div>
@@ -354,14 +353,7 @@
 		</div>
 		{% block javascripts %}
 			<script src="/js/backend/app.js"></script>
-			<script>
-$(document).ready(function(){
-  $(".sidebar-item").click(function(){
-	console.log("abc");
-  });
-});
-</script>
 		{% endblock %}
+		
 	</body>
-
 </html>

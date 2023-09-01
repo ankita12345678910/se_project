@@ -19,6 +19,10 @@ class BookType extends AbstractType
             ->add('title', TextType::class, [
                 'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Title']
             ])
+            ->add('isbn_no', TextType::class, [
+                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'ISBN number'],
+                'label' => 'ISBN number'
+            ])
             ->add('price', NumberType::class, [
                 'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Price']
             ])

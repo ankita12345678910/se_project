@@ -54,11 +54,12 @@
 {% endblock %}
 
 {% block javascripts %}
-	{{parent()}}
+	
 	<script src="//cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
 	<script>
 		$(document).ready(function () {
 $('#list-user').DataTable();
 });
 	</script>
+	{{parent()}}
 {% endblock %}
