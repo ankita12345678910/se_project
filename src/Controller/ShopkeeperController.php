@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Entity\Genre;
 use App\Entity\User;
 use App\Form\BookType;
+use App\Form\GenreType;
 use App\Form\UserShopkeeperType;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\Persistence\ManagerRegistry;
@@ -134,11 +136,46 @@ class ShopkeeperController extends AbstractController
         ]);
     }
 
-    #[Route('shopkeeper/add/genre', name: 'add_genre')]
-    public function addGenre(): Response
+    #[Route('shopkeeper/manage/genre/{id}', name: 'manage_genre')]
+    public function addGenre(Request $request, ManagerRegistry $doctrine, $id = -1): Response
     {
-        return $this->render('shopkeeper/add_genre.html.twig', [
-            'controller_name' => 'UserController',
+        $em = $doctrine->getManager();
+        $genre = $doctrine->getRepository("App\Entity\Genre")->findOneBy(["id" => $id]);
+        $btn = "Update";
+        $msg = "Genre updated successfully";
+        if (!$genre) {
+            $genre = new Genre();
+            $msg = "Genre created successfully";
+            $btn = "Add";
+        }
+
+        $form = $this->createForm(GenreType::class, $genre);
+        $form->handleRequest($request);
+        if ($request->getMethod() == "POST") {
+            if ($form->isSubmitted() and $form->isValid()) {
+                $em->persist($genre);
+                $em->flush();
+                $this->addFlash('success', $msg);
+                return $this->redirectToRoute('manage_genre');
+            }
+        }
+
+        return $this->render('shopkeeper/manage_genre.html.twig', [
+            'form' => $form->createView(),
+            'btn' => $btn
+        ]);
+    }
+
+    #[Route('shopkeeper/genre/list/', name: 'genre_list')]
+    public function genreList(ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+
+        $genre = $doctrine->getRepository("App\Entity\Genre")->findAll();
+
+        return $this->render('shopkeeper/list_genre.html.twig', [
+            'title' => "List Genre",
+            'genres' => $genre,
         ]);
     }
 }
