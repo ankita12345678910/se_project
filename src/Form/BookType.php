@@ -44,9 +44,9 @@ class BookType extends AbstractType
             ->add('binding', TextType::class, [
                 'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Binding']
             ])
-            ->add('genre', TextType::class, [
-                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Genre']
-            ])
+            // ->add('genre', TextType::class, [
+            //     'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Genre']
+            // ])
             ->add('available_book', TextType::class, [
                 'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Available book']
             ])

@@ -22,7 +22,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ShopkeeperController extends AbstractController
 {
     #[Route('shopkeeper/user/manage/{id}', name: 'web_user_manage')]
-    public function userManage(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, $id = -1): Response
+    public function manageUser(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher, $id = -1): Response
     {
 
         $em = $doctrine->getManager();
@@ -70,17 +70,41 @@ class ShopkeeperController extends AbstractController
     #[Route('shopkeeper/book/manage/{id}', name: 'shopkeeper_book_manage')]
     public function manageBook(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger, $id = -1): Response
     {
-
         $em = $doctrine->getManager();
-        $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
-        $val = "edit Book";
+        $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id, "status" => 'Active']);
         $msg = "Book updated successfully";
+
+
 
         if (!$book) {
             $book = new Book();
             $msg = "Book created successfully";
-            $val = "new book";
+            $query = $em->createQuery("SELECT u from App:Genre u where  u.status ='Active'");
+            $result = $query->getResult();
+            $b = "";
+        } else {
+            $query = $em->createQuery("SELECT u from App:Genre u where  u.status ='Active'");
+            $result = $query->getResult();
+
+
+
+            $select = explode(",", $book->getGenre());
+            // $select=$book->getGenre(); 
+            // $select1 = $select[0];
+            // $select2 = $select[1];
+
+
+            // $result = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' => $select]);
+
+
+
+            $gen = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' =>  $select]);
+            foreach ($gen as $genre) {
+
+                $b[] = $genre->getName();
+            }
         }
+
 
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -112,9 +136,17 @@ class ShopkeeperController extends AbstractController
                     } catch (FileException $e) {
                         // ... handle exception if something happens during file upload
                     }
-                    $book->setFile($newFilename);
-                    $em->persist($book);
 
+                    $genres = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' => $request->get("genre")]);
+                    foreach ($genres as $genre) {
+
+                        $a[] = $genre->getName();
+                    }
+                    $genre_together = implode(",", $a);
+
+                    $book->setFile($newFilename);
+                    $book->setGenre($genre_together);
+                    $em->persist($book);
                     $em->flush();
                     $this->addFlash('success', $msg);
                     return $this->redirectToRoute('shopkeeper_book_manage', ['id' => $id]);
@@ -132,12 +164,14 @@ class ShopkeeperController extends AbstractController
         return $this->render('shopkeeper/manage_book.html.twig', [
             'book' => $book,
             'form' => $form->createView(),
+            'value' => $result,
+            'sel' => $b,
 
         ]);
     }
 
     #[Route('shopkeeper/manage/genre/{id}', name: 'manage_genre')]
-    public function addGenre(Request $request, ManagerRegistry $doctrine, $id = -1): Response
+    public function manageGenre(Request $request, ManagerRegistry $doctrine, $id = -1): Response
     {
         $em = $doctrine->getManager();
         $genre = $doctrine->getRepository("App\Entity\Genre")->findOneBy(["id" => $id]);

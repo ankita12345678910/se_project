@@ -18,3 +18,6 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+uploads/books/64f301ee7c4fb_Wings-of-Fire-1.webp
+*.webp
+*.jpg

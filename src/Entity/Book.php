@@ -60,11 +60,19 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $file = null;
 
+    #[ORM\Column(type: "string", columnDefinition: "ENUM('Active', 'Deleted')")]
+    private ?string $status=null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updated = null;
+
+    public function __construct()
+    {
+        $this->status = 'Active';
+    }
 
     public function getId(): ?int
     {
@@ -210,6 +218,18 @@ class Book
     public function setFile(string $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

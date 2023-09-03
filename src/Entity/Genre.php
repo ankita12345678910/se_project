@@ -16,6 +16,14 @@ class Genre
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(type: "string", columnDefinition: "ENUM('Active', 'Deleted')")]
+    private ?string $status=null;
+
+    public function __construct()
+    {
+        $this->status = 'Active';
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +37,18 @@ class Genre
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
