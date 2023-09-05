@@ -51,8 +51,8 @@ class Book
     #[ORM\Column(length: 255)]
     private ?string $binding = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $genre = null;
+    #[ORM\Column]
+    private ?array $genre = [];
 
     #[ORM\Column(length: 255)]
     private ?string $available_book = null;
@@ -182,18 +182,6 @@ class Book
     public function setBinding(string $binding): static
     {
         $this->binding = $binding;
-
-        return $this;
-    }
-
-    public function getGenre(): ?string
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(string $genre): static
-    {
-        $this->genre = $genre;
 
         return $this;
     }

@@ -15,7 +15,7 @@ class HomeController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
-        $book = $doctrine->getRepository("App\Entity\Book")->findBy(["genre" => 'Adventure']);
+        $book = $doctrine->getRepository("App\Entity\Book")->findBy(["genre" => 'Comic']);
         $display = $this->getParameter('upload_directory') . "/books";
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
