@@ -79,17 +79,26 @@ class ShopkeeperController extends AbstractController
             $msg = "Book created successfully";
             $query = $em->createQuery("SELECT u from App:Genre u where  u.status ='Active'");
             $result = $query->getResult();
-            $b = "";
         } else {
             $select = $book->getGenre();
             $query = $em->createQuery("SELECT u from App:Genre u where  u.name NOT IN (:genre) and  u.status ='Active'");
             $query->setParameter('genre', $select);
             $result = $query->getResult();
+            $update_book = "update";
         }
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
         if ($request->getMethod() == "POST") {
             if ($form->isSubmitted() and $form->isValid()) {
+
+                $genres = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' => $request->get("genre")]);
+                foreach ($genres as $genre) {
+
+                    $a[] = $genre->getName();
+                }
+                if ($update_book) {
+                    $a = $request->get('genre');
+                }
 
                 /** @var UploadedFile $upload */
                 $upload = $form->get('file')->getData();
@@ -97,7 +106,7 @@ class ShopkeeperController extends AbstractController
                 if ($upload) {
 
                     /*original file name..if my file name is "my_first_notice"..then $originalfilename
-                return the actual name of the file*/
+                    return the actual name of the file*/
                     $originalFilename = pathinfo($upload->getClientOriginalName(), PATHINFO_FILENAME);
 
                     //$filename returns the file name like that " my-first-notice " 
@@ -117,20 +126,15 @@ class ShopkeeperController extends AbstractController
                         // ... handle exception if something happens during file upload
                     }
 
-                    $genres = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' => $request->get("genre")]);
-                    foreach ($genres as $genre) {
-
-                        $a[] = $genre->getName();
-                    }
-
                     $book->setFile($newFilename);
-                    $book->setGenre($a);
+                    
                     $em->persist($book);
 
                     $em->flush();
                     $this->addFlash('success', $msg);
                     return $this->redirectToRoute('shopkeeper_book_manage', ['id' => $id]);
                 } elseif (!$upload) {
+                    $book->setGenre($a);
                     $em->persist($book);
                     $em->flush();
                     $this->addFlash('success', "updated successfully");
