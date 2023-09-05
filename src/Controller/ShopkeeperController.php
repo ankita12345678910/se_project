@@ -74,8 +74,6 @@ class ShopkeeperController extends AbstractController
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id, "status" => 'Active']);
         $msg = "Book updated successfully";
 
-
-
         if (!$book) {
             $book = new Book();
             $msg = "Book created successfully";
@@ -83,29 +81,11 @@ class ShopkeeperController extends AbstractController
             $result = $query->getResult();
             $b = "";
         } else {
-            $query = $em->createQuery("SELECT u from App:Genre u where  u.status ='Active'");
+            $select = $book->getGenre();
+            $query = $em->createQuery("SELECT u from App:Genre u where  u.name NOT IN (:genre) and  u.status ='Active'");
+            $query->setParameter('genre', $select);
             $result = $query->getResult();
-
-
-
-            $select = explode(",", $book->getGenre());
-            // $select=$book->getGenre(); 
-            // $select1 = $select[0];
-            // $select2 = $select[1];
-
-
-            // $result = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' => $select]);
-
-
-
-            $gen = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' =>  $select]);
-            foreach ($gen as $genre) {
-
-                $b[] = $genre->getName();
-            }
         }
-
-
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
         if ($request->getMethod() == "POST") {
@@ -142,11 +122,11 @@ class ShopkeeperController extends AbstractController
 
                         $a[] = $genre->getName();
                     }
-                    $genre_together = implode(",", $a);
 
                     $book->setFile($newFilename);
-                    $book->setGenre($genre_together);
+                    $book->setGenre($a);
                     $em->persist($book);
+
                     $em->flush();
                     $this->addFlash('success', $msg);
                     return $this->redirectToRoute('shopkeeper_book_manage', ['id' => $id]);
@@ -165,7 +145,7 @@ class ShopkeeperController extends AbstractController
             'book' => $book,
             'form' => $form->createView(),
             'value' => $result,
-            'sel' => $b,
+            'sel' =>  $select,
 
         ]);
     }

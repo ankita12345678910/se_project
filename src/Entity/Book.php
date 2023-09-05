@@ -234,4 +234,26 @@ class Book
     {
         $this->updated = new \DateTimeImmutable();
     }
+
+    public function getGenre(): array
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(array $genre): static
+    {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
 }
