@@ -15,16 +15,27 @@ class HomeController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
-        $book = $doctrine->getRepository("App\Entity\Book")->findBy(["genre" => 'Comic']);
+        $books = $doctrine->getRepository("App\Entity\Book")->findAll();
+        foreach ($books as $book) {
+            foreach ($book as $boo) {
+
+                $name[] = $boo->getGenre();
+                
+            }
+            
+        }
+        
+
+
         $display = $this->getParameter('upload_directory') . "/books";
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
-            'book' => $book,
+            'book' => $books,
             'display' => $display
         ]);
     }
     #[Route(path: 'image/{path}/{file}', name: 'image_show')]
-    public function image($path,$file): Response
+    public function image($path, $file): Response
     {
         // .. add some security checks here
         $response = new Response();
@@ -33,7 +44,7 @@ class HomeController extends AbstractController
             // Set headers
             $response->headers->set('Cache-Control', 'private');
             $response->headers->set('Content-type', mime_content_type($filename));
-            
+
             // Send headers before outputting anything
             $response->sendHeaders();
             $response->setContent(file_get_contents($filename));

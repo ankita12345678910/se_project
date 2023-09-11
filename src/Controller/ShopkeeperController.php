@@ -79,6 +79,8 @@ class ShopkeeperController extends AbstractController
             $msg = "Book created successfully";
             $query = $em->createQuery("SELECT u from App:Genre u where  u.status ='Active'");
             $result = $query->getResult();
+            $update_book = "add";
+            $select = "";
         } else {
             $select = $book->getGenre();
             $query = $em->createQuery("SELECT u from App:Genre u where  u.name NOT IN (:genre) and  u.status ='Active'");
@@ -94,11 +96,13 @@ class ShopkeeperController extends AbstractController
                 $genres = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' => $request->get("genre")]);
                 foreach ($genres as $genre) {
 
-                    $a[] = $genre->getName();
+                    $a[]= $genre->getName();
                 }
-                if ($update_book) {
-                    $a = $request->get('genre');
+
+                if ($update_book == "update") {
+                    $a= $request->get('genre');
                 }
+                
 
                 /** @var UploadedFile $upload */
                 $upload = $form->get('file')->getData();
@@ -127,9 +131,8 @@ class ShopkeeperController extends AbstractController
                     }
 
                     $book->setFile($newFilename);
-                    
+                    $book->setGenre($a);
                     $em->persist($book);
-
                     $em->flush();
                     $this->addFlash('success', $msg);
                     return $this->redirectToRoute('shopkeeper_book_manage', ['id' => $id]);
@@ -151,6 +154,19 @@ class ShopkeeperController extends AbstractController
             'value' => $result,
             'sel' =>  $select,
 
+        ]);
+    }
+
+    #[Route('shopkeeper/book/list/', name: 'book_list')]
+    public function bookList(ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+
+        $book = $doctrine->getRepository("App\Entity\Book")->findAll();
+
+        return $this->render('shopkeeper/list_book.html.twig', [
+            'title' => "List Book",
+            'books' => $book,
         ]);
     }
 

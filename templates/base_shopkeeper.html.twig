@@ -57,7 +57,7 @@
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="book"></i>
 							<span class="align-middle ms-1">Manage
-																																																                            Book</span>
+																																																																																                            Book</span>
 						</li>
 
 						<li class="sidebar-item">
@@ -67,7 +67,7 @@
 						</li>
 
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="#">
+							<a class="sidebar-link" href="{{path('book_list')}}">
 								<span class="align-middle ms-3">List Books</span>
 							</a>
 						</li>
@@ -92,7 +92,7 @@
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="align-justify"></i>
 							<span class="align-middle ms-1">Manage
-																																																                            Department</span>
+																																																																																                            Department</span>
 						</li>
 
 						<li class="sidebar-item">
@@ -129,6 +129,12 @@
 
 					<div class="navbar-collapse collapse">
 						<ul class="navbar-nav navbar-align">
+							<li class="nav-item">
+
+								<a class="nav-link d-none d-sm-inline-block" href="/">
+									<i class="align-middle me-1" data-feather="home"></i>
+								</a>
+							</li>
 							<li class="nav-item dropdown">
 								<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
 									<div class="position-relative">
@@ -149,7 +155,7 @@
 												<div class="col-10">
 													<div class="text-dark">Update completed</div>
 													<div class="text-muted small mt-1">Restart server 12 to complete the
-																																																																																				                                                    update.</div>
+																																																																																																																																												                                                    update.</div>
 													<div class="text-muted small mt-1">30m ago</div>
 												</div>
 											</div>
@@ -162,7 +168,7 @@
 												<div class="col-10">
 													<div class="text-dark">Lorem ipsum</div>
 													<div class="text-muted small mt-1">Aliquam ex eros, imperdiet vulputate
-																																																																																				                                                    hendrerit et.</div>
+																																																																																																																																												                                                    hendrerit et.</div>
 													<div class="text-muted small mt-1">2h ago</div>
 												</div>
 											</div>
@@ -218,7 +224,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">Vanessa Tucker</div>
 													<div class="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu
-																																																																																				                                                    tortor.</div>
+																																																																																																																																												                                                    tortor.</div>
 													<div class="text-muted small mt-1">15m ago</div>
 												</div>
 											</div>
@@ -231,7 +237,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">William Harris</div>
 													<div class="text-muted small mt-1">Curabitur ligula sapien euismod
-																																																																																				                                                    vitae.</div>
+																																																																																																																																												                                                    vitae.</div>
 													<div class="text-muted small mt-1">2h ago</div>
 												</div>
 											</div>
@@ -257,7 +263,7 @@
 												<div class="col-10 ps-2">
 													<div class="text-dark">Sharon Lessman</div>
 													<div class="text-muted small mt-1">Aenean tellus metus, bibendum sed,
-																																																																																				                                                    posuere ac, mattis non.</div>
+																																																																																																																																												                                                    posuere ac, mattis non.</div>
 													<div class="text-muted small mt-1">5h ago</div>
 												</div>
 											</div>
@@ -269,10 +275,10 @@
 								</div>
 							</li>
 							<li class="nav-item dropdown">
-								<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-									<i class="align-middle" data-feather="settings"></i>
-								</a>
 
+								<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+									<i class="align-middle me-1" data-feather="list"></i>
+								</a>
 
 								<div class="dropdown-menu dropdown-menu-end">
 									<a class="dropdown-item" href="#">
@@ -354,6 +360,6 @@
 		{% block javascripts %}
 			<script src="/js/backend/app.js"></script>
 		{% endblock %}
-		
+
 	</body>
 </html>

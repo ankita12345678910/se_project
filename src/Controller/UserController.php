@@ -21,6 +21,13 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
+    #[Route('/feedback', name: 'feedback')]
+    public function feedback(): Response
+    {
+        return $this->render('user/feedback.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
     #[Route('/vendor/dashboard', name: 'web_vendor_dashboard')]
     public function vendorDashboard(): Response
     {
