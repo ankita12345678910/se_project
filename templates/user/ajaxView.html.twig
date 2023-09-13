@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block bootstrap %}
+{{parent()}}
+{% endblock %}
+{% block body %}
+
+<div class="row py-7">
+    <div class="col-7">
+        <div class="py-4 px-5 m-5 bg-light">
+            <h1 class="bg-light py-2 m-3 text-center text-black">Book Details</h1>
+            <div class="container back">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row"></div>
+                    </div>
+                    <table class="table table-striped table-hover color py-5" cellpadding="0" cellspacing="0" border="0"
+                        class="display table table-bordered" id="hidden-table-info">
+                        <tbody>
+
+                            <tr>
+                                <th>Title</th>
+                                <td>{{book.title}}</td>
+                              
+                            </tr>
+                            <tr>
+                                <th>publisher</th>
+                                <td>{{book.publisher}}</td>
+                              
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{book.description}}</td>
+                              
+                            </tr>
+
+                            <tr>
+                                
+                                <th>Author</th>
+                                <td>{{book.author}}</td>
+                            </tr>
+                            <tr>
+                                <th>Language</th>
+                                <td>{{book.language}}</td>
+                            </tr>
+
+                            <tr>
+                               
+                                <th>Binding</th>
+                                <td>{{book.binding}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

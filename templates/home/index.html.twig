@@ -2,14 +2,16 @@
 {% block bootstrap %}
 	{{parent()}}
 {% endblock %}
-
-{% block title %}Hello HomeController!
-{% endblock %}
-{% block header %}
+{% block stylesheets %}
 	{{parent()}}
 {% endblock %}
 
+{% block title %}Hello HomeController!
+{% endblock %}
+
 {% block body %}
+
+	<body id="bookDetails"></body>
 
 	<div id="carouselExampleDark" class="carousel carousel-white slide" style="padding-top: 68px;" data-bs-ride="carousel">
 		<div class="carousel-indicators">
@@ -65,43 +67,46 @@
 		<div class="row row-cols-1 row-cols-lg-4  g-5 py-5">
 			{% for data in book %}
 				<div class="col">
-					<div class="card card-cover h-100 overflow-hidden text-bg-light rounded-5 shadow-lg" style=" width: 18rem; height: 30rem;">
-						<div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-							<img src="{{path('image_show',{path:'books',file: data.file})}}" style=" width:13rem; height: 15rem">
-							<div class="card-body">
+					<div class="card card-cover h-100 overflow-hidden text-bg-light rounded-5 shadow-lg" style=" width: 18rem; height: 10rem;">
+						<div class="d-flex flex-column h-50 p-5 pb-2 text-shadow-1">
+							<img src="{{path('image_show',{path:'books',file: data.file})}}" style=" width:13rem; height: 11rem">
+							<div class="card-body text-center">
 								<p class="card-text">{{data.title}}</p>
+								<small>
+									<s>$399</s>
+								</small>
+								<p class="card-text">Price:{{data.price}}</p>
+								<a href="{{path('web_book_details',{id: data.id})}}" class="book_details btn btn-warning" title="book details" data-toggle="tooltip" userid="{{data.id}}">Explore
+								</a>
+								<!-- <button type="submit" class="btn btn-warning" name="details">Details</button> -->
+								<!-- <input type="hidden" name="book_details" value="{data.id}"> -->
 							</div>
-						</a>
+						</div>
 					</div>
 				</div>
-			</div>
-		{% endfor %}
+			{% endfor %}
+		</div>
 	</div>
-	<p class="pb-2 border-bottom"></p>
 </div>
+<p class="pb-2 border-bottom"></p>{% endblock %}{% block javascripts %}
+{{parent()}}
+<!-- <script>
+	jQuery('body').on('click', ".book_details", function () {
 
-{# <div class="col">
-																		       
-																		
-																		      <div class="col">
-																		        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-3.jpg');">
-																		          <div class="d-flex flex-column h-100 p-5 pb-3 text-shadow-1">
-																		            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Another longer title belongs here</h3>
-																		            <ul class="d-flex list-unstyled mt-auto">
-																		              <li class="me-auto">
-																		                <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-																		              </li>
-																		              <li class="d-flex align-items-center me-3">
-																		                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"></use></svg>
-																		                <small>California</small>
-																		              </li>
-																		              <li class="d-flex align-items-center">
-																		                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"></use></svg>
-																		                <small>5d</small>
-																		              </li>
-																		            </ul>
-																		          </div>
-																		        </div>
-																		      </div>
-																		    </div>
-																		  </div> #}{% endblock %}
+		var id = jQuery(this).attr('userId');
+		$.ajax({
+			
+			url: "{{ path('web_ajax_book_details')}}",
+			type: "GET",
+			data: {
+				id
+			},
+			dataType: 'json',
+			success: function (returns) {
+				jQuery('#bookDetails').html(returns);
+			},
+			error: function (xhr) { }
+		});
+
+	});
+</script> -->{% endblock %}

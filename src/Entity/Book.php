@@ -59,6 +59,9 @@ class Book
 
     #[ORM\Column(length: 255)]
     private ?string $file = null;
+    
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
 
     #[ORM\Column(type: "string", columnDefinition: "ENUM('Active', 'Deleted')")]
     private ?string $status=null;
@@ -68,6 +71,7 @@ class Book
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updated = null;
+
 
     public function __construct()
     {
@@ -206,6 +210,18 @@ class Book
     public function setFile(string $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

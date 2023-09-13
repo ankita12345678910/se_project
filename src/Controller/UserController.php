@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -65,5 +66,29 @@ class UserController extends AbstractController
             'user' => $user,
             'form' => $form->createView(),
         ]);
+    }
+    #[Route('/book/details/{id}', name: 'web_book_details')]
+    public function bookDetails(Request $request, ManagerRegistry $doctrine,$id): Response
+    {
+        
+        $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
+        
+        return $this->render('user/book_details.html.twig', [
+            'controller_name' => 'UserController',
+            'book'=>$book,
+        ]);
+        
+    }
+    #[Route('/ajax/book/details', name: 'web_ajax_book_details')]
+    public function ajaxView(ManagerRegistry $mr,Request $request): JsonResponse
+    {
+        $book = $mr->getRepository("App\Entity\Book")->findOneBy(["id" => $request->get('id')]);
+        $html= $this->renderView('user/ajaxView.html.twig', [
+            'title' => "View User",
+            'book' => $book,
+        ]);
+        $response = new JsonResponse();
+        $response->setData($html);
+        return $response;
     }
 }
