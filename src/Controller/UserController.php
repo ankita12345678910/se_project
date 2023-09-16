@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
- 
+
     #[Route('/shopkeeper/dashboard', name: 'web_shopkeeper_dashboard')]
     public function shopkeeperDashboard(): Response
     {
@@ -68,22 +68,22 @@ class UserController extends AbstractController
         ]);
     }
     #[Route('/book/details/{id}', name: 'web_book_details')]
-    public function bookDetails(Request $request, ManagerRegistry $doctrine,$id): Response
+    public function bookDetails(Request $request, ManagerRegistry $doctrine, $id): Response
     {
-        
+
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
-        
+
         return $this->render('user/book_details.html.twig', [
             'controller_name' => 'UserController',
-            'book'=>$book,
+            'book' => $book,
         ]);
-        
     }
     #[Route('/ajax/book/details', name: 'web_ajax_book_details')]
-    public function ajaxView(ManagerRegistry $mr,Request $request): JsonResponse
+    public function ajaxView(ManagerRegistry $mr, Request $request): JsonResponse
     {
+        
         $book = $mr->getRepository("App\Entity\Book")->findOneBy(["id" => $request->get('id')]);
-        $html= $this->renderView('user/ajaxView.html.twig', [
+        $html = $this->renderView('user/ajaxView.html.twig', [
             'title' => "View User",
             'book' => $book,
         ]);
@@ -91,4 +91,15 @@ class UserController extends AbstractController
         $response->setData($html);
         return $response;
     }
+
+    // #[Route('/book/cart/{id}', name: 'web_add_cart')]
+    // public function bookCart(Request $request, ManagerRegistry $doctrine, $id): Response
+    // {
+
+    //     $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
+    //     return $this->render('user/book_details.html.twig', [
+    //         'controller_name' => 'UserController',
+    //         'book' => $book,
+    //     ]);
+    // }
 }

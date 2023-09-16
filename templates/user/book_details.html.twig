@@ -30,9 +30,9 @@
 {% block body %}
 
 	<div class="row py-5">
-		<div class="col-md-5 col-sm-6">
+		<div class="col-md-5 py-5 col-sm-6">
 			<div class="product-main-image" style="position: relative; overflow: hidden;">
-				<img src="{{path('image_show',{path:'books',file: book.file})}}" alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm" class=" img-responsive" style="border: 1px solid black; height:600px; width:600px;" itemprop="image">
+				<img src="{{path('image_show',{path:'books',file: book.file})}}" alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm" class=" img-responsive shadow-lg" style="border: 1px solid black; height:600px; width:600px;" itemprop="image">
 				<img src="{{path('image_show',{path:'books',file: book.file})}}" class="zoomImg" style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 300px; height: 461px; border: none; max-width: none;">
 			</div>
 			<div class="product-other-images">
@@ -44,7 +44,7 @@
 			</div>
 		</div>
 		<div class="col-md-7">
-			<div class="py-4 m-5 bg-light" style="height: 90%;width: 95%;">
+			<div class="py-4 px-5 m-5 bg-light shadow-lg" style="height: 85%;width: 95%;">
 				<div class="container">
 					<span style="font-size: 30px;">{{book.title}}</span>
 					<span style="font-size: 15px;">
@@ -82,28 +82,26 @@
 					<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
 					<div class="row row-cols-1 row-cols-lg-4  g-3 py-3"></div>
 					<div class="text-center">
-						<a href="javascript:void(0)" style="width: 290px; height: 65px;font-size: 20px;" class="btn btn-lg btn-danger bi bi-cart py-3" title="Add to cart" data-toggle="tooltip">Add to
-																																										                        cart
+						<a href="javascript:void(0)" style="width: 290px; height: 65px;font-size: 20px;" class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" title="Add to cart" data-toggle="tooltip">Add to cart
 						</a>
 					</div>
 					<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
 					<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
 				</div>
-
 			</div>
 		</div>
 	</div>
 	<div class="row py-0">
 		<div class="col-12">
-			<div class="py-4 px-5 m-5 bg-light">
-				<h1 class="bg-light py-2 m-3 text-center text-black">Book Specification</h1>
+			<div class="py-4 px-5 m-5 shadow-lg bg-light">
+				<h1 class="bg-light shadow-lg py-2 m-3 text-center text-black">Book Specification</h1>
 				<p class="pb-3 border-bottom"></p>
 				<div class="container">
 					<div class="table-wrapper">
 						<div class="table-title">
 							<div class="row"></div>
 						</div>
-						<table class="bg-light table table-hover color py-5" style="border-spacing: 30px; " id="hidden-table-info">
+						<table class="bg-light shadow-lg table table-hover color py-5" style="border-spacing: 30px; " id="hidden-table-info">
 							<tbody>
 
 								<tr>
