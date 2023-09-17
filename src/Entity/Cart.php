@@ -15,46 +15,20 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Book::class, inversedBy: 'carts')]
-    #[ORM\JoinTable(name:"cart_book")]
-    private Collection $book;
-
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    #[ORM\OneToMany(mappedBy: 'cart', targetEntity: CartItem::class)]
+    private Collection $cartItem;
+
     public function __construct()
     {
-        $this->book = new ArrayCollection();
+        $this->cartItem = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-
-    /**
-     * @return Collection<int, Book>
-     */
-    public function getBook(): Collection
-    {
-        return $this->book;
-    }
-
-    public function addBook(Book $book): static
-    {
-        if (!$this->book->contains($book)) {
-            $this->book->add($book);
-        }
-
-        return $this;
-    }
-
-    public function removeBook(Book $book): static
-    {
-        $this->book->removeElement($book);
-
-        return $this;
     }
 
     public function getUser(): ?User
@@ -68,4 +42,35 @@ class Cart
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, CartItem>
+     */
+    public function getCartItem(): Collection
+    {
+        return $this->cartItem;
+    }
+
+    public function addCartItem(CartItem $cartItem): static
+    {
+        if (!$this->cartItem->contains($cartItem)) {
+            $this->cartItem->add($cartItem);
+            $cartItem->setCart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartItem(CartItem $cartItem): static
+    {
+        if ($this->cartItem->removeElement($cartItem)) {
+            // set the owning side to null (unless already changed)
+            if ($cartItem->getCart() === $this) {
+                $cartItem->setCart(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

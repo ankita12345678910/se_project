@@ -74,14 +74,14 @@ class Book
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updated = null;
 
-    #[ORM\ManyToMany(targetEntity: Cart::class, mappedBy: 'book')]
-    private Collection $carts;
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: CartItem::class)]
+    private Collection $cartItem;
 
 
     public function __construct()
     {
         $this->status = 'Active';
-        $this->carts = new ArrayCollection();
+        $this->cartItem = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -280,29 +280,33 @@ class Book
     }
 
     /**
-     * @return Collection<int, Cart>
+     * @return Collection<int, CartItem>
      */
-    public function getCarts(): Collection
+    public function getCartItem(): Collection
     {
-        return $this->carts;
+        return $this->cartItem;
     }
 
-    public function addCart(Cart $cart): static
+    public function addCartItem(CartItem $cartItem): static
     {
-        if (!$this->carts->contains($cart)) {
-            $this->carts->add($cart);
-            $cart->addBook($this);
+        if (!$this->cartItem->contains($cartItem)) {
+            $this->cartItem->add($cartItem);
+            $cartItem->setBook($this);
         }
 
         return $this;
     }
 
-    public function removeCart(Cart $cart): static
+    public function removeCartItem(CartItem $cartItem): static
     {
-        if ($this->carts->removeElement($cart)) {
-            $cart->removeBook($this);
+        if ($this->cartItem->removeElement($cartItem)) {
+            // set the owning side to null (unless already changed)
+            if ($cartItem->getBook() === $this) {
+                $cartItem->setBook(null);
+            }
         }
 
         return $this;
     }
+
 }

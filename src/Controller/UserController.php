@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cart;
+use App\Entity\CartItem;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -100,47 +101,52 @@ class UserController extends AbstractController
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(["user" => $this->getUser()]);
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
         if (!$cart) {
-            $cart = new Cart();
-            $cart->setUser($this->getUser());
+            // $cart = new Cart();
+            // $cart_item=new CartItem();
+            // $cart->setUser($this->getUser());
+
         }
-        $cart->addBook($book);
-        $em->persist($cart);
+        $cart_item=new CartItem();
+        $cart_item->setCart($cart);
+        $cart_item->setBook($book);
+        $cart_item->setQuantity("1");
+        $em->persist($cart_item);
         $em->flush();
         return $this->redirect($this->generateUrl('web_book_details', ['id' => $id]));
     }
 
-    #[Route('/view/cart/items', name: 'view_cart')]
-    public function viewCart(Request $request, ManagerRegistry $doctrine): Response
-    {
-        $em = $doctrine->getManager();
-        $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
-        $repository = $em->getRepository('App\Entity\Book');
-        $books = $repository->createQueryBuilder('b')
-            ->innerJoin('b.carts', 'c')
-            ->where('c.id = :category_id')
-            ->setParameter('category_id', $cart)
-            ->getQuery()->getResult();
+    // #[Route('/view/cart/items', name: 'view_cart')]
+    // public function viewCart(Request $request, ManagerRegistry $doctrine): Response
+    // {
+    //     $em = $doctrine->getManager();
+    //     $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
+    //     $repository = $em->getRepository('App\Entity\Book');
+    //     $books = $repository->createQueryBuilder('b')
+    //         ->innerJoin('b.carts', 'c')
+    //         ->where('c.id = :category_id')
+    //         ->setParameter('category_id', $cart)
+    //         ->getQuery()->getResult();
 
-        if (!$books) {
-            $cart_present = "no";
-        } else {
-            $cart_present = "yes";
-        }
+    //     if (!$books) {
+    //         $cart_present = "no";
+    //     } else {
+    //         $cart_present = "yes";
+    //     }
 
-        return $this->render('user/view_cart_items.html.twig', [
-            'existCart' => $cart_present,
-            'books' => $books
-        ]);
-    }
-    #[Route('/remove/item/{id}', name: 'remove_cart_item')]
-    public function RemoveItem(ManagerRegistry $doctrine, $id): Response
-    {
-        $em = $doctrine->getManager();
-        $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
-        $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $id]);
-        $cart->removeBook($book);
-        $em->persist($cart);
-        $em->flush();
-        return $this->redirect($this->generateUrl('view_cart'));
-    }
+    //     return $this->render('user/view_cart_items.html.twig', [
+    //         'existCart' => $cart_present,
+    //         'books' => $books
+    //     ]);
+    // }
+    // #[Route('/remove/item/{id}', name: 'remove_cart_item')]
+    // public function RemoveItem(ManagerRegistry $doctrine, $id): Response
+    // {
+    //     $em = $doctrine->getManager();
+    //     $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
+    //     $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $id]);
+    //     $cart->removeBook($book);
+    //     $em->persist($cart);
+    //     $em->flush();
+    //     return $this->redirect($this->generateUrl('view_cart'));
+    // }
 }
