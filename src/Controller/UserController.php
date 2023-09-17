@@ -120,7 +120,8 @@ class UserController extends AbstractController
             ->where('c.id = :category_id')
             ->setParameter('category_id', $cart)
             ->getQuery()->getResult();
-        if (!$cart) {
+
+        if (!$books) {
             $cart_present = "no";
         } else {
             $cart_present = "yes";
