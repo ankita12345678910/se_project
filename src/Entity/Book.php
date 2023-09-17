@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -72,10 +74,14 @@ class Book
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updated = null;
 
+    #[ORM\ManyToMany(targetEntity: Cart::class, mappedBy: 'book')]
+    private Collection $carts;
+
 
     public function __construct()
     {
         $this->status = 'Active';
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -271,5 +277,32 @@ class Book
     public function getUpdated(): ?\DateTimeInterface
     {
         return $this->updated;
+    }
+
+    /**
+     * @return Collection<int, Cart>
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): static
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts->add($cart);
+            $cart->addBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): static
+    {
+        if ($this->carts->removeElement($cart)) {
+            $cart->removeBook($this);
+        }
+
+        return $this;
     }
 }

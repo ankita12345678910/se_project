@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -81,7 +82,7 @@ class UserController extends AbstractController
     #[Route('/ajax/book/details', name: 'web_ajax_book_details')]
     public function ajaxView(ManagerRegistry $mr, Request $request): JsonResponse
     {
-        
+
         $book = $mr->getRepository("App\Entity\Book")->findOneBy(["id" => $request->get('id')]);
         $html = $this->renderView('user/ajaxView.html.twig', [
             'title' => "View User",
@@ -92,14 +93,53 @@ class UserController extends AbstractController
         return $response;
     }
 
-    // #[Route('/book/cart/{id}', name: 'web_add_cart')]
-    // public function bookCart(Request $request, ManagerRegistry $doctrine, $id): Response
-    // {
+    #[Route('/book/cart/{id}', name: 'add_cart')]
+    public function bookCart(Request $request, ManagerRegistry $doctrine, $id): Response
+    {
+        $em = $doctrine->getManager();
+        $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(["user" => $this->getUser()]);
+        $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
+        if (!$cart) {
+            $cart = new Cart();
+            $cart->setUser($this->getUser());
+        }
+        $cart->addBook($book);
+        $em->persist($cart);
+        $em->flush();
+        return $this->redirect($this->generateUrl('web_book_details', ['id' => $id]));
+    }
 
-    //     $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
-    //     return $this->render('user/book_details.html.twig', [
-    //         'controller_name' => 'UserController',
-    //         'book' => $book,
-    //     ]);
-    // }
+    #[Route('/view/cart/items', name: 'view_cart')]
+    public function viewCart(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+        $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
+        $repository = $em->getRepository('App\Entity\Book');
+        $books = $repository->createQueryBuilder('b')
+            ->innerJoin('b.carts', 'c')
+            ->where('c.id = :category_id')
+            ->setParameter('category_id', $cart)
+            ->getQuery()->getResult();
+        if (!$cart) {
+            $cart_present = "no";
+        } else {
+            $cart_present = "yes";
+        }
+
+        return $this->render('user/view_cart_items.html.twig', [
+            'existCart' => $cart_present,
+            'books' => $books
+        ]);
+    }
+    #[Route('/remove/item/{id}', name: 'remove_cart_item')]
+    public function RemoveItem(ManagerRegistry $doctrine, $id): Response
+    {
+        $em = $doctrine->getManager();
+        $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
+        $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $id]);
+        $cart->removeBook($book);
+        $em->persist($cart);
+        $em->flush();
+        return $this->redirect($this->generateUrl('view_cart'));
+    }
 }

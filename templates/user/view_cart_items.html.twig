@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+{% block bootstrap %}
+{{parent()}}
+{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block body %}
+{% if existCart=='no' %}
+<div class="row py-5">
+    <div class="col-md-12 py-5">
+        <div class="py-4 px-5 m-5 bg-light shadow-lg rounded-5" style="height: 85%;width: 95%;">
+            <div class="container">
+                <p class="pb-3 border-bottom"></p>
+                <div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+                <div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+                <div style="font-size: 16px;">
+                    Your Shopping Cart is currently empty. To add Books in your Shopping Cart, start by searching or
+                    browsing through our book store. When a book interests you, click on Add to Cart button. Books in
+                    Shopping Cart always reflect the most recent price, displayed on their product pages.
+
+                    Please <a class="small" href="/" style="font-size: 16px;">Click here</a>
+                    to continue shopping
+                </div>
+                <div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+                <div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+                <p class="pb-3 border-bottom"></p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+
+
+    <div class="row py-5">
+        <div class="col-md-8 py-5">
+            <div class="py-4 px-5 m-5 bg-light shadow-lg rounded-5" style="width: 100%;">
+                <div class="container">
+                    <table style="width:100%">
+
+                        <thead>
+                            <tr class="pb-3 border-bottom"></tr>
+                            <tr style="height: 40px;text-align: center;">
+                                <th><span class="h5" style="text-align: center;">Image</span></th>
+                                <th><span class="h5" style="text-align: center;">Details</span></th>
+                                <th><span class="h5" style="text-align: center;">Sub Total</span></th>
+                            </tr>
+                            <tr class="pb-3 border-bottom"></tr>
+                        </thead>
+
+                        <tbody>
+                            {% set sl = 0 %}
+
+                            {% for item in books %}
+                            <td>{% set sl = sl + 1 %}
+                                <span class="h5">{{sl}}</span>
+                            </td>
+                            <tr style="height: 150px;text-align: center;">
+                                <td class="product-main-image" style="overflow: hidden;">
+                                    <img src="{{path('image_show',{path:'books',file: item.file})}}"
+                                        alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm"
+                                        class="shadow-lg" style="border: 4px solid yellow; height:115px; width:100px;"
+                                        itemprop="image">
+                                    <img src="{{path('image_show',{path:'books',file: item.file})}}" class="zoomImg"
+                                        style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 20px; height: 30px; border: none; max-width: none;">
+                                </td>
+                                <td>
+                                    <p><span class="h5" style="color: darkred">{{item.Title}}</span></p>
+                                    <p><span class="h5" style="color: black;">By: </span><span
+                                            style="font-size: 14px; color: blue;">{{item.author}}</span></p>
+                                    <p><span class="h5" style="color: black;">Edition: </span><span
+                                            style="font-size: 14px; color: black;">{{item.edition}}</span></p>
+                                    <p><span class="h5" style="color: black;">ISBN: </span><span
+                                            style="font-size: 14px; color: black;">{{item.isbnNo}}</span></p>
+                                </td>
+                                <td>
+                                    <p><span class="h4" style="color: darkslategrey;">₹{{item.price}}</p></span>
+                                    <div class="py-4">
+                                        <a href="{{path('remove_cart_item',{id: item.id})}}" style="width: 118px;font-size: 18px;"
+                                            class="btn btn-danger shadow-lg remove_item" title="remove"
+                                            data-toggle="tooltip">Remove
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="pb-3 border-bottom" style="color: black;"></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    {% endif %}
+    {% endblock %}
