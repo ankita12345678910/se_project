@@ -15,7 +15,7 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'cart', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'cart', targetEntity: CartItem::class)]
@@ -42,7 +42,7 @@ class Cart
 
         return $this;
     }
-
+    
     /**
      * @return Collection<int, CartItem>
      */

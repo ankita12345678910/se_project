@@ -1,162 +1,184 @@
 {% extends 'base.html.twig' %}
 {% block bootstrap %}
-	{{parent()}}
+{{parent()}}
 {% endblock %}
 {% block stylesheets %}
-	{{(parent())}}
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<style>
-		.checked {
-			color: yellow;
-			font-size: 20px;
-		}
+{{(parent())}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+	.checked {
+		color: yellow;
+		font-size: 20px;
+	}
 
-		.unchecked {
-			font-size: 20px;
-		}
+	.unchecked {
+		font-size: 20px;
+	}
 
-		th {
-			font-size: 15px;
-		}
+	th {
+		font-size: 15px;
+	}
 
-		td {
-			font-size: 15px;
-		}
-
-        
-        
-	</style>
+	td {
+		font-size: 15px;
+	}
+</style>
 {% endblock %}
 {% block body %}
 
-	<div class="row py-5">
-		<div class="col-md-5 py-5 col-sm-6">
-			<div class="product-main-image" style="position: relative; overflow: hidden;">
-				<img src="{{path('image_show',{path:'books',file: book.file})}}" alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm" class=" img-responsive shadow-lg" style="border: 1px solid black; height:600px; width:600px;" itemprop="image">
-				<img src="{{path('image_show',{path:'books',file: book.file})}}" class="zoomImg" style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 300px; height: 461px; border: none; max-width: none;">
-			</div>
-			<div class="product-other-images">
-				<p>
-					<strong>Supplemental materials are not guaranteed for used textbooks or rentals
-					</strong>
-					(access codes, DVDs, CDs, workbooks).
-				</p>
-			</div>
+<div class="row py-5">
+	<div class="col-md-5 py-5 col-sm-6">
+		<div class="product-main-image" style="position: relative; overflow: hidden;">
+			<img src="{{path('image_show',{path:'books',file: book.file})}}"
+				alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm"
+				class=" img-responsive shadow-lg" style="border: 1px solid black; height:600px; width:600px;"
+				itemprop="image">
+			<img src="{{path('image_show',{path:'books',file: book.file})}}" class="zoomImg"
+				style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 300px; height: 461px; border: none; max-width: none;">
 		</div>
-		<div class="col-md-7">
-			<div class="py-4 px-5 m-5 bg-light shadow-lg" style="height: 85%;width: 95%;">
-				<div class="container">
-					<span style="font-size: 30px;">{{book.title}}</span>
-					<span style="font-size: 15px;">
-						({{book.binding}})</span>
-					<br>
-					<span>By:
-						<span style="color: red;font-size: 15px;">{{book.author}}
-						</span>(Author)</span>
-					<br><br>
-					<!-- <div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div> -->
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star checked"></span>
-					<span class="fa fa-star unchecked"></span>4/5
-
-					<p class="pb-3 border-bottom"></p>
-
-					<br><br>
-					<small>
-						<s>MRP:₹399</s>
-					</small>
-					<h3 class="py-2" style="color: blue;">
-						<b>MRP: ₹{{book.price}}</b>
-					</h3>
-					<h5 style="color:gray;">(inclusive all taxes)</h5>
-					<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-					{% if book.availableBook > 0 %}
-						<p style="color: green; font-size: 15px;">Available</p>
-					{% else %}
-						<p style="color: red;font-size: 12px;">Stock Out</p>
-					{% endif %}
-					<p style="color: gray;font-size: 15px;">Seller: Bookworm</p>
-					<p style="color: gray;font-size: 15px;">Dispatch time: 4-5 working days</p>
-					<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-					<div class="row row-cols-1 row-cols-lg-4  g-3 py-3"></div>
-					<div class="text-center">
-						<a href="{{path('add_cart',{id: book.id})}}" style="width: 290px; height: 65px;font-size: 20px;" class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" title="Add to cart" data-toggle="tooltip">Add to cart
-						</a>
-					</div>
-					<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-					<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-				</div>
-			</div>
+		<div class="product-other-images">
+			<p>
+				<strong>Supplemental materials are not guaranteed for used textbooks or rentals
+				</strong>
+				(access codes, DVDs, CDs, workbooks).
+			</p>
 		</div>
 	</div>
-	<div class="row py-0">
-		<div class="col-12">
-			<div class="py-4 px-5 m-5 shadow-lg bg-light">
-				<h1 class="bg-light shadow-lg py-2 m-3 text-center text-black">Book Specification</h1>
+	<div class="col-md-7">
+		<div class="py-4 px-5 m-5 bg-light shadow-lg" style="height: 85%;width: 90%;">
+			<div class="container">
+				<span style="font-size: 30px;">{{book.title}}</span>
+				<span style="font-size: 15px;">
+					({{book.binding}})</span>
+				<br>
+				<span>By:
+					<span style="color: red;font-size: 15px;">{{book.author}}
+					</span>(Author)</span>
+				<br><br>
+				<!-- <div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div> -->
+				<span class="fa fa-star checked"></span>
+				<span class="fa fa-star checked"></span>
+				<span class="fa fa-star checked"></span>
+				<span class="fa fa-star checked"></span>
+				<span class="fa fa-star unchecked"></span>4/5
+
 				<p class="pb-3 border-bottom"></p>
-				<div class="container">
-					<div class="table-wrapper">
-						<div class="table-title">
-							<div class="row"></div>
-						</div>
-						<table class="bg-light shadow-lg table table-hover color py-5" style="border-spacing: 30px; " id="hidden-table-info">
-							<tbody>
 
-								<tr>
-									<th>Title</th>
-									<td>{{book.title}}</td>
+				<br><br>
+				<small>
+					<s>MRP:₹399</s>
+				</small>
+				<h3 class="py-2" style="color: blue;">
+					<b>MRP: ₹{{book.price}}</b>
+				</h3>
+				<h5 style="color:gray;">(inclusive all taxes)</h5>
+				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+				{% if book.availableBook > 0 %}
+				<p style="color: green; font-size: 15px;">Available</p>
+				{% else %}
+				<p style="color: red;font-size: 12px;">Stock Out</p>
+				{% endif %}
+				<p style="color: gray;font-size: 15px;">Seller: Bookworm</p>
+				<p style="color: gray;font-size: 15px;">Dispatch time: 4-5 working days</p>
+				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+				<div class="row row-cols-1 row-cols-lg-4  g-3 py-3"></div>
+				<div class="text-center cart_div">
+					<p id="ab">
+						<a href="{{path('add_cart',{id: book.id})}}" style="width: 290px; height: 65px;font-size: 20px;"
+							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Add to cart"
+							data-toggle="tooltip">Add to cart
+						</a>
+					</p>
 
-									<th>Availability</th>
-									{% if book.availableBook > 0 %}
-										<td>In stock</td>
-									{% else %}
-										<td>Stock out</td>
-									{% endif %}
-
-								</tr>
-
-								<tr>
-									<th>ISBN number</th>
-									<td>{{book.isbnNo}}</td>
-
-									<th>Binding</th>
-									<td>{{book.binding}}</td>
-								</tr>
-
-								<tr>
-									<th>Price</th>
-									<td>{{book.price}}</td>
-
-									<th>Edition</th>
-									<td>{{book.edition}}</td>
-								</tr>
-
-								<tr>
-									<th>Pages</th>
-									<td>{{book.pageNo}}</td>
-
-									<th>Author</th>
-									<td>{{book.author}}</td>
-								</tr>
-
-								<tr>
-									<th>publisher</th>
-									<td>{{book.publisher}}</td>
-
-									<th>Language</th>
-									<td>{{book.language}}</td>
-								</tr>
-
-							</tbody>
-						</table>
+				</div>
+				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row py-0">
+	<div class="col-12">
+		<div class="py-4 px-5 m-5 shadow-lg bg-light">
+			<h1 class="bg-light shadow-lg py-2 m-3 text-center text-black">Book Specification</h1>
+			<p class="pb-3 border-bottom"></p>
+			<div class="container">
+				<div class="table-wrapper">
+					<div class="table-title">
+						<div class="row"></div>
 					</div>
+					<table class="bg-light shadow-lg table table-hover color py-5" style="border-spacing: 30px; "
+						id="hidden-table-info">
+						<tbody>
+
+							<tr>
+								<th>Title</th>
+								<td>{{book.title}}</td>
+
+								<th>Availability</th>
+								{% if book.availableBook > 0 %}
+								<td>In stock</td>
+								{% else %}
+								<td>Stock out</td>
+								{% endif %}
+
+							</tr>
+
+							<tr>
+								<th>ISBN number</th>
+								<td>{{book.isbnNo}}</td>
+
+								<th>Binding</th>
+								<td>{{book.binding}}</td>
+							</tr>
+
+							<tr>
+								<th>Price</th>
+								<td>{{book.price}}</td>
+
+								<th>Edition</th>
+								<td>{{book.edition}}</td>
+							</tr>
+
+							<tr>
+								<th>Pages</th>
+								<td>{{book.pageNo}}</td>
+
+								<th>Author</th>
+								<td>{{book.author}}</td>
+							</tr>
+
+							<tr>
+								<th>publisher</th>
+								<td>{{book.publisher}}</td>
+
+								<th>Language</th>
+								<td>{{book.language}}</td>
+							</tr>
+
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
-
 	</div>
 
+</div>
+{% endblock %}
+{% block javascripts %}
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+
+	$(document).ready(function () {
+		$('#add_cart').click(function () {
+			$('#add_cart').replaceWith(`<a href="{{path('view_cart')}}" style="width: 290px; height: 65px;font-size: 20px;"
+							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Add to cart"
+							data-toggle="tooltip">go to cart
+						</a>`);
+			console.log($a);
+		})
+	})
+</script> -->
 
 {% endblock %}

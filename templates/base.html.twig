@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="icon"
 		href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-		<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
 		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
@@ -34,7 +34,7 @@
 			margin: 0;
 			padding: 0;
 			width: 100%;
-			
+
 		}
 
 		.navbar ul li {
@@ -267,15 +267,21 @@
 					{% endif %}
 				</div>
 				<div>
-					
+
 				</div>
 				<li class="p-4">
-					<a class="bi bi-cart rounded-4 " href="#" style="background-color: rgb(117, 116, 116);">cart</a>
+					<a class="bi bi-cart rounded-4 " href="{{path('view_cart')}}"
+						style="background-color: rgb(117, 116, 116);">
+						{% if app.user %}
+						<span>{{app.getUser.getCart.getCartItem.count?app.getUser.getCart.getCartItem.count:''}}</span>
+						{% endif %}
+						<span>Cart</span>
+					</a>
 				</li>
 				<li>
 					<form class="d-flex p-4" role="search">
-						<input class="form-control form-control-lg me-2 p-2 rounded-4" type="search" placeholder="Search here"
-							aria-label="Search">
+						<input class="form-control form-control-lg me-2 p-2 rounded-4" type="search"
+							placeholder="Search here" aria-label="Search">
 						<button class="btn btn-dark btn-lg rounded-4" type="submit">
 							Search</button>
 					</form>
