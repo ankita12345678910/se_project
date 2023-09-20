@@ -171,14 +171,12 @@ class UserController extends AbstractController
     {
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
-        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart]);
-        // dd($cart_item);
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $request->get('id')]);
         $a = $book->getId();
-        $bc = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['book' => $a]);
+        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart,'book' => $a]);
         $quantity=$request->get('a');
-        $bc->setQuantity($quantity);  
-        $em->persist($bc);
+        $cart_item->setQuantity($quantity);  
+        $em->persist($cart_item);
         $em->flush();
         $html = $this->renderView('user/ajax_quantity.html.twig', [
             'title' => "View User",
