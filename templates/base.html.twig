@@ -17,7 +17,6 @@
 
 	{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
 	{% block stylesheets %}
-	<!-- <link rel="stylesheet" type="text/css" href="/css/style.css"> -->
 	{% endblock %}
 
 	{% block header %}
@@ -283,7 +282,7 @@
 
 				</div>
 				<li class="p-4">
-					<a class="bi bi-cart rounded-4 text-white" href="{{path('view_cart')}}"
+					<a class="bi bi-cart-plus-fill rounded-4 text-white" href="{{path('view_cart')}}"
 						style="background-color: rgb(117, 116, 116);">
 						<span>Cart</span>
 						{% if app.user %}

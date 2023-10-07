@@ -80,7 +80,6 @@
                                 <input type="number" style="height: 38px;width: 51px;" min="0"
                                     max="{{item.book.availableBook}}" id="timer02_min2" userId="{{item.book.id}}"
                                     value="{{item.quantity}}">
-
                                 <br>
                                 <p class="py-2">
                                     <a href="#" style="font-size: 14px;" id="quantity_update"
@@ -153,11 +152,10 @@
 </script>
 <script>
     $(document).ready(function () {
-        $(":input").bind('keyup mouseup', function () {
+        $(":input").bind('keyup mouseup keydown mousedown', function () {
             jQuery('body').on('click', "#quantity_update", function (e) {
 
                 var a = $("#timer02_min2").val();
-
                 var id = jQuery("#timer02_min2").attr('userId');
                 $.ajax({
 

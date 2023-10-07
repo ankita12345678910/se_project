@@ -1,0 +1,23 @@
+@media screen and (min-width:576px) {
+    .carousel-inner{
+        display: flex;
+    }
+    .carousel-item{
+        display: block;
+        margin-right: 0 ;
+        flex: 0 0 calc(100%/3);
+    }
+}
+.carousel-inner{
+    padding: 1em;
+}
+.card{
+    margin: 0 .5em;
+    border-radius: 0;
+    box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, .18);
+
+}
+.carousel-control-prev,.carousel-control-next{
+    background-color: indigo;
+    border: 50%;
+}
