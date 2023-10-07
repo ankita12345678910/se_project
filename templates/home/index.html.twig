@@ -108,11 +108,13 @@
 		</div>
 	</div>
 	<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="carousel-control-prev-icon avb" aria-hidden="true"  style=" width: 7vh;
+		height: 7vh;background-color: darkslategrey; border-radius: 50%;transform: translateY(-53%);"></span>
 		<span class="visually-hidden">Previous</span>
 	</button>
 	<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="carousel-control-next-icon vbn" aria-hidden="true" style=" width: 7vh;
+		height: 7vh;background-color: darkslategrey; border-radius: 50%;transform: translateY(-53%);"></span>
 		<span class="visually-hidden">Next</span>
 	</button>
 </div>
@@ -195,7 +197,7 @@
 			});
 
 			$('.carousel-control-prev').on('click', function () {
-				
+
 				if (scrollPosition > 0) {
 
 					scrollPosition = scrollPosition - carWidth;
