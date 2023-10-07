@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
 {{parent()}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.15/jquery.bxslider.min.css"
+	integrity="sha512-UBY4KATrDAEKgEEU+RAfY4yWrK0ah43NGwNr5o/xmncxsT+rv8jp7MI3a00I0Ep3NbAx05U5kw3DvyNCoz+Wcw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
 	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="stylesheet" href="css/backend/list.css">
@@ -13,141 +16,74 @@
 		width: 38px;
 	}
 
-	.carousel-item {
-		display: block;
-		margin-right: 0;
-		flex: 0 0 calc(100%/8);
-	}
 </style>
 {% endblock %}
 
 {% block title %}Hello HomeController!
 {% endblock %}
 
-{% block body %}
-
-<body id="bookDetails"></body>
-
-{# <div id="carouselExampleDark" class="carousel carousel-white slide" style="padding-top: 68px;"
-	data-bs-ride="carousel">
-	<div class="carousel-indicators">
-		<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
-			aria-current="true" aria-label="Slide 1"></button>
-		<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-		<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
-	</div>
-	<div class="carousel-inner">
-		<div class="carousel-item active" data-bs-interval="5000">
-			<img src="https://source.unsplash.com/1700x500/?anime,cartoon book" class="d-block w-100" alt="...">
-			<div class="carousel-caption d-none d-md-block"></div>
-		</div>
-		<div class="carousel-item" data-bs-interval="2000">
+{% block slider %}
+<div class="home-slider shadow-lg" style="margin-top: 79px;">
+	<ul id="slider">
+		<li>
+			<img src="https://source.unsplash.com/1700x500/?anime,cartoon book,library" class="d-block w-100" alt="...">
+		</li>
+		<li>
 			<img src="https://source.unsplash.com/1700x500/?story book,articles," class="d-block w-100" alt="...">
-			<div class="carousel-caption d-none d-md-block"> #}
-				{# <h5>Welcome to The BookWorm</h5>
-				<p>Some representative placeholder content for the second slide.</p>
-				<div class="btn btn-warning">Latest Books</div>
-				<div class="btn btn-success">Novels</div>
-				<div class="btn btn-danger">Top 5 books</div> #}
 
-				{#
-			</div>
-		</div>
-		<div class="carousel-item">
+		</li>
+		<li>
 			<img src="https://source.unsplash.com/1700x500/?book,comic" class="d-block w-100" alt="...">
-			<div class="carousel-caption d-none d-md-block"> #}
-				{# <h5>Welcome to The BookWorm</h5>
-				<p>Some representative placeholder content for the third slide.</p>
-				<div class="btn btn-warning">Latest Books</div>
-				<div class="btn btn-success">Novels</div>
-				<div class="btn btn-danger">Top 5 books</div> #}
-				{#
-			</div>
-		</div>
-	</div>
-	<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		<span class="visually-hidden">Previous</span>
-	</button>
-	<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-		<span class="carousel-control-next-icon" aria-hidden="true"></span>
-		<span class="visually-hidden">Next</span>
-	</button>
-</div> #}
-
-
-<div class="row row-cols-1 row-cols-lg-4  g-5 py-5">
-	<div class="row row-cols-1 row-cols-lg-4  g-5 py-5">
-	</div>
+		</li>
+	</ul>
 </div>
+{% endblock %}
 
-<div id="carouselExampleControls" class="carousel" data-ride="carousel">
-	<div class="container" style="background-color: silver">
-		<div class="carousel-inner">
-			{% for data in book %}
-			<div class="col">
-				<div class="carousel-item apple active">
-					<div class="card h-100 overflow-hidden text-bg-light rounded-3 shadow-lg"
-						style=" width: 192px; height: 10rem;">
-						<img src="{{path('image_show',{path:'books',file: data.file})}}"
-							style=" width:13rem; height: 11rem">
-						<div class="card-body text-center">
-							<p class="card-text">{{data.title}}</p>
-							<small>
-								<s>$399</s>
-							</small>
-							<p class="card-text">Price:{{data.price}}</p>
-							<a href="{{path('web_book_details',{id: data.id})}}" class="book_details btn btn-warning"
-								title="book details" data-toggle="tooltip">Explore
-							</a>
+{% block body %}
+<div class="px-3 py-0 text-bg-light rounded-4">
+	<h2 class="pb-3 border-bottom px-5">English books</h2>
+	<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
+	<div id="carouselExampleControls" class="carousel" data-ride="carousel">
+		<div class="container rounded-2" style="background-color: silver">
+			<div class="carousel-inner">
+				{% for data in book %}
+				<div class="col">
+					<div class="carousel-item apple active">
+						<div class="card h-100 overflow-hidden text-bg-light rounded-3 shadow-lg"
+							style=" width: 192px; height: 10rem;">
+							<img src="{{path('image_show',{path:'books',file: data.file})}}"
+								style=" width: 192px; height: 14rem">
+							<div class="card-body text-center">
+								<p class="card-text">{{data.title}}</p>
+								<small>
+									<s>$399</s>
+								</small>
+								<p class="card-text">Price:{{data.price}}</p>
+								<a href="{{path('web_book_details',{id: data.id})}}"
+									class="book_details btn btn-warning" title="book details"
+									data-toggle="tooltip">Explore
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			{% endfor %}
-		</div>
-	</div>
-	<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-		<span class="carousel-control-prev-icon avb" aria-hidden="true"  style=" width: 7vh;
-		height: 7vh;background-color: darkslategrey; border-radius: 50%;transform: translateY(-53%);"></span>
-		<span class="visually-hidden">Previous</span>
-	</button>
-	<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-		<span class="carousel-control-next-icon vbn" aria-hidden="true" style=" width: 7vh;
-		height: 7vh;background-color: darkslategrey; border-radius: 50%;transform: translateY(-53%);"></span>
-		<span class="visually-hidden">Next</span>
-	</button>
-</div>
-
-
-<div class="container px-4 py-5" id="custom-cards">
-	<h2 class="pb-2 border-bottom">English books</h2>
-	<div class="row row-cols-1 row-cols-lg-4  g-5 py-5">
-		{% for data in book %}
-		<div class="col">
-			<div class="card card-cover h-100 overflow-hidden text-bg-light rounded-5 shadow-lg"
-				style=" width: 18rem; height: 10rem;">
-				<div class="d-flex flex-column h-50 p-5 pb-2 text-shadow-1">
-					<img src="{{path('image_show',{path:'books',file: data.file})}}"
-						style=" width:13rem; height: 11rem">
-					<div class="card-body text-center">
-						<p class="card-text">{{data.title}}</p>
-						<small>
-							<s>$399</s>
-						</small>
-						<p class="card-text">Price:{{data.price}}</p>
-						<a href="{{path('web_book_details',{id: data.id})}}" class="book_details btn btn-warning"
-							title="book details" data-toggle="tooltip" userid="{{data.id}}">Explore
-						</a>
-						<!-- <button type="submit" class="btn btn-warning" name="details">Details</button> -->
-						<!-- <input type="hidden" name="book_details" value="{data.id}"> -->
-					</div>
-				</div>
+				{% endfor %}
 			</div>
 		</div>
-		{% endfor %}
+		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+			data-bs-slide="prev">
+			<span class="carousel-control-prev-icon avb" aria-hidden="true" style=" width: 7vh;
+			height: 7vh;background-color: dimgray; border-radius: 50%;transform: translateY(-15%);"></span>
+			<span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+			data-bs-slide="next">
+			<span class="carousel-control-next-icon vbn" aria-hidden="true" style=" width: 7vh;
+			height: 7vh;background-color: dimgray; border-radius: 50%;transform: translateY(-15%);"></span>
+			<span class="visually-hidden">Next</span>
+		</button>
 	</div>
-</div>
+	<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
 </div>
 <p class="pb-2 border-bottom"></p>
 <div class="jumbotron p-3 p-md-5 text-white shadow-lg rounded" style="background-color: darkslategray;">
@@ -163,10 +99,22 @@
 {% endblock %}
 {% block javascripts %}
 {{parent()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.15/jquery.bxslider.min.js"
+	integrity="sha512-p55Bpm5gf7tvTsmkwyszUe4oVMwxJMoff7Jq3J/oHaBk+tNQvDKNz9/gLxn9vyCjgd6SAoqLnL13fnuZzCYAUA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script>
 <script src="/js/backend/jquery.scrollUp.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$('#slider').bxSlider({
+			auto: true,
+			pager: false,
+			slideWidth: 1400
+		});	
+	});
+</script>
 <script>
 	$(function () {
 		$.scrollUp({ scrollDistance: 100, scrollSpeed: 500, scrollImg: true });
@@ -193,7 +141,6 @@
 					$(".carousel-inner").load(location.href + " .carousel-inner");
 					scrollPosition = 0;
 				}
-
 			});
 
 			$('.carousel-control-prev').on('click', function () {
