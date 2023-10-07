@@ -12,6 +12,12 @@
 		height: 38px;
 		width: 38px;
 	}
+
+	.carousel-item {
+		display: block;
+		margin-right: 0;
+		flex: 0 0 calc(100%/8);
+	}
 </style>
 {% endblock %}
 
@@ -76,28 +82,30 @@
 </div>
 
 <div id="carouselExampleControls" class="carousel" data-ride="carousel">
-	<div class="carousel-inner">
-		{% for data in book %}
-		<div class="col px-1">
-			<div class="carousel-item apple active">
-				<div class="card h-100 overflow-hidden text-bg-white rounded-5 shadow-lg"
-					style=" width: 17rem; height: 10rem;">
-					<img src="{{path('image_show',{path:'books',file: data.file})}}"
-						style=" width:13rem; height: 11rem">
-					<div class="card-body text-center">
-						<p class="card-text">{{data.title}}</p>
-						<small>
-							<s>$399</s>
-						</small>
-						<p class="card-text">Price:{{data.price}}</p>
-						<a href="{{path('web_book_details',{id: data.id})}}" class="book_details btn btn-warning"
-							title="book details" data-toggle="tooltip">Explore
-						</a>
+	<div class="container" style="background-color: silver">
+		<div class="carousel-inner">
+			{% for data in book %}
+			<div class="col">
+				<div class="carousel-item apple active">
+					<div class="card h-100 overflow-hidden text-bg-light rounded-3 shadow-lg"
+						style=" width: 192px; height: 10rem;">
+						<img src="{{path('image_show',{path:'books',file: data.file})}}"
+							style=" width:13rem; height: 11rem">
+						<div class="card-body text-center">
+							<p class="card-text">{{data.title}}</p>
+							<small>
+								<s>$399</s>
+							</small>
+							<p class="card-text">Price:{{data.price}}</p>
+							<a href="{{path('web_book_details',{id: data.id})}}" class="book_details btn btn-warning"
+								title="book details" data-toggle="tooltip">Explore
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
+			{% endfor %}
 		</div>
-		{% endfor %}
 	</div>
 	<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
 		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -172,19 +180,31 @@
 			var carouselWidth = $('.carousel-inner')[0].scrollWidth;
 			var carWidth = $('.carousel-item').width();
 			var scrollPosition = 0;
+
 			$('.carousel-control-next').on('click', function () {
 
-				if (scrollPosition < (carouselWidth - (carWidth * 7))) {
-					console.log(scrollPosition);
+				if (scrollPosition < (carouselWidth - (carWidth * 9))) {
 					scrollPosition = scrollPosition + carWidth;
-					$('.carousel-inner').animate({ scrollLeft: scrollPosition }, 300);
+					$('.carousel-inner').animate({ scrollLeft: scrollPosition }, 700);
+				}
+				else {
+					$(".carousel-inner").load(location.href + " .carousel-inner");
+					scrollPosition = 0;
 				}
 
 			});
+
 			$('.carousel-control-prev').on('click', function () {
+				
 				if (scrollPosition > 0) {
+
 					scrollPosition = scrollPosition - carWidth;
-					$('.carousel-inner').animate({ scrollLeft: scrollPosition }, 300);
+					console.log(scrollPosition);
+
+					$('.carousel-inner').animate({ scrollLeft: scrollPosition }, 700);
+				}
+				else {
+					$(".carousel-inner").load(location.href + " .carousel-inner");
 				}
 			});
 		}
