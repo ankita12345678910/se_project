@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Cart;
 use App\Entity\CartItem;
+use App\Entity\ShippingAddress;
 use App\Entity\User;
+use App\Form\ShippingAddressType;
 use App\Form\UserType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -101,7 +103,7 @@ class UserController extends AbstractController
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(["user" => $this->getUser()]);
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
-        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(["cart" => $cart,'book'=>$book]);
+        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(["cart" => $cart, 'book' => $book]);
 
         if (!$cart_item) {
             $cart_item = new CartItem();
@@ -145,7 +147,7 @@ class UserController extends AbstractController
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $id]);
         $a = $book->getId();
-        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart,'book' => $a]);
+        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart, 'book' => $a]);
         $em->remove($cart_item);
         $em->flush();
         return $this->redirect($this->generateUrl('view_cart'));
@@ -167,20 +169,20 @@ class UserController extends AbstractController
     // }
 
     #[Route('/ajax/quantity', name: 'web_ajax_book_quantity')]
-    public function updateQuantity(Request $request,ManagerRegistry $doctrine): JsonResponse
+    public function updateQuantity(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $request->get('id')]);
         $a = $book->getId();
-        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart,'book' => $a]);
-        $quantity=$request->get('a');
-        $cart_item->setQuantity($quantity);  
+        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart, 'book' => $a]);
+        $quantity = $request->get('a');
+        $cart_item->setQuantity($quantity);
         $em->persist($cart_item);
         $em->flush();
         $html = $this->renderView('user/ajax_quantity.html.twig', [
             'title' => "View User",
-            'quantity'=>$quantity
+            'quantity' => $quantity
 
         ]);
         $response = new JsonResponse();
@@ -188,4 +190,83 @@ class UserController extends AbstractController
         return $response;
     }
 
+    #[Route('/add/shipping/address', name: 'add_shipping_address')]
+    public function addShippingAddress(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+
+        $shippingAddress = new ShippingAddress();
+        $msg = "User created successfully";
+
+
+
+        $form = $this->createForm(ShippingAddressType::class, $shippingAddress);
+        $form->handleRequest($request);
+        if ($request->getMethod() == "POST") {
+            if ($form->isSubmitted() and $form->isValid()) {
+
+                $em->persist($shippingAddress);
+                $em->flush();
+                $this->addFlash('success', $msg);
+                return $this->redirectToRoute('add_shipping_address');
+            }
+        }
+        return $this->render('user/add_shipping_address.html.twig', [
+            'user' => $shippingAddress,
+            'form' => $form->createView(),
+
+        ]);
+    }
+
+
+    #[Route('/ajax/add/shipping/address', name: 'ajax_add_shipping_address')]
+    public function addAddress(Request $request, ManagerRegistry $mr): JsonResponse
+    {
+        $em = $mr->getManager();
+        $address = $mr->getRepository("App\Entity\ShippingAddress")->findOneBy(["id" => $request->get('id')]);
+        if (!$address) {
+            $address = new ShippingAddress();
+        }
+
+        $form = $this->createForm(ShippingAddressType::class, $address);
+        $form->handleRequest($request);
+        
+        if ($request->getMethod() == "POST") {
+
+            if ($form->isSubmitted() and $form->isValid()) {
+                $address->setUser($this->getUser());
+                $em->persist($address);
+                $em->flush();
+            }
+
+            $html = $this->renderView('user/view_address.html.twig', [
+                'title' => "Add Address",
+                'form' => $form->createView(),
+                // 'id' => $request->get('id'),
+                // 'record'=>$users,
+
+            ]);
+        }
+        $response = new JsonResponse();
+        $response->setData($html);
+        return $response;
+    }
+    #[Route('/ajax/get/address/form', name: 'ajax_get_address_form')]
+    public function getUserForm(Request $request, ManagerRegistry $mr): JsonResponse
+    {
+        
+
+        $response = new JsonResponse();
+        $id = $request->get('id');
+        $address = $mr->getRepository('App\Entity\ShippingAddress')->findOneBy(["id" => $id]);
+        $form = $this->createForm(ShippingAddressType::class, $address);
+        
+        $html = $this->renderView('user/get_address_form.html.twig', [
+            'title' => "Edit User",
+            'form' => $form->createView(),
+            'id' => $id,
+        ]);
+        $response->setData($html);
+        return $response;
+    }
 }
