@@ -38,8 +38,16 @@ class ShippingAddress
     #[ORM\Column(length: 255)]
     private ?string $state = null;
 
+    #[ORM\Column(type: "string", columnDefinition: "ENUM('Active', 'Deleted')")]
+    private ?string $status=null;
+
     #[ORM\ManyToOne(inversedBy: 'shippingAddresses')]
     private ?User $user = null;
+
+    public function __construct()
+    {
+        $this->status = 'Active';
+    }
 
     public function getId(): ?int
     {
@@ -138,6 +146,18 @@ class ShippingAddress
     public function setState(string $state): static
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

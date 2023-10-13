@@ -199,7 +199,6 @@ class UserController extends AbstractController
         $msg = "User created successfully";
 
 
-
         $form = $this->createForm(ShippingAddressType::class, $shippingAddress);
         $form->handleRequest($request);
         if ($request->getMethod() == "POST") {
@@ -265,6 +264,24 @@ class UserController extends AbstractController
             'title' => "Edit User",
             'form' => $form->createView(),
             'id' => $id,
+        ]);
+        $response->setData($html);
+        return $response;
+    }
+
+    #[Route('/ajax/delete/address/', name: 'ajax_delete_shipping_address')]
+    public function deleteAddress(Request $request, ManagerRegistry $mr): JsonResponse
+    {
+        $em = $mr->getManager();
+        $response = new JsonResponse();
+        $id = $request->get('id');
+        $address = $mr->getRepository('App\Entity\ShippingAddress')->findOneBy(["id" => $id]);
+        $form = $this->createForm(ShippingAddressType::class, $address);
+        $address->setStatus("Deleted");
+        $em->persist($address);
+        $em->flush();
+        $html = $this->renderView('user/view_address.html.twig', [
+            'form' => $form->createView(),
         ]);
         $response->setData($html);
         return $response;

@@ -70,13 +70,12 @@
                             <div class="col-4">
                                 {{ form_row(form.state) }}
                             </div>
-
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <input type="submit" value="Save" class="btn btn-success">
+                            <div class="col-4 py-4">
+                                <input type="submit" value="Add" style="width: 122px;font-size: 18px;background-color: yellowgreen;"
+                                class="btn" >
                             </div>
                         </div>
+                        
                         {{ form_rest(form) }}
                         {{ form_end(form) }}
                     </div>
@@ -107,16 +106,22 @@
     <div class="col-md-8 py-5">
         <div class="add_address py-4 px-5 m-5 bg-white shadow-lg rounded-5 cart_items" style="width: 100%;">
             <div class="row">
-                <div class="col-md-4 py-5 add_address_box rounded-2 shadow-lg" data-toggle="modal" data-target="#addModal"
-                    style="height: 330px;width: 260px;margin-left: 10px;margin-top: 20px;">
+                <div>
+                    <span style="font-size: 23px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Choose Address</span>
+                    <span style="font-size: 17px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                        (Detailed address will help our delivery partner reach your doorstep
+                        quickly)</span>
+                </div>
+                <div class="col-md-4 py-5 add_address_box rounded-2 shadow-lg" data-toggle="modal"
+                    data-target="#addModal" style="height: 330px;width: 260px;margin-left: 10px;margin-top: 20px;">
                     <i class="bi bi-plus-circle"
-                        style="display: block;margin-left: 90px; font-size:5rem;margin-top: 50px;">
-                    </i>
-                    <p style="font-size: 20px;margin-left: 55px;">Add new address</p>
+                        style="display: block;margin-left: 90px; font-size:5rem;margin-top: 50px;"></i>
+                    <p style="font-size: 20px;margin-left: 48px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Add new address</p>
                 </div>
                 {% if app.user.shippingAddresses %}
                 {% for record in app.user.shippingAddresses %}
-                <div class="col-md-4 py-2 exist_address rounded-2 shadow-lg"
+                {% if record.status == 'Active' %}
+                <div class="col-md-4 py-2 exist_address rounded-2 bg-light"
                     style="width: 260px;margin-left: 10px;margin-top: 20px;">
                     <h3 class="py-2 m-3 text-center rounded-3 text-white" style="background-color: darkcyan;">
                         Address</h3>
@@ -129,13 +134,19 @@
                     <p class="py-2" style="margin-left: 10px;">
                         <a href="#" style="font-size: 14px;width: 220px;" class="btn btn-danger">DELIVER
                             HERE</a><br><br>
-                        <span><a href="#" style="font-size: 14px;width: 110px;"
+                        <span>
+                            <a href="#" style="font-size: 14px;width: 110px;"
                                 class="btn btn-outline-dark update_address" userId="{{record.id}}">Edit
-                            </a></span>
-                        <span><a href="#" style="font-size: 14px;width: 110px" class="btn btn-outline-dark">Delete
-                            </a></span>
+                            </a>
+                        </span>
+                        <span>
+                            <a href="#" style="font-size: 14px;width: 110px" class="btn btn-outline-dark delete_address"
+                               onclick="alert('Are you sure?')" userId="{{record.id}}">Delete
+                            </a>
+                        </span>
                     </p>
                 </div>
+                {% endif %}
                 {% endfor %}
                 {% endif %}
             </div>
@@ -146,7 +157,8 @@
     <div class="col-md-4 py-5">
         <div class="py-4 px-5 m-5 bg-white shadow-lg rounded-2 price_details" style="width: 90%;">
 
-            <span class="h4 py-3">Sub Total :</span><span class="h4" style="margin-left: 159px;">
+            <span class="h4 py-3">Sub Total :</span>
+            <span class="h4" style="margin-left: 159px;">
                 {% set price = 0 %}
                 {% for item in app.user.getCart.getCartItem %}
                 {% set price = price + item.book.price*item.quantity %}
@@ -154,12 +166,14 @@
                 ₹{{price}}
             </span>
             <br><br>
-            <span class="h4 py-3">Shipping Cost :</span><span class="h4" style="margin-left: 130px;">₹70
+            <span class="h4 py-3">Shipping Cost :</span>
+            <span class="h4" style="margin-left: 130px;">₹70
             </span>
             <p style="font-size: 13px;color: dimgray;">(For India)</p>
             <p class="pb-3 border-bottom"></p>
             <br>
-            <span class="h4 py-3">Total Cost :</span><span class="h4" style="margin-left: 160px;">₹{{price+70}}
+            <span class="h4 py-3">Total Cost :</span>
+            <span class="h4" style="margin-left: 160px;">₹{{price+70}}
             </span>
             <br><br>
             <p class="pb-3 border-bottom"></p>
@@ -183,7 +197,7 @@
 
         $.ajax({
             type: "GET",
-            url: "{{path('ajax_get_address_form')}}",
+            url: "{{ path('ajax_get_address_form') }}",
             data: {
                 id
             },
@@ -198,7 +212,7 @@
 
     jQuery('body').on('submit', "#edit-form,#add-form", function (e) {
         e.preventDefault();
-        var formURL = "{{path('ajax_add_shipping_address') }}"
+        var formURL = "{{ path('ajax_add_shipping_address') }}"
         var formData = new FormData(jQuery(this)[0]);
         $.ajax({
             type: "POST",
@@ -212,12 +226,30 @@
                 jQuery(".add_address").html(returns);
                 // $("#editModal .close").click();
                 jQuery('#editModal').modal('hide');
-                jQuery('#editModal').modal('hide');
-
+                jQuery('#addModal').modal('hide');
             },
             error: function (xhr) { }
         });
 
     });
+</script>
+<script>
+
+    jQuery('body').on('click', ".delete_address", function (e) {
+        var id = jQuery(this).attr('userId');
+        $.ajax({
+            url: "{{ path('ajax_delete_shipping_address') }}",
+            type: "GET",
+            data: {
+                id
+            },
+            dataType: 'json',
+            success: function (returns) {
+                jQuery(".add_address").html(returns);
+            },
+            error: function (xhr) { }
+        });
+
+    })
 </script>
 {% endblock %}
