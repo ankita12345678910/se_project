@@ -18,6 +18,8 @@
 	</head>
 
 	<body>
+					{% set page = app.request.attributes.get('_route') %}
+	
 		<div class="wrapper">
 			<nav id="sidebar" class="sidebar js-sidebar">
 				<div class="sidebar-content js-simplebar">
@@ -30,8 +32,11 @@
 							<i class="align-middle" data-feather="home"></i>
 							<span class="align-middle ms-1">Home</span>
 						</li>
-
+						{% if page=='web_shopkeeper_dashboard'%}
 						<li class="sidebar-item active">
+						{% else %}
+						<li class="sidebar-item">
+						{% endif %}
 							<a class="sidebar-link" href="{{path('web_shopkeeper_dashboard')}}">
 								<span class="align-middle ms-3">Dashboard</span>
 							</a>
@@ -41,14 +46,21 @@
 							<i class="align-middle" data-feather="users"></i>
 							<span class="align-middle ms-1">Manage User</span>
 						</li>
-
+						{% if page=='web_user_manage'%}
+						<li class="sidebar-item active">
+						{% else %}
 						<li class="sidebar-item">
+						{% endif %}
 							<a class="sidebar-link" href="{{path('web_user_manage')}}">
 								<span class="align-middle ms-3">Add User</span>
 							</a>
 						</li>
 
+						{% if page=='user_list'%}
+						<li class="sidebar-item active">
+						{% else %}
 						<li class="sidebar-item">
+						{% endif %}
 							<a class="sidebar-link" href="{{path('user_list')}}">
 								<span class="align-middle ms-3">List User</span>
 							</a>
@@ -56,17 +68,24 @@
 
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="book"></i>
-							<span class="align-middle ms-1">Manage
-																																																																																                            Book</span>
+							<span class="align-middle ms-1">Manag Book</span>
 						</li>
 
+						{% if page=='shopkeeper_book_manage'%}
+						<li class="sidebar-item active">
+						{% else %}
 						<li class="sidebar-item">
+						{% endif %}
 							<a class="sidebar-link" href="{{path('shopkeeper_book_manage')}}">
 								<span class="align-middle ms-3">Add Book</span>
 							</a>
 						</li>
 
+						{% if page=='book_list'%}
+						<li class="sidebar-item active">
+						{% else %}
 						<li class="sidebar-item">
+						{% endif %}
 							<a class="sidebar-link" href="{{path('book_list')}}">
 								<span class="align-middle ms-3">List Books</span>
 							</a>
@@ -74,16 +93,24 @@
 
 						<li class="sidebar-header">
 							<i class="align-middle" data-feather="bell"></i>
-							<span class="align-middle ms-1">Manag Genre</span>
+							<span class="align-middle ms-1">Manage Genre</span>
 						</li>
 
+						{% if page=='manage_genre'%}
+						<li class="sidebar-item active">
+						{% else %}
 						<li class="sidebar-item">
+						{% endif %}
 							<a class="sidebar-link" href="{{path('manage_genre')}}">
 								<span class="align-middle ms-3">Add Genre</span>
 							</a>
 						</li>
 
+						{% if page=='genre_list'%}
+						<li class="sidebar-item active">
+						{% else %}
 						<li class="sidebar-item">
+						{% endif %}
 							<a class="sidebar-link" href="{{path('genre_list')}}">
 								<span class="align-middle ms-3">List Genre</span>
 							</a>

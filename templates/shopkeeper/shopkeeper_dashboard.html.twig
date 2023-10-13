@@ -7,7 +7,7 @@
 {% endblock %}
 {% block body %}
 	{% if 'ROLE_SHOPKEEPER' in app.user.roles %}
-		{{3+2}}
+		{{app.request.attributes.get('_route')}}
 	{% else %}
 		{{6+5}}
 	{% endif %}

@@ -35,7 +35,6 @@ class ShopkeeperController extends AbstractController
             $msg = "User created successfully";
             $val = "new user";
         }
-
         $form = $this->createForm(UserShopkeeperType::class, $user);
         $form->handleRequest($request);
         if ($request->getMethod() == "POST") {
@@ -51,8 +50,7 @@ class ShopkeeperController extends AbstractController
         }
         return $this->render('shopkeeper/manage_user.html.twig', [
             'user' => $user,
-            'form' => $form->createView(),
-
+            'form' => $form->createView()
         ]);
     }
     #[Route('shopkeeper/user/list', name: 'user_list')]
