@@ -2,9 +2,12 @@
 	<div class="col-12">
 		{{ form_start(form, { 'attr' : { 'id': 'edit-form' } })}}
 		<input type="hidden" name="id" value="{{id}}">
+		<input type="hidden" name="shipping" value="{{shipping}}">
 		<div class="row mb-3">
-			<div id="max"></div>
+			<div id="max"></div>			
+			
 			<div class="col-4">
+				
 				{{ form_row(form.name) }}
 			</div>
 			<div class="col-4">

@@ -190,10 +190,15 @@ class UserController extends AbstractController
         return $response;
     }
 
-    #[Route('/add/shipping/address', name: 'add_shipping_address')]
-    public function addShippingAddress(Request $request, ManagerRegistry $doctrine): Response
+    #[Route('/add/shipping/address/{id}', name: 'add_shipping_address')]
+    public function addShippingAddress(Request $request, ManagerRegistry $doctrine, $id = -1): Response
     {
         $em = $doctrine->getManager();
+        if ($id > 0) {
+            $address_id = $id;
+        } else {
+            $address_id = -1;
+        }
 
         $shippingAddress = new ShippingAddress();
         $msg = "User created successfully";
@@ -213,10 +218,9 @@ class UserController extends AbstractController
         return $this->render('user/add_shipping_address.html.twig', [
             'user' => $shippingAddress,
             'form' => $form->createView(),
-
+            'address_id' => $address_id
         ]);
     }
-
 
     #[Route('/ajax/add/shipping/address', name: 'ajax_add_shipping_address')]
     public function addAddress(Request $request, ManagerRegistry $mr): JsonResponse
@@ -225,14 +229,16 @@ class UserController extends AbstractController
         $address = $mr->getRepository("App\Entity\ShippingAddress")->findOneBy(["id" => $request->get('id')]);
         if (!$address) {
             $address = new ShippingAddress();
+            $address_id='-1';
+           
         }
-
+   
         $form = $this->createForm(ShippingAddressType::class, $address);
         $form->handleRequest($request);
-        
-        if ($request->getMethod() == "POST") {
 
+        if ($request->getMethod() == "POST") {
             if ($form->isSubmitted() and $form->isValid()) {
+                $address_id=$request->get('shipping');
                 $address->setUser($this->getUser());
                 $em->persist($address);
                 $em->flush();
@@ -242,7 +248,7 @@ class UserController extends AbstractController
                 'title' => "Add Address",
                 'form' => $form->createView(),
                 // 'id' => $request->get('id'),
-                // 'record'=>$users,
+                'address_id' => $address_id
 
             ]);
         }
@@ -253,17 +259,18 @@ class UserController extends AbstractController
     #[Route('/ajax/get/address/form', name: 'ajax_get_address_form')]
     public function getUserForm(Request $request, ManagerRegistry $mr): JsonResponse
     {
-        
 
+        $address_id = $request->get('shipping');
         $response = new JsonResponse();
         $id = $request->get('id');
         $address = $mr->getRepository('App\Entity\ShippingAddress')->findOneBy(["id" => $id]);
         $form = $this->createForm(ShippingAddressType::class, $address);
-        
+
         $html = $this->renderView('user/get_address_form.html.twig', [
             'title' => "Edit User",
             'form' => $form->createView(),
             'id' => $id,
+            'shipping' => $address_id
         ]);
         $response->setData($html);
         return $response;
@@ -275,6 +282,7 @@ class UserController extends AbstractController
         $em = $mr->getManager();
         $response = new JsonResponse();
         $id = $request->get('id');
+        $address_id = $request->get('abc');
         $address = $mr->getRepository('App\Entity\ShippingAddress')->findOneBy(["id" => $id]);
         $form = $this->createForm(ShippingAddressType::class, $address);
         $address->setStatus("Deleted");
@@ -282,8 +290,20 @@ class UserController extends AbstractController
         $em->flush();
         $html = $this->renderView('user/view_address.html.twig', [
             'form' => $form->createView(),
+            'address_id' => $address_id
         ]);
         $response->setData($html);
         return $response;
+    }
+
+    #[Route('make/payment/{id}', name: 'make_payment')]
+    public function bookPayment(Request $request, ManagerRegistry $doctrine, $id): Response
+    {
+        $em = $doctrine->getManager();
+        $address = $doctrine->getRepository("App\Entity\ShippingAddress")->findOneBy(["id" => $id]);
+        return $this->render('user/make_payment.html.twig', [
+            'address' => $address
+
+        ]);
     }
 }
