@@ -15,12 +15,6 @@
         border-color: greenyellow;
         border-style: inset;
     }
-
-    /* .add_address {
-        border-width: 2px;
-        border-color: cadetblue;
-        border-style: ridge;
-    } */
 </style>
 
 {% endblock %}
@@ -40,6 +34,8 @@
                 <div class="row p-3">
                     <div class="col-12">
                         {{ form_start(form, { 'attr' : { 'id': 'add-form' } })}}
+                        <input type="hidden" name="shipping" value="{{address_id}}">
+
                         <div class="row mb-3">
                             <div id="max"></div>
                             <div class="col-4">
@@ -108,7 +104,7 @@
             <div class="add_address py-4 px-5 m-5 bg-white shadow-lg rounded-5 cart_items" style="width: 100%;">
                 <div class="row">
                     <div>
-                        <input type="hidden" id="highlighted_address" name="xyz"  value="{{address_id}}">
+                        <input type="hidden" id="highlighted_address" name="shipping-address" value="{{address_id}}">
                         <span
                             style="font-size: 23px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Choose
                             Address</span>
@@ -209,13 +205,13 @@
 <script>
     jQuery('body').on('click', '.update_address', function () {
         var id = jQuery(this).attr('userId');
-        var shipping= $('#highlighted_address').val();
-       
+        var shipping = $('#highlighted_address').val();
+
         $.ajax({
             type: "GET",
             url: "{{ path('ajax_get_address_form')}}",
             data: {
-                id,shipping
+                id, shipping
             },
             dataType: 'json',
             success: function (returns) {
@@ -252,12 +248,12 @@
 <script>
     jQuery('body').on('click', ".delete_address", function (e) {
         var id = jQuery(this).attr('userId');
-        var abc= $('#highlighted_address').val();
+        var abc = $('#highlighted_address').val();
         $.ajax({
             url: "{{ path('ajax_delete_shipping_address') }}",
             type: "GET",
             data: {
-                id,abc
+                id, abc
             },
             dataType: 'json',
             success: function (returns) {
@@ -265,7 +261,7 @@
             },
             error: function (xhr) { }
         });
-       
+
     })
 </script>
 {% endblock %}
