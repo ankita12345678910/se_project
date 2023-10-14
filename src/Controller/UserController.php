@@ -306,4 +306,30 @@ class UserController extends AbstractController
 
         ]);
     }
+
+    #[Route('fetch/pin/code', name: 'fetch_pin_code')]
+    public function pinCode(Request $request, ManagerRegistry $doctrine): JsonResponse
+    {
+        $response = new JsonResponse();
+        $abc=$request->get('pin');
+        $data= file_get_contents('http://www.postalpincode.in/api/pincode/'.$abc);
+        $data=json_decode($data);
+        dump($data);
+        if(isset($data->PostOffice['0'])){
+            $a=[$arr['city']=$data->PostOffice['0']->Taluk,
+            $arr['state']=$data->PostOffice['0']->State];
+            
+            
+            $print= json_encode($a);
+        }
+        else{
+            $print='no';
+        }
+        $html = $this->renderView('user/fetch_pin_code.html.twig', [
+            'print' => $print
+
+        ]);
+        $response->setData($html);
+        return $response;
+    }
 }

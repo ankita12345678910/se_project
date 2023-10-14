@@ -50,13 +50,13 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-4">
-                                {{ form_row(form.landmark) }}
+                                {{ form_row(form.pin) }}
                             </div>
                             <div class="col-4">
                                 {{ form_row(form.cellphone) }}
                             </div>
                             <div class="col-4">
-                                {{ form_row(form.pin) }}
+                                {{ form_row(form.landmark) }}
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -200,6 +200,39 @@
     });
     $(".add_address_box").mouseleave(function () {
         $(this).css("background-color", "white");
+    });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $(".fetch_city").attr("readonly", "readonly");
+        $(".fetch_state").attr("readonly", "readonly");
+        $(".fetch_pin_no").keyup(function () {
+            var el = $(this);
+            var pin = $(".fetch_pin_no").val();
+            if (el.val().length === 6) {
+
+                $.ajax({
+                    url: "{{path('fetch_pin_code')}}",
+                    type: "get",
+                    data: { pin: pin },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data != 'no') {
+                            data = data.replaceAll('&quot;', '"');
+                            var getData = JSON.parse(data);
+                            $('.fetch_city').val(getData[0]);
+                            $('.fetch_state').val(getData[1]);
+                            $(".fetch_city").removeAttr("readonly", "readonly");
+                        }
+                        else {
+                            alert('Enter a valid Pincode');
+                        }
+                    }
+                })
+            }
+        });
     });
 </script>
 <script>

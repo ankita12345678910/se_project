@@ -30,13 +30,13 @@ class ShippingAddressType extends AbstractType
                 'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'Phone number']
             ])
             ->add('pin', NumberType::class, [
-                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'PIN']
+                'attr' => ['class' => 'fetch_pin_no form-control form-control-lg', 'placeholder' => 'PIN']
             ])
             ->add('city', TextType::class, [
-                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'City']
+                'attr' => ['class' => 'fetch_city form-control form-control-lg', 'placeholder' => 'City']
             ])
             ->add('state', TextType::class, [
-                'attr' => ['class' => 'form-control form-control-lg', 'placeholder' => 'State']
+                'attr' => ['class' => 'fetch_state form-control form-control-lg', 'placeholder' => 'State']
             ])
             // ->add('user')
         ;
