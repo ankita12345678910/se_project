@@ -171,7 +171,9 @@
                 <span class="h4" style="margin-left: 159px;">
                     {% set price = 0 %}
                     {% for item in app.user.getCart.getCartItem %}
+                    {% if item.status == 'Active' %}
                     {% set price = price + item.book.price*item.quantity %}
+                    {% endif %}
                     {% endfor %}
                     ₹{{price}}
                 </span>

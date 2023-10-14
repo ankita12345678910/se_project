@@ -5,11 +5,14 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-    .cart_summary,.cart_items{
+    .cart_summary,
+    .cart_items {
         border-width: 2px;
         border-color: black;
         border-style: inset;
     }
+   
+
 </style>
 {% endblock %}
 {% block body %}
@@ -45,21 +48,23 @@
         <div class="py-4 px-5 m-5 bg-light shadow-lg rounded-5 cart_items" style="width: 100%;">
             <div class="container">
                 <table style="width:100%">
-
-                    <thead>
-                        <tr class="pb-3 border-bottom"></tr>
-                        <tr style="height: 40px;text-align: center;">
-                            <th><span class="h5" style="text-align: center;">Image</span></th>
-                            <th><span class="h5" style="text-align: center;">Details</span></th>
-                            <th><span class="h5" style="text-align: center;">Quantity</span></th>
-                            <th><span class="h5" style="text-align: center;">Sub Total</span></th>
-                        </tr>
-                        <tr class="pb-3 border-bottom"></tr>
-                    </thead>
-
+                  
+                        <thead>
+                            <tr class="pb-3 border-bottom"></tr>
+                            <tr style="height: 40px;text-align: center;">
+                                <th><span class="h5" style="text-align: center;">Image</span></th>
+                                <th><span class="h5" style="text-align: center;">Details</span></th>
+                                <th><span class="h5" style="text-align: center;">Quantity</span></th>
+                                <th><span class="h5" style="text-align: center;">Sub Total</span></th>
+                            </tr>
+                            <tr class="pb-3 border-bottom"></tr>
+                        </thead>
+                   
+                    <div>
                     <tbody>
                         {% set sl = 1 %}
                         {% for item in app.user.getCart.getCartItem %}
+                        {% if item.status == 'Active' %}
                         <td>
                             <span class="h5">{{sl}}</span>
                         </td>
@@ -99,18 +104,28 @@
                                 </span>
 
                                 <div class="py-4">
+                                    {% if address > 0 %}
+                                    <a href="{{path('remove_cart_item',{id: item.book.id , shipping: address})}}"
+                                        style="width: 118px;font-size: 18px;"
+                                        class="btn btn-danger shadow-lg remove_item" title="remove"
+                                        data-toggle="tooltip">remove
+                                    </a>
+                                    {% else %}
                                     <a href="{{path('remove_cart_item',{id: item.book.id})}}"
                                         style="width: 118px;font-size: 18px;"
                                         class="btn btn-danger shadow-lg remove_item" title="remove"
                                         data-toggle="tooltip">remove
                                     </a>
+                                    {% endif %}
                                 </div>
                             </td>
                         </tr>
                         <tr class="pb-3 border-bottom" style="color: black;"></tr>
                         {% set sl = sl + 1 %}
+                        {% endif %}
                         {% endfor %}
                     </tbody>
+                </div>
                 </table>
             </div>
         </div>
@@ -123,7 +138,9 @@
             <span class="h4 py-3">Sub Total :</span><span class="h4" style="margin-left: 159px;">
                 {% set price = 0 %}
                 {% for item in app.user.getCart.getCartItem %}
+                {% if item.status == 'Active' %}
                 {% set price = price + item.book.price*item.quantity %}
+                {% endif %}
                 {% endfor %}
                 ₹{{price}}
             </span>
@@ -138,13 +155,23 @@
             <br><br>
             <p class="pb-3 border-bottom"></p>
             <div class="text-center cart_div">
+                {% if address > 0 %}
                 <p id="ab">
-                    <a href="{{path('add_shipping_address')}}" style="width: 210px; height: 60px;font-size: 20px; background-color: darkolivegreen;"
-                        class="btn bi bi-cart py-3 rounded-5 shadow-lg text-white" id="check_out" title="Check out"
+                    <a href="{{path('make_payment',{id: address})}}"
+                        style="width: 210px; height: 60px;font-size: 20px; background-color: saddlebrown;"
+                        class="btn py-3 rounded-3 shadow-lg text-white" id="proceed" title="Proceed"
+                        data-toggle="tooltip">Proceed
+                    </a>
+                </p>
+                {% else %}
+                <p id="ab">
+                    <a href="{{path('add_shipping_address')}}"
+                        style="width: 210px; height: 60px;font-size: 20px; background-color: darkolivegreen;"
+                        class="btn bi bi-cart py-3 rounded-3 shadow-lg text-white" id="check_out" title="Check out"
                         data-toggle="tooltip">Check out
                     </a>
                 </p>
-
+                {% endif %}
             </div>
         </div>
     </div>

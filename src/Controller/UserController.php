@@ -111,16 +111,23 @@ class UserController extends AbstractController
             $cart_item->setBook($book);
             $cart_item->setQuantity('1');
         } else {
+            $cart_item->setStatus('Active');
             $cart_item->setQuantity($cart_item->getQuantity() + 1);
         }
+        
         $em->persist($cart_item);
         $em->flush();
         return $this->redirect($this->generateUrl('web_book_details', ['id' => $id]));
     }
 
-    #[Route('/view/cart/items', name: 'view_cart')]
-    public function viewCart(Request $request, ManagerRegistry $doctrine): Response
+    #[Route('/view/cart/items/{shipping}', name: 'view_cart')]
+    public function viewCart(Request $request, ManagerRegistry $doctrine,$shipping=-1): Response
     {
+        if($shipping>0){
+            $address=$shipping;
+        }else{
+            $address='-1';
+        }
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
         $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findBy(['cart' => $cart]);
@@ -138,19 +145,27 @@ class UserController extends AbstractController
 
         return $this->render('user/view_cart_items.html.twig', [
             'existCart' => $cart_present,
+            'address'=> $address
         ]);
     }
-    #[Route('/remove/item/{id}', name: 'remove_cart_item')]
-    public function RemoveItem(ManagerRegistry $doctrine, $id): Response
+    #[Route('/remove/item/{id}/{shipping}', name: 'remove_cart_item')]
+    public function RemoveItem(ManagerRegistry $doctrine, $id, $shipping=-1): Response
     {
+        if($shipping>0){
+            $address=$shipping;
+        }
+        else{
+            $address='-1';
+        }
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $id]);
         $a = $book->getId();
         $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart, 'book' => $a]);
-        $em->remove($cart_item);
+        $cart_item->setStatus("Deleted");
+        $em->persist($cart_item);
         $em->flush();
-        return $this->redirect($this->generateUrl('view_cart'));
+        return $this->redirect($this->generateUrl('view_cart',['shipping'=>$address]));
     }
     // #[Route('/update/quantity/{id}', name: 'quantity_update')]
     // public function updateQuantity(ManagerRegistry $doctrine, $id): Response

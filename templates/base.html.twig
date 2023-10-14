@@ -287,8 +287,15 @@
 						style="background-color: rgb(117, 116, 116);">
 						<span>Cart</span>
 						{% if app.user %}
-						<span
-							class="cart">{{app.getUser.getCart.getCartItem.count?app.getUser.getCart.getCartItem.count:''}}</span>
+						<span class="cart">
+							{% set sl = 0 %}
+							{% for item in app.getUser.getCart.getCartItem %}
+							{% if item.status == 'Active' %}
+							{% set sl = sl + 1 %}
+							{% endif %}
+							{% endfor %}
+							{{app.getUser.getCart.getCartItem.count?sl:''}}
+						</span>
 						{% endif %}
 					</a>
 				</li>
@@ -300,15 +307,9 @@
 							Search</button>
 					</form>
 				</li>
-
-
 			</ul>
-
-
 		</div>
-
 	</nav>
-	
 
 	{% block javascripts %}
 	<!-- JavaScript Bundle with Popper -->
