@@ -11,8 +11,6 @@
         border-color: black;
         border-style: inset;
     }
-   
-
 </style>
 {% endblock %}
 {% block body %}
@@ -46,86 +44,93 @@
 <div class="row py-5">
     <div class="col-md-8 py-5">
         <div class="py-4 px-5 m-5 bg-light shadow-lg rounded-5 cart_items" style="width: 100%;">
-            <div class="container">
+            <a href="/"
+                    style="width: 218px;font-size: 17px;background-color: darkolivegreen;" class="bi bi-cart btn text-white" title="continue"
+                    data-toggle="tooltip">Continue shopping
+                </a>
+            <div class="container py-3">
+                
                 <table style="width:100%">
-                  
-                        <thead>
-                            <tr class="pb-3 border-bottom"></tr>
-                            <tr style="height: 40px;text-align: center;">
-                                <th><span class="h5" style="text-align: center;">Image</span></th>
-                                <th><span class="h5" style="text-align: center;">Details</span></th>
-                                <th><span class="h5" style="text-align: center;">Quantity</span></th>
-                                <th><span class="h5" style="text-align: center;">Sub Total</span></th>
-                            </tr>
-                            <tr class="pb-3 border-bottom"></tr>
-                        </thead>
-                   
-                    <div>
-                    <tbody>
-                        {% set sl = 1 %}
-                        {% for item in app.user.getCart.getCartItem %}
-                        {% if item.status == 'Active' %}
-                        <td>
-                            <span class="h5">{{sl}}</span>
-                        </td>
-                        <tr style="height: 150px;text-align: center;">
-                            <td class="product-main-image" style="overflow: hidden;">
-                                <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
-                                    alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm"
-                                    class="shadow-lg" style="border: 4px solid yellow; height:115px; width:100px;"
-                                    itemprop="image">
-                                <img src="{{path('image_show',{path:'books',file: item.book.file})}}" class="zoomImg"
-                                    style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 20px; height: 30px; border: none; max-width: none;">
-                            </td>
-                            <td>
-                                <p><span class="h5" style="color: darkred">{{item.book.title}}</span></p>
-                                <p><span class="h5" style="color: black;">By: </span><span
-                                        style="font-size: 14px; color: blue;">{{item.book.author}}</span></p>
-                                <p><span class="h5" style="color: black;">Edition: </span><span
-                                        style="font-size: 14px; color: black;">{{item.book.edition}}</span></p>
-                                <p><span class="h5" style="color: black;">ISBN: </span><span
-                                        style="font-size: 14px; color: black;">{{item.book.isbnNo}}</span></p>
-                            </td>
-                            <td>
 
-                                <label for="quantity"></label>
-                                <input type="number" style="height: 38px;width: 51px;" min="0"
-                                    max="{{item.book.availableBook}}" id="timer02_min2" userId="{{item.book.id}}"
-                                    value="{{item.quantity}}">
-                                <br>
-                                <p class="py-2">
-                                    <a href="#" style="font-size: 14px;" id="quantity_update"
-                                        class="btn btn-outline-info">Update</a>
-                                </p>
-                            </td>
-                            <td>
-
-                                <p><span class="h4" style="color: darkslategrey;">₹{{item.book.price*item.quantity}}</p>
-                                </span>
-
-                                <div class="py-4">
-                                    {% if address > 0 %}
-                                    <a href="{{path('remove_cart_item',{id: item.book.id , shipping: address})}}"
-                                        style="width: 118px;font-size: 18px;"
-                                        class="btn btn-danger shadow-lg remove_item" title="remove"
-                                        data-toggle="tooltip">remove
-                                    </a>
-                                    {% else %}
-                                    <a href="{{path('remove_cart_item',{id: item.book.id})}}"
-                                        style="width: 118px;font-size: 18px;"
-                                        class="btn btn-danger shadow-lg remove_item" title="remove"
-                                        data-toggle="tooltip">remove
-                                    </a>
-                                    {% endif %}
-                                </div>
-                            </td>
+                    <thead>
+                        <tr class="pb-3 border-bottom"></tr>
+                        <tr style="height: 40px;text-align: center;">
+                            <th><span class="h5" style="text-align: center;">Image</span></th>
+                            <th><span class="h5" style="text-align: center;">Details</span></th>
+                            <th><span class="h5" style="text-align: center;">Quantity</span></th>
+                            <th><span class="h5" style="text-align: center;">Sub Total</span></th>
                         </tr>
-                        <tr class="pb-3 border-bottom" style="color: black;"></tr>
-                        {% set sl = sl + 1 %}
-                        {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </div>
+                        <tr class="pb-3 border-bottom"></tr>
+                    </thead>
+
+                    <div>
+                        <tbody>
+                            {% set sl = 1 %}
+                            {% for item in app.user.getCart.getCartItem %}
+                            {% if item.status == 'Active' %}
+                            <td>
+                                <span class="h5">{{sl}}</span>
+                            </td>
+                            <tr style="height: 150px;text-align: center;">
+                                <td class="product-main-image" style="overflow: hidden;">
+                                    <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
+                                        alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm"
+                                        class="shadow-lg" style="border: 4px solid yellow; height:115px; width:100px;"
+                                        itemprop="image">
+                                    <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
+                                        class="zoomImg"
+                                        style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 20px; height: 30px; border: none; max-width: none;">
+                                </td>
+                                <td>
+                                    <p><span class="h5" style="color: darkred">{{item.book.title}}</span></p>
+                                    <p><span class="h5" style="color: black;">By: </span><span
+                                            style="font-size: 14px; color: blue;">{{item.book.author}}</span></p>
+                                    <p><span class="h5" style="color: black;">Edition: </span><span
+                                            style="font-size: 14px; color: black;">{{item.book.edition}}</span></p>
+                                    <p><span class="h5" style="color: black;">ISBN: </span><span
+                                            style="font-size: 14px; color: black;">{{item.book.isbnNo}}</span></p>
+                                </td>
+                                <td>
+
+                                    <label for="quantity"></label>
+                                    <input type="number" style="height: 38px;width: 51px;" min="0"
+                                        max="{{item.book.availableBook}}" id="timer02_min2" userId="{{item.book.id}}"
+                                        value="{{item.quantity}}">
+                                    <br>
+                                    <p class="py-2">
+                                        <a href="#" style="font-size: 14px;" id="quantity_update"
+                                            class="btn btn-outline-info">Update</a>
+                                    </p>
+                                </td>
+                                <td>
+
+                                    <p><span class="h4" style="color: darkslategrey;">₹{{item.book.price*item.quantity}}
+                                    </p>
+                                    </span>
+
+                                    <div class="py-4">
+                                        {% if address > 0 %}
+                                        <a href="{{path('remove_cart_item',{id: item.book.id , shipping: address})}}"
+                                            style="width: 118px;font-size: 18px;"
+                                            class="btn btn-danger shadow-lg remove_item" title="remove"
+                                            data-toggle="tooltip">remove
+                                        </a>
+                                        {% else %}
+                                        <a href="{{path('remove_cart_item',{id: item.book.id})}}"
+                                            style="width: 118px;font-size: 18px;"
+                                            class="btn btn-danger shadow-lg remove_item" title="remove"
+                                            data-toggle="tooltip">remove
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="pb-3 border-bottom" style="color: black;"></tr>
+                            {% set sl = sl + 1 %}
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </div>
                 </table>
             </div>
         </div>
@@ -158,9 +163,9 @@
                 {% if address > 0 %}
                 <p id="ab">
                     <a href="{{path('make_payment',{id: address})}}"
-                        style="width: 210px; height: 60px;font-size: 20px; background-color: saddlebrown;"
+                        style="width: 210px; height: 60px;font-size: 20px; background-color: darkolivegreen;"
                         class="btn py-3 rounded-3 shadow-lg text-white" id="proceed" title="Proceed"
-                        data-toggle="tooltip">Proceed
+                        data-toggle="tooltip">Go To Order
                     </a>
                 </p>
                 {% else %}

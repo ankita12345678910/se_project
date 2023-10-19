@@ -83,13 +83,28 @@
 				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
 				<div class="row row-cols-1 row-cols-lg-4  g-3 py-3"></div>
 				<div class="text-center cart_div">
+					{% if item_present == 'no' %}
 					<p id="ab">
 						<a href="{{path('add_cart',{id: book.id})}}" style="width: 290px; height: 65px;font-size: 20px;"
 							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Add to cart"
 							data-toggle="tooltip">Add to cart
 						</a>
 					</p>
-
+					{% elseif cart_item == '1' %}
+					<p id="ab">
+						<a href="{{path('view_cart')}}" style="width: 290px; height: 65px;font-size: 20px;"
+							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Go to cart"
+							data-toggle="tooltip">Go To Cart
+						</a>
+					</p>
+					{% else %}
+					<p id="ab">
+						<a href="{{path('add_cart',{id: book.id})}}" style="width: 290px; height: 65px;font-size: 20px;"
+							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Add to cart"
+							data-toggle="tooltip">Add to cart
+						</a>
+					</p>
+					{% endif %}
 				</div>
 				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
 				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>

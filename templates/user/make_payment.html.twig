@@ -5,11 +5,53 @@
 {% block stylesheets %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-    
-    #scroll_div{
+    #scroll_div {
         height: 240px;
         border: 1px solid #000;
         overflow: auto;
+    }
+
+    .tab {
+        float: left;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        width: 30%;
+        height: 400px;
+    }
+
+    /* Style the buttons inside the tab */
+    .tab button {
+        display: block;
+        background-color: inherit;
+        color: black;
+        padding: 22px 16px;
+        width: 100%;
+        border: none;
+        outline: none;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current "tab button" class */
+    .tab button.active {
+        background-color: cadetblue
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        float: left;
+        padding: 0px 12px;
+        border: 1px solid #b39292;
+        width: 70%;
+        border-left: none;
+        height: 400px;
     }
 </style>
 
@@ -29,7 +71,7 @@
                     </h2>
                     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
                         <div class="accordion-body">
-                            <div class="py-4 px-5 m-2 bg-white shadow-lg rounded-2 price_details" style="width: 90%;">
+                            <div class="py-3 px-3 m-1 bg-white shadow-lg rounded-2 price_details" style="width: 90%;">
 
                                 <span class="h4 py-3">Sub Total :</span>
                                 <span class="h4" style="margin-left: 240px;">
@@ -187,30 +229,58 @@
         </div>
     </div>
     <div class="col-md-6 py-5">
-        <div class="py-4 px-5 m-5 bg-white shadow-lg rounded-2 price_details" style="width: 90%;">
+        <div class="py-1 m-5 bg-white shadow-lg rounded-2 price_details" style="width: 90%;">
+            <p class="shadow-lg text-center text-white py-2"
+                style="background-color: darkslategray;font-size: 21px;height: 50px;width: 100%;">Please select a
+                payment mode</p>
+            
+            <div class="tab">
+                <button class="tablinks active"  id="online">Online Payment</button>
+                <button class="tablinks"  id="cash">Cash on delivery</button>
+            </div>
 
-            <span class="h4 py-3">Sub Total :</span>
-            <span class="h4" style="margin-left: 159px;">
-                {% set price = 0 %}
-                {% for item in app.user.getCart.getCartItem %}
-                {% if item.status == 'Active' %}
-                {% set price = price + item.book.price*item.quantity %}
-                {% endif %}
-                {% endfor %}
-                ₹{{price}}
-            </span>
-            <br><br>
-            <span class="h4 py-3">Shipping Cost :</span>
-            <span class="h4" style="margin-left: 130px;">₹70
-            </span>
-            <p style="font-size: 13px;color: dimgray;">(For India)</p>
-            <p class="pb-3 border-bottom"></p>
-            <br>
-            <span class="h4 py-3">Total Cost :</span>
-            <span class="h4" style="margin-left: 160px;">₹{{price+70}}
-            </span>
-            <br><br>
-            <p class="pb-3 border-bottom"></p>
+            <div id="buy_online" class="tabcontent py-3">
+
+                <span>
+                    <span style="font-size: 20px;"><b>PAY ONLINE</b></span><br>
+                    <span style="font-size: 19px;color: darkred;">TOTAL AMOUNT PAYABLE: ₹{{price+70}}</span><br><br>
+                    <span style="font-size: 16px;">We currently accept online payments via Razorpay. You can make
+                        payment using Credit Cards, Visa,
+                        MasterCard, Discover, AmericanExpress, & other bank cards. We accept single or multiple methods
+                        of
+                        payment on your purchases online. Bookworm maintains reasonable and appropriate standards to
+                        safeguard your Personal Information.</span><br>
+
+                    <span style="font-size: 16px;">You will be pay to our billing gateway partner. Please click below to
+                        buy now...</span><br><br>
+                    <a href="#" style="width:388px; height: 60px;font-size: 20px; background-color: goldenrod;"
+                        class="btn py-3 rounded-1 text-white" id="check_out" title="Check out"
+                        data-toggle="tooltip">Buy Now
+                    </a>
+                </span>
+            </div>
+
+            <div id="cash_on_delivery" class="tabcontent py-3" style="display: none;">
+                <span>
+                    <span style="font-size: 20px;" class="py-2"><b>CASH ON DELIVERY</b></span><br><br>
+                    <div class="container py-2" style="background-color: rgb(131, 211, 174);">
+                        <ol style="font-size: 14px;"><span style="font-size: 17px;"class="h5 py-2">Terms & Condition</span>
+                            <li>Cash on Delivery is available only at select pin codes.</li>
+                            <li>However, if you choose to pay online we deliver at all pincodes.</li>
+                            <li>An additional will be charged as convenience fees.</li>
+                            <li>COD will not be available if your order value exceeds 3000</li>
+                            <li>All Orders placed using COD as payment method will be verified through a call before shipment</li>
+                        </ol>
+                    </div>
+                    <span style="font-size: 20px;color: darkred;">TOTAL AMOUNT PAYABLE: ₹{{price+70}}</span><br><br>
+                    
+                    <a href="#" style="width:388px; height: 60px;font-size: 20px; background-color: goldenrod;"
+                        class="btn py-3 rounded-1 text-white" id="check_out" title="Check out"
+                        data-toggle="tooltip">Confirm order
+                    </a>
+                </span>
+            </div>
+
         </div>
     </div>
 </div>
@@ -218,4 +288,22 @@
 
 {% block javascripts %}
 {{parent()}}
+<script>
+    $(document).ready(function () {
+        $('#online').click(function () {
+            $('#cash_on_delivery').hide();
+            $('#cash').removeClass('active');
+            $('#online').addClass('active');
+            $('#buy_online').show();
+        });
+        $('#cash').click(function () {
+            $('#online').removeClass('active');
+            $('#cash').addClass('active');
+            $('#cash_on_delivery').show();
+            $('#buy_online').hide();
+           
+
+        });
+    })
+</script>
 {% endblock %}

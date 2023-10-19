@@ -71,21 +71,30 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[Route('/book/details/{id}', name: 'web_book_details')]
-    public function bookDetails(Request $request, ManagerRegistry $doctrine, $id): Response
+    #[Route('/book/details/{id}/{item}', name: 'web_book_details')]
+    public function bookDetails(Request $request, ManagerRegistry $doctrine, $id, $item = 'no'): Response
     {
-
+        $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(["user" => $this->getUser()]);
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(["id" => $id]);
-
+        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(["cart" => $cart, 'book' => $book]);
+        if (!$cart_item) {
+            $cart_present = '0';
+        } elseif ($cart_item->getStatus() != "Active") {
+            $cart_present = '0';
+        } else {
+            $cart_present = '1';
+            $item='yes';
+        }
         return $this->render('user/book_details.html.twig', [
             'controller_name' => 'UserController',
             'book' => $book,
+            'item_present' => $item,
+            'cart_item' => $cart_present
         ]);
     }
     #[Route('/ajax/book/details', name: 'web_ajax_book_details')]
     public function ajaxView(ManagerRegistry $mr, Request $request): JsonResponse
     {
-
         $book = $mr->getRepository("App\Entity\Book")->findOneBy(["id" => $request->get('id')]);
         $html = $this->renderView('user/ajaxView.html.twig', [
             'title' => "View User",
@@ -110,23 +119,31 @@ class UserController extends AbstractController
             $cart_item->setCart($cart);
             $cart_item->setBook($book);
             $cart_item->setQuantity('1');
-        } else {
+            $em->persist($cart_item);
+            $em->flush();
+            $item_present = 'yes';
+        } elseif ($cart_item->getStatus() != "Active") {
             $cart_item->setStatus('Active');
-            $cart_item->setQuantity($cart_item->getQuantity() + 1);
+            $em->persist($cart_item);
+            $em->flush();
+            $item_present = 'yes';
+        } else {
+            $item_present = 'yes';
+            // $cart_item->setStatus('Active');
+            // $cart_item->setQuantity($cart_item->getQuantity() + 1);
         }
-        
-        $em->persist($cart_item);
-        $em->flush();
-        return $this->redirect($this->generateUrl('web_book_details', ['id' => $id]));
+
+
+        return $this->redirect($this->generateUrl('web_book_details', ['id' => $id, 'item' => $item_present]));
     }
 
     #[Route('/view/cart/items/{shipping}', name: 'view_cart')]
-    public function viewCart(Request $request, ManagerRegistry $doctrine,$shipping=-1): Response
+    public function viewCart(Request $request, ManagerRegistry $doctrine, $shipping = -1): Response
     {
-        if($shipping>0){
-            $address=$shipping;
-        }else{
-            $address='-1';
+        if ($shipping > 0) {
+            $address = $shipping;
+        } else {
+            $address = '-1';
         }
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
@@ -145,17 +162,16 @@ class UserController extends AbstractController
 
         return $this->render('user/view_cart_items.html.twig', [
             'existCart' => $cart_present,
-            'address'=> $address
+            'address' => $address
         ]);
     }
     #[Route('/remove/item/{id}/{shipping}', name: 'remove_cart_item')]
-    public function RemoveItem(ManagerRegistry $doctrine, $id, $shipping=-1): Response
+    public function RemoveItem(ManagerRegistry $doctrine, $id, $shipping = -1): Response
     {
-        if($shipping>0){
-            $address=$shipping;
-        }
-        else{
-            $address='-1';
+        if ($shipping > 0) {
+            $address = $shipping;
+        } else {
+            $address = '-1';
         }
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
@@ -165,7 +181,7 @@ class UserController extends AbstractController
         $cart_item->setStatus("Deleted");
         $em->persist($cart_item);
         $em->flush();
-        return $this->redirect($this->generateUrl('view_cart',['shipping'=>$address]));
+        return $this->redirect($this->generateUrl('view_cart', ['shipping' => $address]));
     }
     // #[Route('/update/quantity/{id}', name: 'quantity_update')]
     // public function updateQuantity(ManagerRegistry $doctrine, $id): Response
@@ -244,16 +260,15 @@ class UserController extends AbstractController
         $address = $mr->getRepository("App\Entity\ShippingAddress")->findOneBy(["id" => $request->get('id')]);
         if (!$address) {
             $address = new ShippingAddress();
-            $address_id='-1';
-           
+            $address_id = '-1';
         }
-   
+
         $form = $this->createForm(ShippingAddressType::class, $address);
         $form->handleRequest($request);
 
         if ($request->getMethod() == "POST") {
             if ($form->isSubmitted() and $form->isValid()) {
-                $address_id=$request->get('shipping');
+                $address_id = $request->get('shipping');
                 $address->setUser($this->getUser());
                 $em->persist($address);
                 $em->flush();
@@ -326,19 +341,20 @@ class UserController extends AbstractController
     public function pinCode(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         $response = new JsonResponse();
-        $abc=$request->get('pin');
-        $data= file_get_contents('http://www.postalpincode.in/api/pincode/'.$abc);
-        $data=json_decode($data);
+        $abc = $request->get('pin');
+        $data = file_get_contents('http://www.postalpincode.in/api/pincode/' . $abc);
+        $data = json_decode($data);
         dump($data);
-        if(isset($data->PostOffice['0'])){
-            $a=[$arr['city']=$data->PostOffice['0']->Taluk,
-            $arr['state']=$data->PostOffice['0']->State];
-            
-            
-            $print= json_encode($a);
-        }
-        else{
-            $print='no';
+        if (isset($data->PostOffice['0'])) {
+            $a = [
+                $arr['city'] = $data->PostOffice['0']->Taluk,
+                $arr['state'] = $data->PostOffice['0']->State
+            ];
+
+
+            $print = json_encode($a);
+        } else {
+            $print = 'no';
         }
         $html = $this->renderView('user/fetch_pin_code.html.twig', [
             'print' => $print
