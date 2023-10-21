@@ -70,6 +70,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ShippingAddress::class)]
     private Collection $shippingAddresses;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: BookOrder::class)]
+    private Collection $bookOrders;
+
 
     public function __construct()
     {
@@ -77,6 +80,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->status = 'Active';
         $this->roles = ['ROLE_CUSTOMER'];
         $this->shippingAddresses = new ArrayCollection();
+        $this->bookOrders = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -304,4 +309,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function getUpdated(): ?\DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @return Collection<int, BookOrder>
+     */
+    public function getBookOrders(): Collection
+    {
+        return $this->bookOrders;
+    }
+
+    public function addBookOrder(BookOrder $bookOrder): static
+    {
+        if (!$this->bookOrders->contains($bookOrder)) {
+            $this->bookOrders->add($bookOrder);
+            $bookOrder->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookOrder(BookOrder $bookOrder): static
+    {
+        if ($this->bookOrders->removeElement($bookOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($bookOrder->getUser() === $this) {
+                $bookOrder->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

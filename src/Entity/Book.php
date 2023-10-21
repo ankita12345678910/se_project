@@ -77,11 +77,15 @@ class Book
     #[ORM\OneToMany(mappedBy: 'book', targetEntity: CartItem::class)]
     private Collection $cartItem;
 
+    #[ORM\OneToMany(mappedBy: 'book', targetEntity: OrderItem::class)]
+    private Collection $orderItems;
+
 
     public function __construct()
     {
         $this->status = 'Active';
         $this->cartItem = new ArrayCollection();
+        $this->orderItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -303,6 +307,36 @@ class Book
             // set the owning side to null (unless already changed)
             if ($cartItem->getBook() === $this) {
                 $cartItem->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderItem>
+     */
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function addOrderItem(OrderItem $orderItem): static
+    {
+        if (!$this->orderItems->contains($orderItem)) {
+            $this->orderItems->add($orderItem);
+            $orderItem->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderItem(OrderItem $orderItem): static
+    {
+        if ($this->orderItems->removeElement($orderItem)) {
+            // set the owning side to null (unless already changed)
+            if ($orderItem->getBook() === $this) {
+                $orderItem->setBook(null);
             }
         }
 

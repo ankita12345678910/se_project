@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ShippingAddressRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -44,9 +46,14 @@ class ShippingAddress
     #[ORM\ManyToOne(inversedBy: 'shippingAddresses')]
     private ?User $user = null;
 
+    #[ORM\OneToMany(mappedBy: 'address', targetEntity: BookOrder::class)]
+    private Collection $bookOrders;
+
     public function __construct()
     {
         $this->status = 'Active';
+        $this->bookOrders = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -170,6 +177,36 @@ class ShippingAddress
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BookOrder>
+     */
+    public function getBookOrders(): Collection
+    {
+        return $this->bookOrders;
+    }
+
+    public function addBookOrder(BookOrder $bookOrder): static
+    {
+        if (!$this->bookOrders->contains($bookOrder)) {
+            $this->bookOrders->add($bookOrder);
+            $bookOrder->setAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookOrder(BookOrder $bookOrder): static
+    {
+        if ($this->bookOrders->removeElement($bookOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($bookOrder->getAddress() === $this) {
+                $bookOrder->setAddress(null);
+            }
+        }
 
         return $this;
     }

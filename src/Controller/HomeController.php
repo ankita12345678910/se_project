@@ -24,9 +24,7 @@ class HomeController extends AbstractController
             }
             
         }
-        
-
-
+ 
         $display = $this->getParameter('upload_directory') . "/books";
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',

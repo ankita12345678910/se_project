@@ -274,7 +274,7 @@
                     </div>
                     <span style="font-size: 20px;color: darkred;">TOTAL AMOUNT PAYABLE: ₹{{price+70}}</span><br><br>
                     
-                    <a href="#" style="width:388px; height: 60px;font-size: 20px; background-color: goldenrod;"
+                    <a href="{{path('make_order',{address: address.id})}}" style="width:388px; height: 60px;font-size: 20px; background-color: goldenrod;"
                         class="btn py-3 rounded-1 text-white" id="check_out" title="Check out"
                         data-toggle="tooltip">Confirm order
                     </a>

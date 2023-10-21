@@ -83,7 +83,7 @@ class UserController extends AbstractController
             $cart_present = '0';
         } else {
             $cart_present = '1';
-            $item='yes';
+            $item = 'yes';
         }
         return $this->render('user/book_details.html.twig', [
             'controller_name' => 'UserController',
@@ -154,7 +154,22 @@ class UserController extends AbstractController
             ->where('b.id IN (:category_id)')
             ->setParameter('category_id', $cart_item)
             ->getQuery()->getResult();
-        if (!$books) {
+        // dd($books[0]);
+
+        // $query = $em->createQuery("SELECT u from App:CartItem u where  u.book  IN (:genre) and u.user  u.status ='Active'");
+        // $query->setParameter('genre', $books);
+        // $result = $query->getResult();
+        // dd($result);
+        // dd($books);
+        $count=0;
+        foreach ($this->getUser()->getCart()->getCartItem() as $item) {
+
+            if($item->getStatus()=='Active'){
+                $count=$count+1;
+            }
+        }
+        // dd($count);
+        if ($count == 0) {
             $cart_present = "no";
         } else {
             $cart_present = "yes";

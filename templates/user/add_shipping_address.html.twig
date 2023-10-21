@@ -261,6 +261,7 @@
         e.preventDefault();
         var formURL = "{{ path('ajax_add_shipping_address') }}"
         var formData = new FormData(jQuery(this)[0]);
+        console.log(formData);
         $.ajax({
             type: "POST",
             url: formURL,
