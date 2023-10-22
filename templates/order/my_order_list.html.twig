@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+{{parent()}}{{title}}
+{% endblock %}
+{% block bootstrap %}
+{{parent()}}
+{% endblock %}
+{% block stylesheets %}
+{{parent()}}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+<style>
+    table {
+        font-family: arial, sans-serif;
+        /* border-collapse: collapse; */
+        width: 100%;
+    }
+
+    td {
+
+        border: 1px solid #e5f878;
+        text-align: center;
+        padding: 15px;
+    }
+
+    tr:nth-child(even) {
+
+        background-color: #97ccca;
+    }
+
+    tr:nth-child(odd) {
+
+        background-color: #f8f8f7;
+    }
+
+    th {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        padding-left: 80px;
+        text-align: center;
+        background-color: #234247;
+        color: white;
+
+    }
+
+    tr:hover {
+        background-color: rgb(112, 152, 143);
+    }
+</style>
+{% endblock %}
+{% block body %}
+<div class="container px-5" style="margin-top: 100px;">
+    <table style="width:100%">
+        <thead>
+            <tr>
+                <th>Sl.No</th>
+                <th>Order No</th>
+                <th>Total price</th>
+                <th>Date</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set sl = (page-1)*limit %}
+            {% for record in orders %}
+            <tr>
+                <td>{% set sl = sl + 1 %}
+                    {{sl}}
+                </td>
+                <td>{{record.orderNo}}</td>
+                <td>{{record.totalPrice}}</td>
+                <td>{{record.createdAt|date('d-m-Y')}}</td>
+                <td><a href="#" style="width: 100px;font-size: 14px;background-color: rgb(37, 110, 115);"
+                        class="btn shadow-lg bi bi-eye-fill text-white rounded-3" title="edit" data-toggle="tooltip">
+                        Details
+                    </a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    <br>
+    <div style="margin-left: 850px;">
+        <ul class="pagination">
+            {% if page > 1 %}
+            <li class="px-1"><a class="btn rounded-5" style="background-color: #5f888f;"
+                    href="{{path('my_order_list',{page: page-1})}}">prev</a></li>
+            {% endif %}
+            {% set sl = 0 %}
+            {% for record in orders %}
+            {% if sl == 0 %}
+            <li class="px-1"><a class="btn rounded-5" style="background-color: #5f888f;"
+                    href="{{path('my_order_list',{page: sl+1})}}">{{sl+1}}</a></li>
+            {% set sl = sl + 1 %}
+            {% endif %}
+            {% if sl < total_pages %} <li class="px-1"><a class="btn rounded-5" style="background-color: #5f888f;"
+                    href="{{path('my_order_list',{page: sl+1})}}">{{sl+1}}</a></li>
+                {% endif %}
+                {% set sl = sl + 1 %}
+                {% endfor %}
+                {% if total_pages > page %}
+                <li class="px-1"><a class="btn rounded-5" style="background-color: #5f888f;"
+                        href="{{path('my_order_list',{page: page+1})}}">next</a></li>
+                {% endif %}
+
+        </ul>
+    </div>
+
+</div>
+<br>
+<br><br>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#my-order').DataTable();
+        //     $('#my-order').DataTable({
+        //         "pagingType": "full_numbers",
+        //         "lengthMenu":[
+        //             [10,25,50,-1],
+        //             [10,25,50,'All']
+        //         ],
+        //         responsive:true,
+        //         language:{
+        //             search:"_INPUT_",
+        //             searchPlaceholder:"Search orders",
+        //         }
+        //     });
+    });
+</script>
+{% endblock %}

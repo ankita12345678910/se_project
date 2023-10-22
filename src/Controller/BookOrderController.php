@@ -75,6 +75,36 @@ class BookOrderController extends AbstractController
         }
 
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('my_order_list');
+    }
+
+    #[Route('my/order/list/{page}', name: 'my_order_list')]
+    public function myOrder(ManagerRegistry $doctrine, $page = 1): Response
+    {
+        $user = $this->getUser();
+        $em = $doctrine->getManager();
+
+        $limit = 6;
+        $pg = $page;
+        $offset = ($pg - 1) * $limit;
+        $query = $em->createQuery("SELECT u from App:BookOrder u where  u.user = :us order by u.createdAt DESC")->setFirstResult($offset)->setMaxResults($limit);
+        $query->setParameter('us', $user);
+        $result = $query->getResult();
+
+
+
+        $order = $doctrine->getRepository("App\Entity\BookOrder")->findBy(['user' => $this->getUser()]);
+        if (count($order) > 0) {
+            $total_records = count($order);
+            $total_pages = ceil($total_records / $limit);
+        }
+
+        return $this->render('order/my_order_list.html.twig', [
+            'title' => "My Order",
+            'orders' => $result,
+            'page' => $pg,
+            'limit' => $limit,
+            'total_pages' => $total_pages
+        ]);
     }
 }
