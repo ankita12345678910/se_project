@@ -73,8 +73,6 @@ class BookOrderController extends AbstractController
                 $em->flush();
             }
         }
-
-
         return $this->redirectToRoute('my_order_list');
     }
 
@@ -83,17 +81,14 @@ class BookOrderController extends AbstractController
     {
         $user = $this->getUser();
         $em = $doctrine->getManager();
-
         $limit = 6;
         $pg = $page;
         $offset = ($pg - 1) * $limit;
         $query = $em->createQuery("SELECT u from App:BookOrder u where  u.user = :us order by u.createdAt DESC")->setFirstResult($offset)->setMaxResults($limit);
         $query->setParameter('us', $user);
         $result = $query->getResult();
-
-
-
         $order = $doctrine->getRepository("App\Entity\BookOrder")->findBy(['user' => $this->getUser()]);
+
         if (count($order) > 0) {
             $total_records = count($order);
             $total_pages = ceil($total_records / $limit);
@@ -105,6 +100,22 @@ class BookOrderController extends AbstractController
             'page' => $pg,
             'limit' => $limit,
             'total_pages' => $total_pages
+        ]);
+    }
+    #[Route('/my/order/details/{order_no}', name: 'my_order_details')]
+    public function detailsOrder(Request $request, ManagerRegistry $doctrine, $order_no): Response
+    {
+        $em = $doctrine->getManager();
+        $order = $doctrine->getRepository("App\Entity\BookOrder")->findOneBy(['orderNo' => $order_no]);
+        $address = $doctrine->getRepository("App\Entity\ShippingAddress")->findOneBy(['id' => $order->getAddress()]);
+        $order_items = $doctrine->getRepository("App\Entity\OrderItem")->findBy(['bookOrder' => $order]);
+        // dd($order_items);
+        return $this->render('order/my_order_details.html.twig', [
+            'title' => "My Order",
+            'address'=> $address,
+            'order_items'=> $order_items,
+            'order'=> $order
+
         ]);
     }
 }

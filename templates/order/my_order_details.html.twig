@@ -1,0 +1,202 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+{{parent()}}{{title}}
+{% endblock %}
+{% block bootstrap %}
+{{parent()}}
+{% endblock %}
+{% block stylesheets %}
+{{parent()}}
+<style>
+    #scroll_div {
+        height: 233px;
+        border: 1px solid #000;
+        overflow: auto;
+    }
+</style>
+{% endblock %}
+{% block body %}
+
+<div class="row py-5">
+    <div class="col-md-12">
+
+        <div class="py-4 mt-4 bg-white shadow-lg" style="width: 100%;">
+            <!-- <span class="py-4 h4">Delivery Details</span> -->
+            
+            <p class="pb-2 border-bottom"></p>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="bg-white shadow-lg" style="width: 100%;">
+                        <p class="shadow-lg py-2 m-1 text-center rounded-1 text-white"
+                            style="background-color: rgb(78, 144, 144);font-size: 21px;height: 50px;">Delivery Details
+                        </p>
+                        <p class="pb-3 border-bottom"></p>
+                        <div class="row">
+                            <div class="col-md-6 py-2">
+                                <span class="px-3" style="font-size: 15px;">
+                                    <b>Name</b>
+                                </span>
+                                <div class="border p-1 py-2 px-4 m-2" style="font-size: 14px;">
+                                    {{address.name}}
+                                </div>
+                            </div>
+                            <div class="col-md-6 py-2">
+                                <span class="px-3" style="font-size: 15px;">
+                                    <b>Landmark</b>
+                                </span>
+                                <div class="border p-1 py-2 px-4 m-2" style="font-size: 14px;">
+                                    {{address.landmark}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6 py-2">
+
+                                <span class="px-3" style="font-size: 15px;">
+                                    <b>CellPhone</b>
+                                </span>
+                                <div class="border p-1 py-2 px-4 m-2" style="font-size: 14px;">
+                                    {{address.cellphone}}
+                                </div>
+                            </div>
+                            <div class="col-md-6 py-2">
+
+                                <span class="px-3" style="font-size: 15px;">
+                                    <b>PIN</b>
+                                </span>
+                                <div class="border p-1 py-2 px-4 m-2" style="font-size: 14px;">
+                                    {{address.pin}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 py-2">
+
+                                <span class="px-3" style="font-size: 15px;">
+                                    <b>House/Flat/Apt/Street</b>
+                                </span>
+                                <div class="border p-1 py-2 px-4 m-2" style="font-size: 14px;">
+                                    {{address.addressLine1}}
+                                </div>
+                            </div>
+                            <div class="col-md-6 py-2">
+
+                                <span class="px-3" style="font-size: 15px;">
+                                    <b>City</b>
+                                </span>
+                                <div class="border p-1 py-2 px-4 m-2" style="font-size: 14px;">
+                                    {{address.city}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 py-2">
+
+                                <span class="px-3" style="font-size: 15px;">
+                                    <b>Locality/Area</b>
+                                </span>
+                                <div class="border p-1 py-2 px-4 m-2" style="font-size: 14px;">
+                                    {{address.addressLine2}}
+                                </div>
+                            </div>
+                            <div class="col-md-6 py-2">
+
+                                <span class="px-3" style="font-size: 15px;">
+                                    <b>State</b>
+                                </span>
+                                <div class="border p-1 py-2 px-4 m-2" style="font-size: 14px;">
+                                    {{address.state}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="bg-white shadow-lg" style="width: 100%;">
+                        <p class="shadow-lg py-2 m-1 text-center rounded-1 text-white"
+                            style="background-color: rgb(78, 144, 144);font-size: 21px;height: 50px;">Order Details</p>
+                        <p class="pb-2 border-bottom"></p>
+
+
+                        <!-- <h3 style="font-size: 18px;background-color: dimgrey;" class="btn shadow-lg text-white">Order items</h3> -->
+                        <div class="container"  id="scroll_div">
+
+                            <table style="width:100%">
+
+                                <thead>
+                                    <tr style="height: 30px;text-align: center;">
+                                        <th><span class="h5" style="text-align: center;">Image</span></th>
+                                        <th><span class="h5" style="text-align: center;">Details</span></th>
+                                        <th><span class="h5" style="text-align: center;">Quantity</span></th>
+                                        <th><span class="h5" style="text-align: center;">Price</span></th>
+                                        <th><span class="h5" style="text-align: center;">Status</span></th>
+                                    </tr>
+                                    <tr class="pb-3 border-bottom"></tr>
+                                </thead>
+
+                                <div>
+                                    <tbody>
+                                        {% set sl = 1 %}
+                                        {% for item in order_items %}
+                                        <td>
+                                            <span class="h5">{{sl}}</span>
+                                        </td>
+                                        <tr style="height: 119px;text-align: center;">
+                                            <td class="product-main-image" style="overflow: hidden;">
+                                                <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
+                                                    alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm"
+                                                    class="shadow-lg"
+                                                    style="border: 4px solid yellow; height:90px; width:90px;"
+                                                    itemprop="image">
+                                                <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
+                                                    class="zoomImg"
+                                                    style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 20px; height: 30px; border: none; max-width: none;">
+                                            </td>
+                                            <td>
+                                                <p><span class="h5" style="color: black">{{item.book.title}}</span>
+                                                </p>
+                                                <p><span class="h5" style="color: black;">ISBN: </span><span
+                                                        style="font-size: 14px; color: black;">{{item.book.isbnNo}}</span>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p><span class="h5" style="color: black"> {{item.quantity}}</span>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p><span class="h5" style="color: black"> {{item.price}}</span>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p<span class="h5" style="color: black">{{order.status}}
+                                                    </span>
+                                                    </p>
+                                            </td>
+
+                                        </tr>
+                                        <tr class="pb-3 border-bottom" style="color: black;"></tr>
+                                        {% set sl = sl + 1 %}
+                                        {% endfor %}
+                                    </tbody>
+                                </div>
+                            </table>
+                        </div>
+                        <div class="py-5 px-3">
+                            <h4><span>TOTAL PRICE WITH DELIVERY CHARGE : </span><span style="color: darkred;">{{order.totalPrice}}</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div><br>
+            <span class="py-3"><a href="{{path('my_order_list')}}"
+                style="width: 100px;font-size: 15px;background-color: rgb(43, 59, 60);margin-left: 1200px;"
+                class="btn shadow-lg bi bi-reply-fill text-white rounded-2" title="edit" data-toggle="tooltip">
+                Back
+            </a></span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
+{% endblock %}
