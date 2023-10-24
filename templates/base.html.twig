@@ -249,35 +249,35 @@
 								title="Buy &amp; Sell your used books">
 						</a>
 					</li> -->
+					{% if app.user %}
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-							aria-expanded="false">
-							Dropdown
+						<a class="nav-link dropdown-toggle bi bi-person-check-fill oval" href="#" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false"> {{app.user.firstname}} {{app.user.lastname}}
+
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item bi bi-person-square" href="#"> Account</a>
 							</li>
 							<li>
-								<a class="dropdown-item" href="#">action</a>
+								<a class="dropdown-item bi bi-shop" href="#"> Orders</a>
 							</li>
 							<li>
 								<hr class="dropdown-divider">
 							</li>
+
 							<li>
-								<a class="dropdown-item" href="#">action</a>
+								<a class="dropdown-item bi bi-box-arrow-right" href="/logout"> Sign out</a>
 							</li>
 						</ul>
-					</li>
-					{% if app.user %}
-					<li class="nav-item">
-						<a class="nav-link" href="/logout">Sign out</a>
-					</li>
-					{% else %}
+						{% else %}
 					<li class="nav-item">
 						<a class="nav-link" href="/login"><i class="fa fa-fw fa-user"></i>Sign in</a>
 					</li>
 					{% endif %}
+
+					</li>
+
 				</div>
 				<div>
 
@@ -315,7 +315,7 @@
 	<!-- JavaScript Bundle with Popper -->
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://cdn.usebootstrap.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-	
+
 	{% endblock %}
 </body>
 

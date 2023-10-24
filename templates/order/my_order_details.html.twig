@@ -20,12 +20,12 @@
 <div class="row py-5">
     <div class="col-md-12">
 
-        <div class="py-4 mt-4 bg-white shadow-lg" style="width: 100%;">
+        <div class="py-4 mt-4 bg-white " style="width: 100%;">
             <!-- <span class="py-4 h4">Delivery Details</span> -->
             
             <p class="pb-2 border-bottom"></p>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="bg-white shadow-lg" style="width: 100%;">
                         <p class="shadow-lg py-2 m-1 text-center rounded-1 text-white"
                             style="background-color: rgb(78, 144, 144);font-size: 21px;height: 50px;">Delivery Details
@@ -112,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-6">
                     <div class="bg-white shadow-lg" style="width: 100%;">
                         <p class="shadow-lg py-2 m-1 text-center rounded-1 text-white"
                             style="background-color: rgb(78, 144, 144);font-size: 21px;height: 50px;">Order Details</p>
@@ -183,12 +183,12 @@
                             </table>
                         </div>
                         <div class="py-5 px-3">
-                            <h4><span>TOTAL PRICE WITH DELIVERY CHARGE : </span><span style="color: darkred;">{{order.totalPrice}}</span></h4>
+                            <h4><span>TOTAL PRICE WITH DELIVERY CHARGE : </span><span style="color: darkred;">₹{{order.totalPrice}}</span></h4>
                         </div>
                     </div>
                 </div>
             </div><br>
-            <span class="py-3"><a href="{{path('my_order_list')}}"
+            <span class="py-3"><a href="{{path('my_order_list',{page: page})}}"
                 style="width: 100px;font-size: 15px;background-color: rgb(43, 59, 60);margin-left: 1200px;"
                 class="btn shadow-lg bi bi-reply-fill text-white rounded-2" title="edit" data-toggle="tooltip">
                 Back

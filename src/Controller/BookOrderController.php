@@ -102,8 +102,8 @@ class BookOrderController extends AbstractController
             'total_pages' => $total_pages
         ]);
     }
-    #[Route('/my/order/details/{order_no}', name: 'my_order_details')]
-    public function detailsOrder(Request $request, ManagerRegistry $doctrine, $order_no): Response
+    #[Route('/my/order/details/{order_no}/{page}', name: 'my_order_details')]
+    public function detailsOrder(Request $request, ManagerRegistry $doctrine, $order_no,$page): Response
     {
         $em = $doctrine->getManager();
         $order = $doctrine->getRepository("App\Entity\BookOrder")->findOneBy(['orderNo' => $order_no]);
@@ -114,8 +114,8 @@ class BookOrderController extends AbstractController
             'title' => "My Order",
             'address'=> $address,
             'order_items'=> $order_items,
-            'order'=> $order
-
+            'order'=> $order,
+            'page'=>$page
         ]);
     }
 }
