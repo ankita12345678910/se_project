@@ -40,143 +40,154 @@
 </div>
 {% else %}
 
-
-<div class="row py-5">
-    <div class="col-md-8 py-5">
-        <div class="py-4 px-5 m-5 bg-light shadow-lg rounded-5 cart_items" style="width: 100%;">
-            <a href="/"
-                    style="width: 218px;font-size: 17px;background-color: darkolivegreen;" class="bi bi-cart btn text-white" title="continue"
-                    data-toggle="tooltip">Continue shopping
+<div class="view-cart-items">
+    <div class="row py-5">
+        <div class="col-md-8 py-5">
+            <div class="py-4 px-5 m-5 bg-white shadow-lg rounded-5 cart_items" style="width: 100%;">
+                <a href="/" style="width: 218px;font-size: 17px;background-color: darkolivegreen;"
+                    class="bi bi-cart btn text-white" title="continue" data-toggle="tooltip">Continue shopping
                 </a>
-            <div class="container py-3">
-                
-                <table style="width:100%">
+                <div class="container py-3">
+                    <table style="width:100%">
 
-                    <thead>
-                        <tr class="pb-3 border-bottom"></tr>
-                        <tr style="height: 40px;text-align: center;">
-                            <th><span class="h5" style="text-align: center;">Image</span></th>
-                            <th><span class="h5" style="text-align: center;">Details</span></th>
-                            <th><span class="h5" style="text-align: center;">Quantity</span></th>
-                            <th><span class="h5" style="text-align: center;">Sub Total</span></th>
-                        </tr>
-                        <tr class="pb-3 border-bottom"></tr>
-                    </thead>
+                        <thead>
+                            <tr class="pb-3 border-bottom"></tr>
+                            <tr style="height: 40px;text-align: center;">
+                                <th><span class="h5" style="text-align: center;">Image</span></th>
+                                <th><span class="h5" style="text-align: center;">Details</span></th>
+                                <th><span class="h5" style="text-align: center;">Quantity</span></th>
+                                <th><span class="h5" style="text-align: center;">Sub Total</span></th>
+                            </tr>
+                            <tr class="pb-3 border-bottom"></tr>
+                        </thead>
 
-                    <div>
-                        <tbody>
-                            {% set sl = 1 %}
-                            {% for item in app.user.getCart.getCartItem %}
-                            {% if item.status == 'Active' %}
-                            <td>
-                                <span class="h5">{{sl}}</span>
-                            </td>
-                            <tr style="height: 150px;text-align: center;">
-                                <td class="product-main-image" style="overflow: hidden;">
-                                    <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
-                                        alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm"
-                                        class="shadow-lg" style="border: 4px solid yellow; height:115px; width:100px;"
-                                        itemprop="image">
-                                    <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
-                                        class="zoomImg"
-                                        style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 20px; height: 30px; border: none; max-width: none;">
-                                </td>
+                        <div>
+                            <tbody>
+                                {% set sl = 1 %}
+                                {% for item in app.user.getCart.getCartItem %}
+                                {% if item.status == 'Active' %}
+
                                 <td>
-                                    <p><span class="h5" style="color: darkred">{{item.book.title}}</span></p>
-                                    <p><span class="h5" style="color: black;">By: </span><span
-                                            style="font-size: 14px; color: blue;">{{item.book.author}}</span></p>
-                                    <p><span class="h5" style="color: black;">Edition: </span><span
-                                            style="font-size: 14px; color: black;">{{item.book.edition}}</span></p>
-                                    <p><span class="h5" style="color: black;">ISBN: </span><span
-                                            style="font-size: 14px; color: black;">{{item.book.isbnNo}}</span></p>
+                                    <span class="h5">{{sl}}</span>
                                 </td>
-                                <td>
+                                <tr style="height: 150px;text-align: center;">
+                                    <td class="product-main-image" style="overflow: hidden;">
+                                        <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
+                                            alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm"
+                                            class="shadow-lg"
+                                            style="border: 4px solid yellow; height:115px; width:100px;"
+                                            itemprop="image">
+                                        <img src="{{path('image_show',{path:'books',file: item.book.file})}}"
+                                            class="zoomImg"
+                                            style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 20px; height: 30px; border: none; max-width: none;">
+                                    </td>
+                                    <td>
+                                        <p><span class="h5" style="color: darkred">{{item.book.title}}</span></p>
+                                        <p><span class="h5" style="color: black;">By: </span><span
+                                                style="font-size: 14px; color: blue;">{{item.book.author}}</span></p>
+                                        <p><span class="h5" style="color: black;">Edition: </span><span
+                                                style="font-size: 14px; color: black;">{{item.book.edition}}</span></p>
+                                        <p><span class="h5" style="color: black;">ISBN: </span><span
+                                                style="font-size: 14px; color: black;">{{item.book.isbnNo}}</span></p>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" id="xy" value="{{address}}">
+                                        <div style="margin-left: 72px;" class="product-data">
+                                            <div class="input-group mb-3" style="width:100px;">
+                                                <span class="input-group-text decrement-btn"><input type="hidden"
+                                                        id="avl_book" value="{{item.book.availableBook}}"><input
+                                                        type="hidden" id="book_id" value="{{item.book.id}}">-</span>
+                                                <input type="text"
+                                                    class="form-control text-center bg-white input-quantity"
+                                                    value="{{item.quantity}}" disabled>
+                                                <span class="input-group-text increment-btn"><input type="hidden"
+                                                        id="avl_book" value="{{item.book.availableBook}}"><input
+                                                        type="hidden" id="book_id" value="{{item.book.id}}">+</span>
+                                            </div>
+                                        </div>
 
-                                    <label for="quantity"></label>
-                                    <input type="number" style="height: 38px;width: 51px;" min="0"
-                                        max="{{item.book.availableBook}}" id="timer02_min2" userId="{{item.book.id}}"
-                                        value="{{item.quantity}}">
-                                    <br>
-                                    <p class="py-2">
+                                        <!-- <p class="py-2">
                                         <a href="#" style="font-size: 14px;" id="quantity_update"
                                             class="btn btn-outline-info">Update</a>
-                                    </p>
-                                </td>
-                                <td>
+                                    </p> -->
+                                    </td>
+                                    <td>
 
-                                    <p><span class="h4" style="color: darkslategrey;">₹{{item.book.price*item.quantity}}
-                                    </p>
-                                    </span>
-
-                                    <div class="py-4">
-                                        {% if address > 0 %}
-                                        <a href="{{path('remove_cart_item',{id: item.book.id , shipping: address})}}"
-                                            style="width: 118px;font-size: 18px;"
-                                            class="btn btn-danger shadow-lg remove_item" title="remove"
-                                            data-toggle="tooltip">remove
-                                        </a>
-                                        {% else %}
-                                        <a href="{{path('remove_cart_item',{id: item.book.id})}}"
-                                            style="width: 118px;font-size: 18px;"
-                                            class="btn btn-danger shadow-lg remove_item" title="remove"
-                                            data-toggle="tooltip">remove
-                                        </a>
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="pb-3 border-bottom" style="color: black;"></tr>
-                            {% set sl = sl + 1 %}
-                            {% endif %}
-                            {% endfor %}
-                        </tbody>
-                    </div>
-                </table>
+                                        <p><span class="h4"
+                                                style="color: darkslategrey;">₹{{item.book.price*item.quantity}}
+                                        </p>
+                                        </span>
+                                        <div class="py-4">
+                                            {% if address > 0 %}
+                                            <a href="{{path('remove_cart_item',{id: item.book.id , shipping: address})}}"
+                                                style="width: 118px;font-size: 18px;"
+                                                class="btn btn-danger shadow-lg remove_item" title="remove"
+                                                data-toggle="tooltip">remove
+                                            </a>
+                                            {% else %}
+                                            <a href="{{path('remove_cart_item',{id: item.book.id})}}"
+                                                style="width: 118px;font-size: 18px;"
+                                                class="btn btn-danger shadow-lg remove_item" title="remove"
+                                                data-toggle="tooltip">remove
+                                            </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="pb-3 border-bottom" style="color: black;"></tr>
+                                {% set sl = sl + 1 %}
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </div>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 py-5">
-        <div class="py-4 px-5 m-5 bg-light shadow-lg rounded-5 cart_summary" style="width: 90%;">
-            <h3 class="shadow-lg py-4 m-3 text-center rounded-3 text-white" style="background-color: darkcyan;">Cart
-                Summary</h3>
-            <br><br>
-            <span class="h4 py-3">Sub Total :</span><span class="h4" style="margin-left: 159px;">
-                {% set price = 0 %}
-                {% for item in app.user.getCart.getCartItem %}
-                {% if item.status == 'Active' %}
-                {% set price = price + item.book.price*item.quantity %}
-                {% endif %}
-                {% endfor %}
-                ₹{{price}}
-            </span>
-            <br><br>
-            <span class="h4 py-3">Shipping Cost :</span><span class="h4" style="margin-left: 130px;">₹70
-            </span>
-            <p style="font-size: 13px;color: dimgrey;">(For India)</p>
-            <p class="pb-3 border-bottom"></p>
-            <br>
-            <span class="h4 py-3">Total Cost :</span><span class="h4" style="margin-left: 160px;">₹{{price+70}}
-            </span>
-            <br><br>
-            <p class="pb-3 border-bottom"></p>
-            <div class="text-center cart_div">
-                {% if address > 0 %}
-                <p id="ab">
-                    <a href="{{path('make_payment',{id: address})}}"
-                        style="width: 210px; height: 60px;font-size: 20px; background-color: darkolivegreen;"
-                        class="btn py-3 rounded-3 shadow-lg text-white" id="proceed" title="Proceed"
-                        data-toggle="tooltip">Go To Order
-                    </a>
-                </p>
-                {% else %}
-                <p id="ab">
-                    <a href="{{path('add_shipping_address')}}"
-                        style="width: 210px; height: 60px;font-size: 20px; background-color: darkolivegreen;"
-                        class="btn bi bi-cart py-3 rounded-3 shadow-lg text-white" id="check_out" title="Check out"
-                        data-toggle="tooltip">Check out
-                    </a>
-                </p>
-                {% endif %}
+        <div class="col-md-4 py-5">
+            <div class="py-4 px-5 m-5 bg-light shadow-lg rounded-5 cart_summary" style="width: 90%;">
+                <h3 class="shadow-lg py-4 m-3 text-center rounded-3 text-white" style="background-color: darkcyan;">Cart
+                    Summary</h3>
+                <br><br>
+                <span class="h4 py-3">Sub Total :</span><span class="h4" style="margin-left: 159px;">
+                    {% set price = 0 %}
+                    {% for item in app.user.getCart.getCartItem %}
+                    {% if item.status == 'Active' %}
+                    {% set price = price + item.book.price*item.quantity %}
+                    {% endif %}
+                    {% endfor %}
+                    ₹{{price}}
+                </span>
+                <br><br>
+                <span class="h4 py-3">Shipping Cost :</span><span class="h4" style="margin-left: 130px;">₹70
+                </span>
+                <p style="font-size: 13px;color: dimgrey;">(For India)</p>
+                <p class="pb-3 border-bottom"></p>
+                <br>
+                <span class="h4 py-3">Total Cost :</span><span class="h4" style="margin-left: 160px;">₹{{price+70}}
+                </span>
+                <br><br>
+                <p class="pb-3 border-bottom"></p>
+                <div class="text-center cart_div">
+
+                    {% if address > 0 %}
+                    <p id="ab">
+                        <a href="{{path('make_payment',{id: address})}}"
+                            style="width: 210px; height: 60px;font-size: 20px; background-color: darkolivegreen;"
+                            class="btn py-3 rounded-3 shadow-lg text-white" id="proceed" title="Proceed"
+                            data-toggle="tooltip">Go To Order
+                        </a>
+                    </p>
+                    {% else %}
+                    <p id="ab">
+                        <a href="{{path('add_shipping_address')}}"
+                            style="width: 210px; height: 60px;font-size: 20px; background-color: darkolivegreen;"
+                            class="btn bi bi-cart py-3 rounded-3 shadow-lg text-white" id="check_out" title="Check out"
+                            data-toggle="tooltip">Check out
+                        </a>
+                    </p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
@@ -186,35 +197,62 @@
 {% endblock %}
 {% block javascripts %}
 <script>
-    document.getElementById("timer02_min2").addEventListener("keydown", e => e.keyCode != 38 && e.keyCode != 40 &&
-        e.preventDefault());
-</script>
-<script>
     $(document).ready(function () {
-        $(":input").bind('keyup mouseup keydown mousedown', function () {
-            jQuery('body').on('click', "#quantity_update", function (e) {
+        $('.increment-btn').click(function (e) {
+            e.preventDefault();
+            var available = $(this).find('#avl_book').val();
+            var book_id = $(this).find('#book_id').val();
+            var address = $('#xy').val();
+            var quantity = $(this).closest('.product-data').find('.input-quantity').val();
+            var value = parseInt(quantity, 10);
+            value = isNaN(value) ? 0 : value;
+            if (value < available) {
+                value++;
+                var qty = $(this).closest('.product-data').find('.input-quantity').val(value);
 
-                var a = $("#timer02_min2").val();
-                var id = jQuery("#timer02_min2").attr('userId');
                 $.ajax({
 
                     url: "{{ path('web_ajax_book_quantity')}}",
                     type: "GET",
                     data: {
-                        id, a
+                        book_id, value,address
                     },
                     dataType: 'json',
                     success: function (returns) {
-                        jQuery(this).val(returns);
+                        // jQuery(".view-cart-items").html(returns);
+                        $(this).closest('.product-data').find('.input-quantity').val(returns);
+
                     },
                     error: function (xhr) { }
                 });
+            }
+        })
+        $('.decrement-btn').click(function (e) {
+            e.preventDefault();
+            var available = $(this).find('#avl_book').val();
+            var book_id = $(this).find('#book_id').val();
+            var quantity = $(this).closest('.product-data').find('.input-quantity').val();
+            var value = parseInt(quantity, 10);
+            value = isNaN(value) ? 0 : value;
+            if (value > 1) {
+                value--;
+                var qty = $(this).closest('.product-data').find('.input-quantity').val(value);
 
+                $.ajax({
 
-
-            })
-
-        });
+                    url: "{{ path('web_ajax_book_quantity')}}",
+                    type: "GET",
+                    data: {
+                        book_id, value
+                    },
+                    dataType: 'json',
+                    success: function (returns) {
+                        $(this).closest('.product-data').find('.input-quantity').val(returns);
+                    },
+                    error: function (xhr) { }
+                });
+            }
+        })
     })
 
 </script>

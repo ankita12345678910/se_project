@@ -219,17 +219,18 @@ class UserController extends AbstractController
     {
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
-        $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $request->get('id')]);
+        $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $request->get('book_id')]);
         $a = $book->getId();
         $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart, 'book' => $a]);
-        $quantity = $request->get('a');
+        $quantity = $request->get('value');
+        $address = $request->get('address');
         $cart_item->setQuantity($quantity);
         $em->persist($cart_item);
         $em->flush();
         $html = $this->renderView('user/ajax_quantity.html.twig', [
             'title' => "View User",
-            'quantity' => $quantity
-
+            'quantity' => $quantity,
+            'address' => $address,
         ]);
         $response = new JsonResponse();
         $response->setData($html);
@@ -248,8 +249,6 @@ class UserController extends AbstractController
 
         $shippingAddress = new ShippingAddress();
         $msg = "User created successfully";
-
-
         $form = $this->createForm(ShippingAddressType::class, $shippingAddress);
         $form->handleRequest($request);
         if ($request->getMethod() == "POST") {

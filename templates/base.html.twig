@@ -27,13 +27,12 @@
 		}
 
 		.navbar ul {
-			background-color: #a5a4a6;
+			background-color: #9bcfd4;
 			position: fixed;
 			top: 0;
 			margin: 0;
 			padding: 0;
 			width: 100%;
-
 		}
 
 		.navbar ul li {
@@ -251,8 +250,9 @@
 					</li> -->
 					{% if app.user %}
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle bi bi-person-check-fill oval" href="#" role="button" data-bs-toggle="dropdown"
-							aria-expanded="false"> {{app.user.firstname}} {{app.user.lastname}}
+						<a class="nav-link dropdown-toggle bi bi-person-check-fill oval" href="#" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false"> {{app.user.firstname}}
+							{{app.user.lastname}}
 
 						</a>
 						<ul class="dropdown-menu">
@@ -260,7 +260,7 @@
 								<a class="dropdown-item bi bi-person-square" href="#"> Account</a>
 							</li>
 							<li>
-								<a class="dropdown-item bi bi-shop" href="#"> Orders</a>
+								<a class="dropdown-item bi bi-shop" href="{{path('my_order_list')}}"> Orders</a>
 							</li>
 							<li>
 								<hr class="dropdown-divider">
@@ -270,6 +270,11 @@
 								<a class="dropdown-item bi bi-box-arrow-right" href="/logout"> Sign out</a>
 							</li>
 						</ul>
+						{% if 'ROLE_SHOPKEEPER' in app.user.roles %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{path('web_shopkeeper_dashboard')}}"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+						</li>
+						{% endif %}
 						{% else %}
 					<li class="nav-item">
 						<a class="nav-link" href="/login"><i class="fa fa-fw fa-user"></i>Sign in</a>

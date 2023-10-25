@@ -15,8 +15,7 @@
 			{% if record.status == 'Active' %}
 
 				<div class="col-md-4 py-2 exist_address rounded-2 bg-light" style="width: 260px;margin-left: 10px;margin-top: 20px;">
-					<h3 class="py-2 m-3 text-center rounded-3 text-white" style="background-color: darkcyan;">
-						Address</h3>
+					 <h3 class="py-2 m-3 rounded-3 px-4 text-white bi bi-truck" style="background-color: darkcyan;"> {{record.name}}</h3>
 					<span style="font-size: 16px;margin-left: 25px">{{record.name}}</span><br>
 					<span style="font-size: 16px;margin-left: 25px">{{record.addressLine1}}</span><br>
 					<span style="font-size: 16px;margin-left: 25px">{{record.addressLine2}}</span><br>
