@@ -194,23 +194,18 @@
                                                     </p>
                                                 </td>
                                                 <td>
+                                                    <p><span class="h5 border px-4"
+                                                        style="color: rgb(36, 49, 49);">{{item.quantity}}
 
-                                                    <label for="quantity"></label>
-                                                    <input type="number" style="height: 38px;width: 51px;" min="0"
-                                                        max="{{item.book.availableBook}}" id="timer02_min2"
-                                                        userId="{{item.book.id}}" value="{{item.quantity}}">
-                                                    <br>
-                                                    <p class="py-2">
-                                                        <a href="#" style="font-size: 14px;" id="quantity_update"
-                                                            class="btn btn-outline-info">Update</a>
-                                                    </p>
+                                                    </span>
+                                                </p>
+
                                                 </td>
                                                 <td>
-
-                                                    <p><span class="h4"
-                                                            style="color: darkslategrey;">₹{{item.book.price*item.quantity}}
+                                                    <p class="h5"><span
+                                                            style="color: rgb(39, 49, 49);font-size: 17px;">₹ {{item.book.price*item.quantity}}
+                                                        </span>
                                                     </p>
-                                                    </span>
 
                                                 </td>
                                             </tr>
@@ -233,10 +228,10 @@
             <p class="shadow-lg text-center text-white py-2"
                 style="background-color: darkslategray;font-size: 21px;height: 50px;width: 100%;">Please select a
                 payment mode</p>
-            
+
             <div class="tab">
-                <button class="tablinks active"  id="online">Online Payment</button>
-                <button class="tablinks"  id="cash">Cash on delivery</button>
+                <button class="tablinks active" id="online">Online Payment</button>
+                <button class="tablinks" id="cash">Cash on delivery</button>
             </div>
 
             <div id="buy_online" class="tabcontent py-3">
@@ -254,8 +249,8 @@
                     <span style="font-size: 16px;">You will be pay to our billing gateway partner. Please click below to
                         buy now...</span><br><br>
                     <a href="#" style="width:388px; height: 60px;font-size: 20px; background-color: goldenrod;"
-                        class="btn py-3 rounded-1 text-white" id="check_out" title="Check out"
-                        data-toggle="tooltip">Buy Now
+                        class="btn py-3 rounded-1 text-white" id="check_out" title="Check out" data-toggle="tooltip">Buy
+                        Now
                     </a>
                 </span>
             </div>
@@ -264,17 +259,20 @@
                 <span>
                     <span style="font-size: 20px;" class="py-2"><b>CASH ON DELIVERY</b></span><br><br>
                     <div class="container py-2" style="background-color: rgb(131, 211, 174);">
-                        <ol style="font-size: 14px;"><span style="font-size: 17px;"class="h5 py-2">Terms & Condition</span>
+                        <ol style="font-size: 14px;"><span style="font-size: 17px;" class="h5 py-2">Terms &
+                                Condition</span>
                             <li>Cash on Delivery is available only at select pin codes.</li>
                             <li>However, if you choose to pay online we deliver at all pincodes.</li>
                             <li>An additional will be charged as convenience fees.</li>
                             <li>COD will not be available if your order value exceeds 3000</li>
-                            <li>All Orders placed using COD as payment method will be verified through a call before shipment</li>
+                            <li>All Orders placed using COD as payment method will be verified through a call before
+                                shipment</li>
                         </ol>
                     </div>
                     <span style="font-size: 20px;color: darkred;">TOTAL AMOUNT PAYABLE: ₹{{price+70}}</span><br><br>
-                    
-                    <a href="{{path('make_order',{address: address.id})}}" style="width:388px; height: 60px;font-size: 20px; background-color: goldenrod;"
+
+                    <a href="{{path('make_order',{address: address.id})}}"
+                        style="width:388px; height: 60px;font-size: 20px; background-color: goldenrod;"
                         class="btn py-3 rounded-1 text-white" id="check_out" title="Check out"
                         data-toggle="tooltip">Confirm order
                     </a>
@@ -301,7 +299,7 @@
             $('#cash').addClass('active');
             $('#cash_on_delivery').show();
             $('#buy_online').hide();
-           
+
 
         });
     })

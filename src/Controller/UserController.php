@@ -124,13 +124,12 @@ class UserController extends AbstractController
             $item_present = 'yes';
         } elseif ($cart_item->getStatus() != "Active") {
             $cart_item->setStatus('Active');
+            $cart_item->setQuantity('1');
             $em->persist($cart_item);
             $em->flush();
             $item_present = 'yes';
         } else {
             $item_present = 'yes';
-            // $cart_item->setStatus('Active');
-            // $cart_item->setQuantity($cart_item->getQuantity() + 1);
         }
 
 
@@ -147,13 +146,13 @@ class UserController extends AbstractController
         }
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
-        $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findBy(['cart' => $cart]);
-        $repository = $em->getRepository('App\Entity\Book');
-        $books = $repository->createQueryBuilder('c')
-            ->innerJoin('c.cartItem', 'b')
-            ->where('b.id IN (:category_id)')
-            ->setParameter('category_id', $cart_item)
-            ->getQuery()->getResult();
+        // $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findBy(['cart' => $cart]);
+        // $repository = $em->getRepository('App\Entity\Book');
+        // $books = $repository->createQueryBuilder('c')
+        //     ->innerJoin('c.cartItem', 'b')
+        //     ->where('b.id IN (:category_id)')
+        //     ->setParameter('category_id', $cart_item)
+        //     ->getQuery()->getResult();
         // dd($books[0]);
 
         // $query = $em->createQuery("SELECT u from App:CartItem u where  u.book  IN (:genre) and u.user  u.status ='Active'");
@@ -161,11 +160,11 @@ class UserController extends AbstractController
         // $result = $query->getResult();
         // dd($result);
         // dd($books);
-        $count=0;
+        $count = 0;
         foreach ($this->getUser()->getCart()->getCartItem() as $item) {
 
-            if($item->getStatus()=='Active'){
-                $count=$count+1;
+            if ($item->getStatus() == 'Active') {
+                $count = $count + 1;
             }
         }
         // dd($count);
@@ -220,17 +219,23 @@ class UserController extends AbstractController
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
         $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $request->get('book_id')]);
+        $bk = $request->get('book_id');
+        $price = $book->getPrice();
         $a = $book->getId();
         $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart, 'book' => $a]);
         $quantity = $request->get('value');
         $address = $request->get('address');
         $cart_item->setQuantity($quantity);
+        $q = $cart_item->getQuantity();
         $em->persist($cart_item);
         $em->flush();
+
         $html = $this->renderView('user/ajax_quantity.html.twig', [
-            'title' => "View User",
-            'quantity' => $quantity,
+            'quantity' => $q,
             'address' => $address,
+            'price' => $price,
+            'bk' => $bk,
+
         ]);
         $response = new JsonResponse();
         $response->setData($html);
