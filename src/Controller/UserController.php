@@ -129,7 +129,7 @@ class UserController extends AbstractController
             $em->flush();
             $item_present = 'yes';
         } else {
-            $item_present = 'yes';
+            $item_present = 'yes'; 
         }
 
 
@@ -265,6 +265,7 @@ class UserController extends AbstractController
                 return $this->redirectToRoute('add_shipping_address');
             }
         }
+       
         return $this->render('user/add_shipping_address.html.twig', [
             'user' => $shippingAddress,
             'form' => $form->createView(),
@@ -337,11 +338,8 @@ class UserController extends AbstractController
         $address->setStatus("Deleted");
         $em->persist($address);
         $em->flush();
-        $html = $this->renderView('user/view_address.html.twig', [
-            'form' => $form->createView(),
-            'address_id' => $address_id
-        ]);
-        $response->setData($html);
+        $response_code=http_response_code();
+        $response->setData($response_code);
         return $response;
     }
 

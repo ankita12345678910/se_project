@@ -50,13 +50,16 @@
                                     <div class="input-group mb-3" style="width:100px;">
                                         <span class="input-group-text decrement-btn"><input type="hidden" id="avl_book"
                                                 value="{{item.book.availableBook}}"><input type="hidden" id="book_id"
-                                                value="{{item.book.id}}">-</span>
+                                                value="{{item.book.id}}">
+                                                <input
+                                                    type="hidden" id="book-title"
+                                                    value="{{item.book.title}}">-</span>
                                         <input type="text" class="form-control text-center bg-white input-quantity"
                                             value="{{item.quantity}}">
                                         <span class="input-group-text increment-btn"><input type="hidden" id="avl_book"
                                                 value="{{item.book.availableBook}}"><input type="hidden" id="book_id"
-                                                value="{{item.book.id}}"><input type="hidden" id="sum-price"
-                                                value="{{item.book.price*item.quantity}}">+</span>
+                                                value="{{item.book.id}}"><input type="hidden" id="book-title"
+                                                value="{{item.book.title}}">+</span>
                                     </div>
                                 </div>
 

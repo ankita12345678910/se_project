@@ -3,6 +3,7 @@
 {{parent()}}
 {% endblock %}
 {% block stylesheets %}
+{{parent()}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
     .cart_summary,
@@ -11,6 +12,7 @@
         border-color: black;
         border-style: inset;
     }
+ 
 </style>
 {% endblock %}
 {% block body %}
@@ -94,14 +96,16 @@
                                         <div class="input-group mb-3" style="width:100px;">
                                             <span class="input-group-text decrement-btn"><input type="hidden"
                                                     id="avl_book" value="{{item.book.availableBook}}"><input
-                                                    type="hidden" id="book_id" value="{{item.book.id}}">-</span>
+                                                    type="hidden" id="book_id" value="{{item.book.id}}"><input
+                                                    type="hidden" id="book-title"
+                                                    value="{{item.book.title}}">-</span>
                                             <input type="text" class="form-control text-center bg-white input-quantity"
                                                 value="{{item.quantity}}">
                                             <span class="input-group-text increment-btn"><input type="hidden"
                                                     id="avl_book" value="{{item.book.availableBook}}"><input
                                                     type="hidden" id="book_id" value="{{item.book.id}}"><input
-                                                    type="hidden" id="sum-price"
-                                                    value="{{item.book.price*item.quantity}}">+</span>
+                                                    type="hidden" id="book-title"
+                                                    value="{{item.book.title}}">+</span>
                                         </div>
                                     </div>
 
@@ -201,11 +205,12 @@
 <script>
     jQuery('body').on('click', '.increment-btn', function () {
 
-        console.log('kjhg');
+        
         var available = $(this).find('#avl_book').val();
         var book_id = $(this).find('#book_id').val();
         var address = $('#xy').val();
-        var sum = $(this).find('#sum-price').val();
+        var title = $(this).find('#book-title').val();
+        
         var quantity = $(this).closest('.product-data').find('.input-quantity').val();
         var value = parseInt(quantity, 10);
         value = isNaN(value) ? 0 : value;
@@ -222,18 +227,21 @@
                 dataType: 'json',
                 success: function (returns) {
                     $('.view-cart-items').html(returns);
-                    // $(this).closest('.product-data').find('.input-quantity').val(returns);
+                    alertify.set('notifier','position', 'bottom-left');
+                    alertify.success('you have changed '+title+' QUANTITY to '+value);
+                    // alertify.notify('you have changed '+title+' QUANTITY to ', 'custom', 2, function(){console.log('dismissed');});
                 },
                 error: function (xhr) { }
             });
         }
     })
     jQuery('body').on('click', '.decrement-btn', function () {
-    
-       
+
+
         var available = $(this).find('#avl_book').val();
         var book_id = $(this).find('#book_id').val();
         var address = $('#xy').val();
+        var title = $(this).find('#book-title').val();
         var quantity = $(this).closest('.product-data').find('.input-quantity').val();
         var value = parseInt(quantity, 10);
         value = isNaN(value) ? 0 : value;
@@ -252,7 +260,8 @@
                 success: function (returns) {
                     $('.view-cart-items').html(returns);
                     // $(this).closest('.product-data').find('.input-quantity').val(returns);
-
+                    alertify.set('notifier','position', 'bottom-right');
+                    alertify.success('you have changed '+title+' QUANTITY to '+value);
                 },
                 error: function (xhr) { }
             });

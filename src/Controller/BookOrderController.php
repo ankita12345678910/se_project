@@ -76,6 +76,15 @@ class BookOrderController extends AbstractController
         return $this->redirectToRoute('my_order_list');
     }
 
+    #[Route('order/success/', name: 'my_order_list')]
+    public function successOrder(ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+        return $this->render('order/order_response.html.twig', [
+            'title' => "My Order",
+        ]);
+    }
+
     #[Route('my/order/list/{page}', name: 'my_order_list')]
     public function myOrder(ManagerRegistry $doctrine, $page = 1): Response
     {
@@ -103,7 +112,7 @@ class BookOrderController extends AbstractController
         ]);
     }
     #[Route('/my/order/details/{order_no}/{page}', name: 'my_order_details')]
-    public function detailsOrder(Request $request, ManagerRegistry $doctrine, $order_no,$page): Response
+    public function detailsOrder(Request $request, ManagerRegistry $doctrine, $order_no, $page): Response
     {
         $em = $doctrine->getManager();
         $order = $doctrine->getRepository("App\Entity\BookOrder")->findOneBy(['orderNo' => $order_no]);
@@ -112,10 +121,10 @@ class BookOrderController extends AbstractController
         // dd($order_items);
         return $this->render('order/my_order_details.html.twig', [
             'title' => "My Order",
-            'address'=> $address,
-            'order_items'=> $order_items,
-            'order'=> $order,
-            'page'=>$page
+            'address' => $address,
+            'order_items' => $order_items,
+            'order' => $order,
+            'page' => $page
         ]);
     }
 }
