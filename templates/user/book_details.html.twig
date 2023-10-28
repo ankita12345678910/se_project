@@ -22,178 +22,256 @@
 	td {
 		font-size: 15px;
 	}
+
+	.tab {
+		overflow: hidden;
+		border: 1px solid #ccc;
+		background-color: #f1f1f1;
+	}
+
+	/* Style the buttons inside the tab */
+	.tab button {
+		background-color: inherit;
+		float: left;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		padding: 14px 16px;
+		transition: 0.3s;
+		font-size: 17px;
+	}
+
+	/* Change background color of buttons on hover */
+	.tab button:hover {
+		background-color: #ddd;
+	}
+
+	/* Create an active/current tablink class */
+	.tab button.active {
+		background-color: cadetblue
+	}
+
+	/* Style the tab content */
+	.tabcontent {
+
+		padding: 0px 12px;
+		border: 1px solid #b39292;
+		width: 100%;
+
+	}
 </style>
 {% endblock %}
 {% block body %}
 
-<div class="row py-5">
-	<div class="col-md-5 py-5 col-sm-6">
-		<div class="product-main-image" style="position: relative; overflow: hidden;">
+<div class="row py-5" style="background-color: rgb(240, 251, 251);">
+	<div class="col-md-5 py-3 col-sm-6">
+		<div class="product-main-image py-5" style="position: relative; overflow: hidden;">
 			<img src="{{path('image_show',{path:'books',file: book.file})}}"
 				alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm"
-				class=" img-responsive shadow-lg" style="border: 1px solid black; height:600px; width:600px;"
+				class=" img-responsive shadow-lg" style="border: 1px solid black; height:460px; width:550px;"
 				itemprop="image">
 			<img src="{{path('image_show',{path:'books',file: book.file})}}" class="zoomImg"
 				style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 300px; height: 461px; border: none; max-width: none;">
 		</div>
-		<div class="product-other-images">
-			<p>
-				<strong>Supplemental materials are not guaranteed for used textbooks or rentals
-				</strong>
-				(access codes, DVDs, CDs, workbooks).
-			</p>
-		</div>
+		<p>
+			<strong>Supplemental materials are not guaranteed for used textbooks or rentals
+			</strong>
+			(access codes, DVDs, CDs, workbooks).
+		</p>
+
 	</div>
-	<div class="col-md-7">
-		<div class="py-4 px-5 m-5 bg-light shadow-lg" style="height: 85%;width: 90%;">
-			<div class="container">
-				<span style="font-size: 30px;">{{book.title}}</span>
-				<span style="font-size: 15px;">
-					({{book.binding}})</span>
-				<br>
-				<span>By:
-					<span style="color: red;font-size: 15px;">{{book.author}}
-					</span>(Author)</span>
-				<br><br>
-				<!-- <div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div> -->
-				<span class="fa fa-star checked"></span>
-				<span class="fa fa-star checked"></span>
-				<span class="fa fa-star checked"></span>
-				<span class="fa fa-star checked"></span>
-				<span class="fa fa-star unchecked"></span>4/5
+	<div class="col-md-7 py-5">
+		<div class=" mt-3 bg-white shadow-lg" style="width: 100%;">
 
-				<p class="pb-3 border-bottom"></p>
+			<div class="tab">
+				<button class="tablinks active" id="cart">Do Cart</button>
+				<button class="tablinks" id="description">Book Description</button>
+				<button class="tablinks" id="specification">Book Specification</button>
+			</div>
 
-				<br><br>
-				<small>
-					<s>MRP:₹399</s>
-				</small>
-				<h3 class="py-2" style="color: blue;">
-					<b>MRP: ₹{{book.price}}</b>
-				</h3>
-				<h5 style="color:gray;">(inclusive all taxes)</h5>
-				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-				{% if book.availableBook > 0 %}
-				<p style="color: green; font-size: 15px;">Available</p>
-				{% else %}
-				<p style="color: red;font-size: 12px;">Stock Out</p>
-				{% endif %}
-				<p style="color: gray;font-size: 15px;">Seller: Bookworm</p>
-				<p style="color: gray;font-size: 15px;">Dispatch time: 4-5 working days</p>
-				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-				<div class="row row-cols-1 row-cols-lg-4  g-3 py-3"></div>
-				<div class="text-center cart_div">
-					{% if item_present == 'no' %}
-					<p id="ab">
-						<a href="{{path('add_cart',{id: book.id})}}" style="width: 290px; height: 65px;font-size: 20px;"
-							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Add to cart"
-							data-toggle="tooltip">Add to cart
-						</a>
-					</p>
-					{% elseif cart_item == '1' %}
-					<p id="ab">
-						<a href="{{path('view_cart')}}" style="width: 290px; height: 65px;font-size: 20px;"
-							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Go to cart"
-							data-toggle="tooltip">Go To Cart
-						</a>
-					</p>
+			<div id="book_cart" class="tabcontent">
+				<div class="container m-3">
+					<span style="font-size: 30px;">{{book.title}}</span>
+					<span style="font-size: 15px;">
+						({{book.binding}})</span>
+					<br>
+					<span>By:
+						<span style="color: red;font-size: 15px;">{{book.author}}
+						</span>(Author)</span>
+					<br><br>
+					<!-- <div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div> -->
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star checked"></span>
+					<span class="fa fa-star unchecked"></span>4/5
+
+					<p class="pb-2 border-bottom"></p>
+					<small>
+						<s>MRP: ₹{{book.price+169}}</s>
+					</small>
+					<h3 class="py-2" style="color: blue;">
+						<b>MRP: ₹{{book.price}}</b>
+					</h3>
+					<h5 style="color:gray;">(inclusive all taxes)</h5>
+
+					{% if book.availableBook > 0 %}
+					<p style="color: green; font-size: 15px;">Available</p>
 					{% else %}
-					<p id="ab">
-						<a href="{{path('add_cart',{id: book.id})}}" style="width: 290px; height: 65px;font-size: 20px;"
-							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Add to cart"
-							data-toggle="tooltip">Add to cart
-						</a>
-					</p>
+					<p style="color: red;font-size: 12px;">Stock Out</p>
 					{% endif %}
-				</div>
-				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-				<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="row py-0">
-	<div class="col-12">
-		<div class="py-4 px-5 m-5 shadow-lg bg-light">
-			<h1 class="bg-light shadow-lg py-2 m-3 text-center text-black">Book Specification</h1>
-			<p class="pb-3 border-bottom"></p>
-			<div class="container">
-				<div class="table-wrapper">
-					<div class="table-title">
-						<div class="row"></div>
+					<p style="color: gray;font-size: 15px;">Seller: Bookworm</p>
+					<p style="color: gray;font-size: 15px;">Dispatch time: 4-5 working days</p>
+
+					<div class="text-center cart_div">
+						{% if item_present == 'no' %}
+						<p id="ab">
+							<a href="{{path('add_cart',{id: book.id})}}"
+								style="width: 290px; height: 65px;font-size: 20px;"
+								class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart"
+								title="Add to cart" data-toggle="tooltip">Add to cart
+							</a>
+						</p>
+						{% elseif cart_item == '1' %}
+						<p id="ab">
+							<a href="{{path('view_cart')}}" style="width: 290px; height: 65px;font-size: 20px;"
+								class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Go to cart"
+								data-toggle="tooltip">Go To Cart
+							</a>
+						</p>
+						{% else %}
+						<p id="ab">
+							<a href="{{path('add_cart',{id: book.id})}}"
+								style="width: 290px; height: 65px;font-size: 20px;"
+								class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart"
+								title="Add to cart" data-toggle="tooltip">Add to cart
+							</a>
+						</p>
+						{% endif %}
 					</div>
-					<table class="bg-light shadow-lg table table-hover color py-5" style="border-spacing: 30px; "
-						id="hidden-table-info">
-						<tbody>
+				</div>
+			</div>
 
-							<tr>
-								<th>Title</th>
-								<td>{{book.title}}</td>
+			<div id="book_description" class="tabcontent" style="display: none;">
+				<div class="container mt-3 bg-white shadow-lg" style="height: 390px;">
+					<p class="py-3 px-3" style="font-size: 16px;">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Alias
+						molestias, officia natus velit
+						assumenda aspernatur sit cupiditate aliquam quidem tempore! Ipsa, aperiam aut doloribus sunt
+						aliquid blanditiis eligendi expedita totam ipsam, laudantium beatae cupiditate tempora fuga
+						sapiente cum delectus facere eius, quod quia eaque iste. Beatae aperiam minima quae molestias
+						nisi, hic perferendis autem nesciunt ut, qui ullam ipsum optio atque error facilis sequi totam
+						quisquam officiis dolores asperiores accusamus voluptas? Sit veniam omnis praesentium harum
+						veritatis ratione placeat aliquam, quo, cumque exercitationem minima quis mollitia qui quos,
+						error tempora hic doloribus! Facilis incidunt aspernatur id reiciendis dolore ipsum iusto cumque
+						dolorem perspiciatis esse, possimus, voluptatum pariatur voluptas nulla, facere deleniti
+						provident architecto voluptatibus est modi maiores! Itaque dolor distinctio quas? Porro
+						perferendis dolorem blanditiis, culpa veritatis quis. Alias iusto excepturi nobis nisi a
+						aspernatur? Corrupti est excepturi, eius ratione doloremque aspernatur corporis dolorem dicta
+						dolores ea ullam ut voluptatem?</p>
+				</div>
+			</div>
 
-								<th>Availability</th>
-								{% if book.availableBook > 0 %}
-								<td>In stock</td>
-								{% else %}
-								<td>Stock out</td>
-								{% endif %}
+			<div id="book_specification" class="tabcontent" style="display:none;">
+				<div class="py-1 shadow-lg bg-light">
+					<!-- <h1 class="bg-light shadow-lg py-2 m-3 text-center text-black">Book Specification</h1> -->
+					<p class="pb-3 border-bottom"></p>
+					<div class="container">
+						<div class="table-wrapper">
+							<div class="table-title">
+								<div class="row"></div>
+							</div>
+							<table class="bg-light shadow-lg table table-hover color py-3"
+								style="border-spacing: 30px; height: 359px;" id="hidden-table-info">
+								<tbody class="m-3">
 
-							</tr>
+									<tr>
+										<th>Title</th>
+										<td>{{book.title}}</td>
+										<th>Availability</th>
+										{% if book.availableBook > 0 %}
+										<td>In stock</td>
+										{% else %}
+										<td>Stock out</td>
+										{% endif %}
 
-							<tr>
-								<th>ISBN number</th>
-								<td>{{book.isbnNo}}</td>
+									</tr>
 
-								<th>Binding</th>
-								<td>{{book.binding}}</td>
-							</tr>
+									<tr>
+										<th>ISBN number</th>
+										<td>{{book.isbnNo}}</td>
 
-							<tr>
-								<th>Price</th>
-								<td>{{book.price}}</td>
+										<th>Binding</th>
+										<td>{{book.binding}}</td>
+									</tr>
 
-								<th>Edition</th>
-								<td>{{book.edition}}</td>
-							</tr>
+									<tr>
+										<th>Price</th>
+										<td>{{book.price}}</td>
 
-							<tr>
-								<th>Pages</th>
-								<td>{{book.pageNo}}</td>
+										<th>Edition</th>
+										<td>{{book.edition}}</td>
+									</tr>
 
-								<th>Author</th>
-								<td>{{book.author}}</td>
-							</tr>
+									<tr>
+										<th>Pages</th>
+										<td>{{book.pageNo}}</td>
 
-							<tr>
-								<th>publisher</th>
-								<td>{{book.publisher}}</td>
+										<th>Author</th>
+										<td>{{book.author}}</td>
+									</tr>
 
-								<th>Language</th>
-								<td>{{book.language}}</td>
-							</tr>
+									<tr>
+										<th>publisher</th>
+										<td>{{book.publisher}}</td>
 
-						</tbody>
-					</table>
+										<th>Language</th>
+										<td>{{book.language}}</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 </div>
 {% endblock %}
 {% block javascripts %}
-<!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{{parent()}}
 <script>
-
 	$(document).ready(function () {
-		$('#add_cart').click(function () {
-			$('#add_cart').replaceWith(`<a href="{{path('view_cart')}}" style="width: 290px; height: 65px;font-size: 20px;"
-							class="btn btn-lg btn-danger bi bi-cart py-3 shadow-lg" id="add_cart" title="Add to cart"
-							data-toggle="tooltip">go to cart
-						</a>`);
-			console.log($a);
-		})
-	})
-</script> -->
+		$('#cart').click(function () {
+			$('#book_description').hide();
+			$('#book_specification').hide();
+			$('#description').removeClass('active');
+			$('#specification').removeClass('active');
+			$('#cart').addClass('active');
+			$('#book_cart').show();
+		});
 
+		$('#description').click(function () {
+
+			$('#cart').removeClass('active');
+			$('#specification').removeClass('active');
+			$('#description').addClass('active');
+			$('#book_cart').hide();
+			$('#book_specification').hide();
+			$('#book_description').show();
+
+		});
+
+		$('#specification').click(function () {
+
+			$('#cart').removeClass('active');
+			$('#description').removeClass('active');
+			$('#specification').addClass('active');
+			$('#book_cart').hide();
+			$('#book_description').hide();
+			$('#book_specification').show();
+
+		});
+	})
+</script>
 {% endblock %}

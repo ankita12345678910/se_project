@@ -42,7 +42,7 @@
 </div>
 {% else %}
 
-<div class="row py-5 view-cart-items">
+<div class="row py-5 view-cart-items" style="background-color: rgb(231, 253, 253);">
     <div class="col-md-8 py-5">
         <div class="py-4 px-5 m-5 bg-white shadow-lg rounded-5 cart_items" style="width: 100%;">
             <a href="/" style="width: 218px;font-size: 17px;background-color: darkolivegreen;"
@@ -227,7 +227,7 @@
                 dataType: 'json',
                 success: function (returns) {
                     $('.view-cart-items').html(returns);
-                    alertify.set('notifier','position', 'bottom-left');
+                    alertify.set('notifier','position', 'bottom-right');
                     alertify.success('you have changed '+title+' QUANTITY to '+value);
                     // alertify.notify('you have changed '+title+' QUANTITY to ', 'custom', 2, function(){console.log('dismissed');});
                 },
@@ -260,8 +260,9 @@
                 success: function (returns) {
                     $('.view-cart-items').html(returns);
                     // $(this).closest('.product-data').find('.input-quantity').val(returns);
-                    alertify.set('notifier','position', 'bottom-right');
-                    alertify.success('you have changed '+title+' QUANTITY to '+value);
+                    // alertify.set('notifier','position', 'bottom-right');
+                    // alertify.success('you have changed '+title+' QUANTITY to '+value);
+                    alertify.notify('you have changed '+title+' QUANTITY to '+value, 'custom', 2, function(){console.log('dismissed');});
                 },
                 error: function (xhr) { }
             });

@@ -55,20 +55,23 @@ class UserController extends AbstractController
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+        $msg = '0';
+        $icon='0';
         if ($request->getMethod() == "POST") {
 
             if ($form->isSubmitted() and $form->isValid()) {
-
-                $user->setPassword($passwordHasher->hashPassword($user, $request->get("pass")));
-                $em->persist($user);
-                $em->flush();
-                $this->addFlash('success', 'User created successfully');
-                return $this->redirectToRoute('web_sign_up');
+                    $user->setPassword($passwordHasher->hashPassword($user, $request->get("pass")));
+                    $em->persist($user);
+                    $em->flush();
+                    $msg = "you have registered successfully";
+                    $icon="success";  
             }
         }
         return $this->render('user/sign_up.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'msg' => $msg,
+            'cv'=> $icon
         ]);
     }
     #[Route('/book/details/{id}/{item}', name: 'web_book_details')]
@@ -129,7 +132,7 @@ class UserController extends AbstractController
             $em->flush();
             $item_present = 'yes';
         } else {
-            $item_present = 'yes'; 
+            $item_present = 'yes';
         }
 
 
@@ -265,7 +268,7 @@ class UserController extends AbstractController
                 return $this->redirectToRoute('add_shipping_address');
             }
         }
-       
+
         return $this->render('user/add_shipping_address.html.twig', [
             'user' => $shippingAddress,
             'form' => $form->createView(),
@@ -338,7 +341,7 @@ class UserController extends AbstractController
         $address->setStatus("Deleted");
         $em->persist($address);
         $em->flush();
-        $response_code=http_response_code();
+        $response_code = http_response_code();
         $response->setData($response_code);
         return $response;
     }
