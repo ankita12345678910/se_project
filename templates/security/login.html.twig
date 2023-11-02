@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Log in!
+{% endblock %}
+{% block bootstrap %}
+{{parent()}}
+{% endblock %}
+{% block stylesheets %}
 {% endblock %}
 
 {% block body %}
@@ -15,13 +19,19 @@
 								alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;height:499px" />
 						</div>
 						<div class="col-md-6 col-lg-7 d-flex align-items-center">
+
 							<div class="card-body p-4 p-lg-5 text-black">
 								<div class="d-flex align-items-center mb-3 pb-1">
-									<i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+									<i class="fas fa-cubes fa-2x me-3" style="color: #f56827;"></i>
 									<span class="h1 fw-bold mb-0">Login</span>
 								</div>
 
 								<h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+								<div>
+									{% if error %}
+									<div class="alert alert-danger"style="font-size: 11px;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+									{% endif %}
+								</div>
 								<form method="post">
 
 									<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -45,16 +55,12 @@
 											style="width: 100%;background-color: #3c6363;color: white;" type="submit">
 											Sign in
 										</button>
-										<a class="small text-muted" href="#!"
+										<a class="small text-muted" href="{{path('verify_email')}}"
 											style="margin-left: 360px;font-size: 13px;">Forgot password?</a>
 									</div>
 
 
-									<div class="text-danger mb-2">
-										{% if error %}
-										<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-										{% endif %}
-									</div>
+
 
 									{% if app.user %}
 									<div class="mb-3">
@@ -85,4 +91,7 @@
 		</div>
 	</div>
 </section>
+{% endblock %}
+{% block javascripts %}
+{{parent()}}
 {% endblock %}

@@ -22,7 +22,7 @@ class FrontController extends AbstractController
         } elseif ($this->isGranted('ROLE_VENDOR')) {
             $url = 'web_vendor_dashboard';
         } elseif ($this->isGranted('ROLE_CUSTOMER')) {
-            $url = 'web_customer_dashboard';
+            $url = 'app_home';
         } else{
 
         }

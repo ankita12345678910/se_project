@@ -56,24 +56,80 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         $msg = '0';
-        $icon='0';
+        $icon = '0';
         if ($request->getMethod() == "POST") {
 
             if ($form->isSubmitted() and $form->isValid()) {
-                    $user->setPassword($passwordHasher->hashPassword($user, $request->get("pass")));
-                    $em->persist($user);
-                    $em->flush();
-                    $msg = "you have registered successfully";
-                    $icon="success";  
+                $user->setPassword($passwordHasher->hashPassword($user, $request->get("pass")));
+                $em->persist($user);
+                $em->flush();
+                $msg = "you have registered successfully";
+                $icon = "success";
             }
         }
         return $this->render('user/sign_up.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
             'msg' => $msg,
-            'cv'=> $icon
+            'cv' => $icon
         ]);
     }
+
+    #[Route('/user/verify/email/', name: 'verify_email')]
+    public function verifyEmail(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $error = 'false';
+        if ($request->getMethod() == "POST") {
+
+            $email = $request->get('email_id');
+            $user = $doctrine->getRepository("App\Entity\User")->findOneBy(["email" => $email]);
+            if ($user) {
+                return $this->redirect($this->generateUrl('reset_password', ['id' => $user->getId()]));
+            } else {
+                $error = true;
+            }
+        }
+        return $this->render('user/verify_email.html.twig', [
+            'controller_name' => 'UserController',
+            'error' => $error
+        ]);
+    }
+    #[Route('/user/reset/password/{id}', name: 'reset_password')]
+    public function resetPassword(Request $request, UserPasswordHasherInterface $passwordHasher, ManagerRegistry $doctrine, $id = -1): Response
+    {
+        $em = $doctrine->getManager();
+        $user = $doctrine->getRepository("App\Entity\User")->findOneBy(["id" => $id]);
+        $error='false';
+        $is_changed='no';
+        
+        if ($request->getMethod() == "POST") {
+            if ($user->getId()) {
+                $new = $request->get('new_password');
+                $con = $request->get('con_password');
+                if ($new == $con) {
+                    $user->setPassword($passwordHasher->hashPassword($user, $request->get('con_password')));
+                    $em->persist($user);
+                    $em->flush();
+                    $is_changed='yes';
+                } else {
+                    $error='true';
+                }
+            }
+            // $email = $request->get('email_id');
+            // if ($user) {
+            //     return $this->redirect($this->generateUrl('reset_password', ['id' => $user->getId()]));
+            // } else {
+            //     $error=true;
+            // }
+
+        }
+        return $this->render('user/reset_password.html.twig', [
+            'controller_name' => 'UserController',
+            'error' => $error,
+            'is_changed'=> $is_changed
+        ]);
+    }
+
     #[Route('/book/details/{id}/{item}', name: 'web_book_details')]
     public function bookDetails(Request $request, ManagerRegistry $doctrine, $id, $item = 'no'): Response
     {
@@ -149,20 +205,6 @@ class UserController extends AbstractController
         }
         $em = $doctrine->getManager();
         $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
-        // $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findBy(['cart' => $cart]);
-        // $repository = $em->getRepository('App\Entity\Book');
-        // $books = $repository->createQueryBuilder('c')
-        //     ->innerJoin('c.cartItem', 'b')
-        //     ->where('b.id IN (:category_id)')
-        //     ->setParameter('category_id', $cart_item)
-        //     ->getQuery()->getResult();
-        // dd($books[0]);
-
-        // $query = $em->createQuery("SELECT u from App:CartItem u where  u.book  IN (:genre) and u.user  u.status ='Active'");
-        // $query->setParameter('genre', $books);
-        // $result = $query->getResult();
-        // dd($result);
-        // dd($books);
         $count = 0;
         foreach ($this->getUser()->getCart()->getCartItem() as $item) {
 
@@ -170,7 +212,6 @@ class UserController extends AbstractController
                 $count = $count + 1;
             }
         }
-        // dd($count);
         if ($count == 0) {
             $cart_present = "no";
         } else {
