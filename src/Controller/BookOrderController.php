@@ -73,21 +73,22 @@ class BookOrderController extends AbstractController
                 $em->flush();
             }
         }
-        return $this->redirectToRoute('my_order_list');
+        return $this->redirectToRoute('my_order_list', ['abc' => 'yes']);
     }
 
-    #[Route('order/success/', name: 'my_order_list')]
-    public function successOrder(ManagerRegistry $doctrine): Response
-    {
-        $em = $doctrine->getManager();
-        return $this->render('order/order_response.html.twig', [
-            'title' => "My Order",
-        ]);
-    }
+    // #[Route('order/success/', name: 'my_order_list')]
+    // public function successOrder(ManagerRegistry $doctrine): Response
+    // {
+    //     $em = $doctrine->getManager();
+    //     return $this->render('order/order_response.html.twig', [
+    //         'title' => "My Order",
+    //     ]);
+    // }
 
-    #[Route('my/order/list/{page}', name: 'my_order_list')]
-    public function myOrder(ManagerRegistry $doctrine, $page = 1): Response
+    #[Route('my/order/list/{page}/{abc}', name: 'my_order_list')]
+    public function myOrder(ManagerRegistry $doctrine, $page = 1,$abc='no'): Response
     {
+        
         $user = $this->getUser();
         $em = $doctrine->getManager();
         $limit = 6;
@@ -108,7 +109,8 @@ class BookOrderController extends AbstractController
             'orders' => $result,
             'page' => $pg,
             'limit' => $limit,
-            'total_pages' => $total_pages
+            'total_pages' => $total_pages,
+            'abc'=>$abc
         ]);
     }
     #[Route('/my/order/details/{order_no}/{page}', name: 'my_order_details')]
@@ -127,4 +129,17 @@ class BookOrderController extends AbstractController
             'page' => $page
         ]);
     }
+    // #[Route('book/order/response/', name: 'book_order_response')]
+    // public function responseOrder(Request $request, ManagerRegistry $doctrine): Response
+    // {
+    //     $em = $doctrine->getManager();
+     
+    //     return $this->render('order/order_response.html.twig', [
+    //         'title' => "My Order",
+            
+    //     ]);
+    // }
+
+
+
 }

@@ -99,9 +99,9 @@ class UserController extends AbstractController
     {
         $em = $doctrine->getManager();
         $user = $doctrine->getRepository("App\Entity\User")->findOneBy(["id" => $id]);
-        $error='false';
-        $is_changed='no';
-        
+        $error = 'false';
+        $is_changed = 'no';
+
         if ($request->getMethod() == "POST") {
             if ($user->getId()) {
                 $new = $request->get('new_password');
@@ -110,9 +110,9 @@ class UserController extends AbstractController
                     $user->setPassword($passwordHasher->hashPassword($user, $request->get('con_password')));
                     $em->persist($user);
                     $em->flush();
-                    $is_changed='yes';
+                    $is_changed = 'yes';
                 } else {
-                    $error='true';
+                    $error = 'true';
                 }
             }
             // $email = $request->get('email_id');
@@ -126,7 +126,7 @@ class UserController extends AbstractController
         return $this->render('user/reset_password.html.twig', [
             'controller_name' => 'UserController',
             'error' => $error,
-            'is_changed'=> $is_changed
+            'is_changed' => $is_changed
         ]);
     }
 
@@ -198,6 +198,7 @@ class UserController extends AbstractController
     #[Route('/view/cart/items/{shipping}', name: 'view_cart')]
     public function viewCart(Request $request, ManagerRegistry $doctrine, $shipping = -1): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if ($shipping > 0) {
             $address = $shipping;
         } else {
@@ -241,21 +242,6 @@ class UserController extends AbstractController
         $em->flush();
         return $this->redirect($this->generateUrl('view_cart', ['shipping' => $address]));
     }
-    // #[Route('/update/quantity/{id}', name: 'quantity_update')]
-    // public function updateQuantity(ManagerRegistry $doctrine, $id): Response
-    // {
-    //     $em = $doctrine->getManager();
-    //     $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
-    //     $cart_item = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['cart' => $cart]);
-    //     // dd($cart_item);
-    //     $book = $doctrine->getRepository("App\Entity\Book")->findOneBy(['id' => $id]);
-    //     $a = $book->getId();
-    //     $bc = $doctrine->getRepository("App\Entity\CartItem")->findOneBy(['book' => $a]);
-    //     $cart_item->setQuantity();  
-    //     $em->remove($bc);
-    //     $em->flush();
-    //     return $this->redirect($this->generateUrl('view_cart'));
-    // }
 
     #[Route('/ajax/quantity', name: 'web_ajax_book_quantity')]
     public function updateQuantity(Request $request, ManagerRegistry $doctrine): JsonResponse

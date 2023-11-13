@@ -15,7 +15,8 @@ class HomeController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $em = $doctrine->getManager();
-        $books = $doctrine->getRepository("App\Entity\Book")->findAll();
+        $books = $doctrine->getRepository("App\Entity\Book")->findBy(['language'=>'English']);
+        $b = $doctrine->getRepository("App\Entity\Book")->findBy(['language'=>'Bengali']);
         foreach ($books as $book) {
             foreach ($book as $boo) {
 
@@ -29,6 +30,7 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'book' => $books,
+            'mango'=>$b,
             'display' => $display
         ]);
     }

@@ -94,13 +94,13 @@ class ShopkeeperController extends AbstractController
                 $genres = $doctrine->getRepository("App\Entity\Genre")->findBy(['name' => $request->get("genre")]);
                 foreach ($genres as $genre) {
 
-                    $a[]= $genre->getName();
+                    $a[] = $genre->getName();
                 }
 
                 if ($update_book == "update") {
-                    $a= $request->get('genre');
+                    $a = $request->get('genre');
                 }
-                
+
 
                 /** @var UploadedFile $upload */
                 $upload = $form->get('file')->getData();
