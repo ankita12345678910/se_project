@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Genre;
 use App\Entity\User;
+use App\Form\AuthorType;
 use App\Form\BookType;
 use App\Form\GenreType;
 use App\Form\UserShopkeeperType;
@@ -210,4 +212,83 @@ class ShopkeeperController extends AbstractController
             'genres' => $genre,
         ]);
     }
+
+    #[Route('shopkeeper/manage/author/{id}', name: 'manage_author')]
+    public function manageAuthor(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger, $id = -1): Response
+    {
+        $em = $doctrine->getManager();
+        $author = $doctrine->getRepository("App\Entity\Author")->findOneBy(["id" => $id]);
+        $btn = "Update Author";
+        $msg = "Author updated successfully";
+        if (!$author) {
+            $author = new Author();
+            $msg = "Author created successfully";
+            $btn = "Add Author";
+        }
+
+        $form = $this->createForm(AuthorType::class, $author);
+        $form->handleRequest($request);
+        if ($request->getMethod() == "POST") {
+            if ($form->isSubmitted() and $form->isValid()) {
+
+                /** @var UploadedFile $upload */
+                $upload = $form->get('file')->getData();
+
+                if ($upload) {
+
+                    /*original file name..if my file name is "my_first_notice"..then $originalfilename
+                    return the actual name of the file*/
+                    $originalFilename = pathinfo($upload->getClientOriginalName(), PATHINFO_FILENAME);
+
+                    //$filename returns the file name like that " my-first-notice " 
+                    $Filename = $slugger->slug($originalFilename);
+
+                    //$newFilename returns a unique file name with extension..like that" my-first-notice.pdf"
+                    //guessExtension()is a method which returns the original extension of the file.
+                    $newFilename = uniqid() . '_' . $Filename . '.' . $upload->guessExtension();
+
+                    //move uploaded file....
+                    try {
+                        $upload->move(
+                            $this->getParameter('upload_directory') . "/authors/",
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    $author->setFile($newFilename);
+                    $em->persist($author);
+                    $em->flush();
+                    $this->addFlash('success', $msg);
+                    return $this->redirectToRoute('manage_author');
+                } elseif (!$upload) {
+                   
+                    $em->persist($author);
+                    $em->flush();
+                    $this->addFlash('success', "updated successfully");
+                    return $this->redirect($this->generateUrl('manage_author', ['id' => $id]));
+                }
+            }
+        }
+
+        return $this->render('shopkeeper/manage_author.html.twig', [
+            'form' => $form->createView(),
+            'btn' => $btn
+        ]);
+    }
+
+    #[Route('shopkeeper/author/list/', name: 'author_list')]
+    public function authorList(ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+
+        $author = $doctrine->getRepository("App\Entity\Author")->findAll();
+
+        return $this->render('shopkeeper/list_author.html.twig', [
+            'title' => "List author",
+            'authors' => $author,
+        ]);
+    }
+    
 }

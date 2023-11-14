@@ -17,6 +17,7 @@ class HomeController extends AbstractController
         $em = $doctrine->getManager();
         $books = $doctrine->getRepository("App\Entity\Book")->findBy(['language'=>'English']);
         $b = $doctrine->getRepository("App\Entity\Book")->findBy(['language'=>'Bengali']);
+        $author = $doctrine->getRepository("App\Entity\Author")->findAll();
         foreach ($books as $book) {
             foreach ($book as $boo) {
 
@@ -31,7 +32,8 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
             'book' => $books,
             'mango'=>$b,
-            'display' => $display
+            'display' => $display,
+            'authors'=>$author
         ]);
     }
     #[Route(path: 'image/{path}/{file}', name: 'image_show')]

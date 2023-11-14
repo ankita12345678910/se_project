@@ -1,0 +1,60 @@
+{% extends 'base_shopkeeper.html.twig' %}
+
+{% block title %}
+	{{parent()}}{{title}}
+{% endblock %}
+{% block stylesheets %}
+	{{parent()}}
+	<link rel="stylesheet" href="//cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css">
+{% endblock %}
+
+{% block body %}
+
+	<div class="row">
+		<div class="col-12">
+			<table id="list-user" class="table">
+				<thead>
+					<tr>
+						<th>Sl.No</th>
+						<th>Image</th>
+						<th>Name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% set sl = 0 %}
+					{% for record in authors %}
+						<tr>
+							<td>{% set sl = sl + 1 %}
+								{{sl}}
+							</td>
+							<td>
+
+								<img src="{{path('image_show',{path:'authors',file: record.file})}}" alt="Buy Harry Potter And The Chamber Of Secrets Book By J. K. Rowling | BookWorm" class="shadow-lg" style="border: 4px solid yellow; height:65px; width:65px;" itemprop="image">
+								<img src="{{path('image_show',{path:'authors',file: record.file})}}" class="zoomImg" style="position: absolute; top: -66.8299px; left: -33.7977px; opacity: 0; width: 20px; height: 30px; border: none; max-width: none;">
+							</td>
+							<td>{{record.name}}</td>
+							<td>
+								<a href="{{path('manage_author',{id: record.id})}}">
+									<i class="fa fa-pencil" aria-hidden="true"></i>
+								</a>
+							</td>
+						</tr>
+
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+
+	<script src="//cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+	<script>
+		$(document).ready(function () {
+$('#list-user').DataTable();
+});
+	</script>
+	{{parent()}}
+{% endblock %}

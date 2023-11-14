@@ -115,6 +115,32 @@
 								<span class="align-middle ms-3">List Genre</span>
 							</a>
 						</li>
+
+						<li class="sidebar-header">
+							<i class="align-middle" data-feather="bell"></i>
+							<span class="align-middle ms-1">Manage Author</span>
+						</li>
+
+						{% if page=='manage_author'%}
+						<li class="sidebar-item active">
+						{% else %}
+						<li class="sidebar-item">
+						{% endif %}
+							<a class="sidebar-link" href="{{path('manage_author')}}">
+								<span class="align-middle ms-3">Add Author</span>
+							</a>
+						</li>
+
+						{% if page=='author_list'%}
+						<li class="sidebar-item active">
+						{% else %}
+						<li class="sidebar-item">
+						{% endif %}
+							<a class="sidebar-link" href="{{path('author_list')}}">
+								<span class="align-middle ms-3">List Author</span>
+							</a>
+						</li>
+
 					</ul>
 				</div>
 			</nav>
@@ -322,7 +348,6 @@
 						</div>
 					</div>
 				</main>
-
 				<footer class="footer">
 					<div class="container-fluid">
 						<div class="row text-muted">
