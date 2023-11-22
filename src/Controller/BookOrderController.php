@@ -9,6 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+include_once __DIR__ .'/../../vendor/autoload.php';
 
 class BookOrderController extends AbstractController
 {
@@ -23,8 +27,9 @@ class BookOrderController extends AbstractController
     #[Route('/make/order/{address}', name: 'make_order')]
     public function orderBook(Request $request, ManagerRegistry $doctrine, $address): Response
     {
-
+        ob_start();
         $em = $doctrine->getManager();
+        $mail = new PHPMailer(true);
         $shipping_address = $doctrine->getRepository("App\Entity\ShippingAddress")->findOneBy(['id' => $request->get('address')]);
         $order = $doctrine->getRepository("App\Entity\BookOrder")->findOneBy(['user' => $this->getUser()]);
         $total_price = 0;
@@ -73,22 +78,35 @@ class BookOrderController extends AbstractController
                 $em->flush();
             }
         }
+       
+        try {
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'wormb022@gmail.com';
+            $mail->Password = 'qepp ibvk hjli purj';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+            $mail->setFrom('wormb022@gmail.com', 'BookWorm');
+            $mail->addAddress('baidyaankita927@gmail.com');     //Add a recipient
+            $mail->addReplyTo('wormb022@gmail.com', 'BookWorm');
+            $mail->isHTML(true);                                  //Set email format to HTML
+            $mail->Subject = 'Order confirmation';
+            $mail->msgHTML("<h1>Dear " . $this->getUser()->getFirstname() . ",</h1><h1>Thank you for your order.</h1><h3>Your order number is- " . $order->getOrderNo() . "</h3><h3>We truly value our loyal customers. Thanks for making us who we are!</h3><h3>Estimated time of delivery within 4-5 working days</h3><h3>If you have any questions, concerns, or want to share your thoughts, email us</h3>");
+            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+            $mail->send(); 
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+        
         return $this->redirectToRoute('my_order_list', ['abc' => 'yes']);
     }
 
-    // #[Route('order/success/', name: 'my_order_list')]
-    // public function successOrder(ManagerRegistry $doctrine): Response
-    // {
-    //     $em = $doctrine->getManager();
-    //     return $this->render('order/order_response.html.twig', [
-    //         'title' => "My Order",
-    //     ]);
-    // }
-
     #[Route('my/order/list/{page}/{abc}', name: 'my_order_list')]
-    public function myOrder(ManagerRegistry $doctrine, $page = 1,$abc='no'): Response
+    public function myOrder(ManagerRegistry $doctrine, $page = 1, $abc = 'no'): Response
     {
-        
+
         $user = $this->getUser();
         $em = $doctrine->getManager();
         $limit = 6;
@@ -110,7 +128,7 @@ class BookOrderController extends AbstractController
             'page' => $pg,
             'limit' => $limit,
             'total_pages' => $total_pages,
-            'abc'=>$abc
+            'abc' => $abc
         ]);
     }
     #[Route('/my/order/details/{order_no}/{page}', name: 'my_order_details')]
@@ -129,17 +147,4 @@ class BookOrderController extends AbstractController
             'page' => $page
         ]);
     }
-    // #[Route('book/order/response/', name: 'book_order_response')]
-    // public function responseOrder(Request $request, ManagerRegistry $doctrine): Response
-    // {
-    //     $em = $doctrine->getManager();
-     
-    //     return $this->render('order/order_response.html.twig', [
-    //         'title' => "My Order",
-            
-    //     ]);
-    // }
-
-
-
 }

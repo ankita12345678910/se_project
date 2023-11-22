@@ -29,7 +29,8 @@
 								<h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
 								<div>
 									{% if error %}
-									<div class="alert alert-danger"style="font-size: 11px;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+									<div class="alert alert-danger" style="font-size: 11px;">{{
+										error.messageKey|trans(error.messageData, 'security') }}</div>
 									{% endif %}
 								</div>
 								<form method="post">
@@ -49,7 +50,6 @@
 										<label class="form-label" for="inputPassword">Password</label>
 									</div>
 
-
 									<div class=" mb-1">
 										<button class="btn btn-lg"
 											style="width: 100%;background-color: #3c6363;color: white;" type="submit">
@@ -58,9 +58,6 @@
 										<a class="small text-muted" href="{{path('verify_email')}}"
 											style="margin-left: 360px;font-size: 13px;">Forgot password?</a>
 									</div>
-
-
-
 
 									{% if app.user %}
 									<div class="mb-3">
