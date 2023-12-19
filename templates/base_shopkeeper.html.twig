@@ -144,6 +144,22 @@
 							<span class="align-middle ms-3">List Author</span>
 						</a>
 					</li>
+
+
+					<li class="sidebar-header">
+						<i class="align-middle" data-feather="bell"></i>
+						<span class="align-middle ms-1">View Orders</span>
+					</li>
+
+					{% if page=='order_list'%}
+					<li class="sidebar-item active">
+						{% else %}
+					<li class="sidebar-item">
+						{% endif %}
+						<a class="sidebar-link" href="{{path('order_list')}}">
+							<span class="align-middle ms-3">Orders</span>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</nav>

@@ -179,6 +179,7 @@ class UserController extends AbstractController
             $cart_item->setBook($book);
             $cart_item->setQuantity('1');
             $em->persist($cart_item);
+            // dd($cart_item);
             $em->flush();
             $item_present = 'yes';
         } elseif ($cart_item->getStatus() != "Active") {
@@ -204,8 +205,6 @@ class UserController extends AbstractController
         } else {
             $address = '-1';
         }
-        $em = $doctrine->getManager();
-        $cart = $doctrine->getRepository("App\Entity\Cart")->findOneBy(['user' => $this->getUser()]);
         $count = 0;
         foreach ($this->getUser()->getCart()->getCartItem() as $item) {
 
@@ -307,7 +306,7 @@ class UserController extends AbstractController
     public function addAddress(Request $request, ManagerRegistry $mr): JsonResponse
     {
         $em = $mr->getManager();
-        $address = $mr->getRepository("App\Entity\ShippingAddress")->findOneBy(["id" => $request->get('id')]);
+        $address = $mr->getRepository("App\Entity\ShippingAddress")->findOneBy(["id" => $request->get('uid')]);
         if (!$address) {
             $address = new ShippingAddress();
             $address_id = '-1';
@@ -342,14 +341,14 @@ class UserController extends AbstractController
 
         $address_id = $request->get('shipping');
         $response = new JsonResponse();
-        $id = $request->get('id');
+        $id = $request->get('uid');
         $address = $mr->getRepository('App\Entity\ShippingAddress')->findOneBy(["id" => $id]);
         $form = $this->createForm(ShippingAddressType::class, $address);
 
         $html = $this->renderView('user/get_address_form.html.twig', [
             'title' => "Edit User",
             'form' => $form->createView(),
-            'id' => $id,
+            'uid' => $id,
             'shipping' => $address_id
         ]);
         $response->setData($html);

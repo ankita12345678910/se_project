@@ -12,7 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-include_once __DIR__ .'/../../vendor/autoload.php';
+
+include_once __DIR__ . '/../../vendor/autoload.php';
 
 class BookOrderController extends AbstractController
 {
@@ -50,14 +51,15 @@ class BookOrderController extends AbstractController
         $em->flush();
 
         foreach ($this->getUser()->getCart()->getCartItem() as $item) {
-
-            $order_item = new OrderItem();
-            $order_item->setBookOrder($order);
-            $order_item->setBook($item->getBook());
-            $order_item->setPrice($item->getBook()->getPrice());
-            $order_item->setQuantity($item->getQuantity());
-            $em->persist($order_item);
-            $em->flush();
+            if ($item->getStatus() == "Active") {
+                $order_item = new OrderItem();
+                $order_item->setBookOrder($order);
+                $order_item->setBook($item->getBook());
+                $order_item->setPrice($item->getBook()->getPrice());
+                $order_item->setQuantity($item->getQuantity());
+                $em->persist($order_item);
+                $em->flush();
+            }
         }
         foreach ($this->getUser()->getCart()->getCartItem() as $item) {
 
@@ -78,7 +80,7 @@ class BookOrderController extends AbstractController
                 $em->flush();
             }
         }
-       
+
         try {
             $mail->SMTPDebug = SMTP::DEBUG_SERVER;
             $mail->isSMTP();
@@ -95,11 +97,11 @@ class BookOrderController extends AbstractController
             $mail->Subject = 'Order confirmation';
             $mail->msgHTML("<h1>Dear " . $this->getUser()->getFirstname() . ",</h1><h1>Thank you for your order.</h1><h3>Your order number is- " . $order->getOrderNo() . "</h3><h3>We truly value our loyal customers. Thanks for making us who we are!</h3><h3>Estimated time of delivery within 4-5 working days</h3><h3>If you have any questions, concerns, or want to share your thoughts, email us</h3>");
             $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-            $mail->send(); 
+            $mail->send();
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
-        
+
         return $this->redirectToRoute('my_order_list', ['abc' => 'yes']);
     }
 

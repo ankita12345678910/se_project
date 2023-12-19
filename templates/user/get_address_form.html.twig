@@ -1,13 +1,18 @@
 <div class="row p-3">
 	<div class="col-12">
-		{{ form_start(form, { 'attr' : { 'id': 'edit-form' } })}}
-		<input type="hidden" name="id" value="{{id}}">
+		{% if uid < 0 %}
+			{{ form_start(form, { 'attr' : { 'id' : 'add-form' } })}}
+		{% else %}
+			{{ form_start(form,
+			{ 'attr' : { 'id' : 'edit-form' } })}}
+		{% endif %}
+		<input type="hidden" name="uid" value="{{uid}}">
 		<input type="hidden" name="shipping" value="{{shipping}}">
 		<div class="row mb-3">
-			<div id="max"></div>			
-			
+			<div id="max"></div>
+
 			<div class="col-4">
-				
+
 				{{ form_row(form.name) }}
 			</div>
 			<div class="col-4">
@@ -36,7 +41,11 @@
 				{{ form_row(form.state) }}
 			</div>
 			<div class="col-4 py-4">
-				<input type="submit" value="Update" style="width: 122px;font-size: 18px;background-color: rgb(94, 198, 214);" class="btn">
+				{% if uid < 0 %}
+					<input type="submit" value="Add" style="width: 122px;font-size: 18px;background-color: rgb(143, 227, 240);" class="btn">
+				{% else %}
+					<input type="submit" value="Update" style="width: 122px;font-size: 18px;background-color: rgb(94, 198, 214);" class="btn">
+				{% endif %}
 			</div>
 
 		</div>
@@ -45,3 +54,42 @@
 		{{ form_end(form) }}
 	</div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(".fetch_city").attr("readonly", "readonly");
+        $(".fetch_state").attr("readonly", "readonly");
+        $(".fetch_pin_no").keyup(function () {
+            var el = $(this);
+            var pin = $(".fetch_pin_no").val();
+            if (el.val().length === 6) {
+
+                $.ajax({
+                    url: "{{path('fetch_pin_code') }}",
+                    type: "get",
+                    data: {
+                        pin: pin
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data != 'no') {
+                            data = data.replaceAll('&quot;', '"');
+                            var getData = JSON.parse(data);
+                            $('.fetch_city').val(getData[0]);
+                            $('.fetch_state').val(getData[1]);
+                            $(".fetch_city").removeAttr("readonly", "readonly");
+                        } else {
+                            alert('Enter a valid Pincode');
+                        }
+                    }
+                })
+
+            }
+        });
+    });
+	    
+	
+</script>
+
+
+

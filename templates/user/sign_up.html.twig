@@ -88,8 +88,9 @@
 				title: message,
 				icon: ico,
 				button: "Ok",
-			});
-			$('.sign-up').load(location.href + " .sign-up");
+			}).then((value) => {
+                window.location.replace("http://127.0.0.1:8000/login");
+            });
 		}
 
 	});

@@ -290,5 +290,18 @@ class ShopkeeperController extends AbstractController
             'authors' => $author,
         ]);
     }
+
+    #[Route('shopkeeper/order/list/', name: 'order_list')]
+    public function orderList(ManagerRegistry $doctrine): Response
+    {
+        $em = $doctrine->getManager();
+
+        $order = $doctrine->getRepository("App\Entity\BookOrder")->findAll();
+
+        return $this->render('shopkeeper/list_order.html.twig', [
+            'title' => "List order",
+            'orders' => $order,
+        ]);
+    }
     
 }

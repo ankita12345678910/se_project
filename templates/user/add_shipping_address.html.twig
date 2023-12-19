@@ -23,83 +23,20 @@
 
     }
 </style>
-
 {% endblock %}
 {% block body %}
-
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New Address</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Address</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row p-3">
-                    <div class="col-12">
-                        {{ form_start(form, { 'attr' : { 'id': 'add-form' } })}}
-                        <input type="hidden" name="shipping" value="{{address_id}}">
-
-                        <div class="row mb-3">
-                            <div id="max"></div>
-                            <div class="col-4">
-                                {{ form_row(form.name) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_row(form.addressLine1) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_row(form.addressLine2) }}
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                {{ form_row(form.pin) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_row(form.cellphone) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_row(form.landmark) }}
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                {{ form_row(form.city) }}
-                            </div>
-                            <div class="col-4">
-                                {{ form_row(form.state) }}
-                            </div>
-                            <div class="col-4 py-4">
-                                <input type="submit" value="Add"
-                                    style="width: 122px;font-size: 18px;background-color: rgb(143, 227, 240);" class="btn">
-                            </div>
-                        </div>
-
-                        {{ form_rest(form) }}
-                        {{ form_end(form) }}
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer"></div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Address</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="updateEdit"></div>
+                <div id="addressForm"></div>
             </div>
             <div class="modal-footer"></div>
         </div>
@@ -120,8 +57,9 @@
                             (Detailed address will help our delivery partner reach your doorstep
                             quickly)</span>
                     </div>
-                    <div class="col-md-4 py-5 add_address_box rounded-2 shadow-lg" data-toggle="modal"
-                        data-target="#addModal" style="height: 330px;width: 260px;margin-left: 10px;margin-top: 20px;">
+                    <div class="col-md-4 py-5 add_address_box rounded-2 shadow-lg add-address-btn" data-toggle="modal"
+                        data-target="#addressModal" userid="-1"
+                        style="height: 330px;width: 260px;margin-left: 10px;margin-top: 20px;">
                         <i class="bi bi-plus-circle"
                             style="display: block;margin-left: 90px; font-size:5rem;margin-top: 50px;"></i>
                         <p
@@ -133,7 +71,8 @@
                     {% if record.status == 'Active' %}
                     <div class="col-md-4 py-2 exist_address rounded-2 bg-light"
                         style="width: 260px;margin-left: 10px;margin-top: 20px;">
-                        <h3 class="py-2 m-3 rounded-3 px-4 text-white bi bi-truck" style="background-color: rgb(78, 159, 159);">
+                        <h3 class="py-2 m-3 rounded-3 px-4 text-white bi bi-truck"
+                            style="background-color: rgb(78, 159, 159);">
                             {{record.name}}</h3>
                         <span style="font-size: 16px;margin-left: 25px">{{record.name}}</span><br>
                         <span style="font-size: 16px;margin-left: 25px">{{record.addressLine1}}</span><br>
@@ -152,12 +91,12 @@
                             {% endif %}
                             <span>
                                 <a href="#" style="font-size: 14px;width: 110px;"
-                                    class="btn btn-outline-dark update_address" userId="{{record.id}}">Edit
+                                    class="btn btn-outline-dark update_address" userid="{{record.id}}">Edit
                                 </a>
                             </span>
                             <span>
                                 <a href="#" style="font-size: 14px;width: 110px"
-                                    class="btn btn-outline-dark delete_address" userId="{{record.id}}">Delete
+                                    class="btn btn-outline-dark delete_address" userid="{{record.id}}">Delete
                                 </a>
                             </span>
                         </p>
@@ -169,7 +108,6 @@
                 <br><br>
             </div>
         </div>
-
         <div class="col-md-4 py-5">
             <div class="py-4 px-5 m-5 bg-white shadow-lg rounded-2 price_details" style="width: 90%;">
 
@@ -212,62 +150,36 @@
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-
-    $(document).ready(function () {
-        $(".fetch_city").attr("readonly", "readonly");
-        $(".fetch_state").attr("readonly", "readonly");
-        $(".fetch_pin_no").keyup(function () {
-            var el = $(this);
-            var pin = $(".fetch_pin_no").val();
-            if (el.val().length === 6) {
-
-                $.ajax({
-                    url: "{{path('fetch_pin_code')}}",
-                    type: "get",
-                    data: { pin: pin },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data != 'no') {
-                            data = data.replaceAll('&quot;', '"');
-                            var getData = JSON.parse(data);
-                            $('.fetch_city').val(getData[0]);
-                            $('.fetch_state').val(getData[1]);
-                            $(".fetch_city").removeAttr("readonly", "readonly");
-                        }
-                        else {
-                            alert('Enter a valid Pincode');
-                        }
-                    }
-                })
-            }
-        });
-    });
-</script>
-<script>
-    jQuery('body').on('click', '.update_address', function () {
-        var id = jQuery(this).attr('userId');
+    jQuery('body').on('click', '.update_address,.add-address-btn', function () {
+        var uid = jQuery(this).attr('userId');
         var shipping = $('#highlighted_address').val();
+        // jQuery("#addressModal").load(location.href + " #addressModal");
 
         $.ajax({
             type: "GET",
-            url: "{{ path('ajax_get_address_form')}}",
+            url: "{{ path('ajax_get_address_form') }}",
             data: {
-                id, shipping
+                uid,
+                shipping
             },
             dataType: 'json',
             success: function (returns) {
-                jQuery('#updateEdit').html(returns);
-                jQuery('#editModal').modal('show');
+                jQuery('#addressForm').html(returns);
+                jQuery('#addressModal').modal('show');
             },
             error: function (xhr) { }
         });
     })
 
+    jQuery('body').on('click', '.modal .close', function () {
+        jQuery('#addressModal').modal('hide');
+    });
+
     jQuery('body').on('submit', "#edit-form,#add-form", function (e) {
         e.preventDefault();
         var formURL = "{{ path('ajax_add_shipping_address') }}"
         var formData = new FormData(jQuery(this)[0]);
-        console.log(formData);
+        // console.log(formData);
         $.ajax({
             type: "POST",
             url: formURL,
@@ -277,15 +189,18 @@
             cache: false,
             contentType: false,
             success: function (returns) {
-                jQuery(".add_address").html(returns);
-                // $("#editModal .close").click();
-                jQuery('#editModal').modal('hide');
-                jQuery('#addModal .close').click();
-                jQuery("#add-form").load(location.href + " #add-form");
 
+                jQuery(".add_address").html(returns);
+                $(".modal .close").click();
+                jQuery('.modal').modal('hide');
+
+
+                // jQuery("#addressModal").load(location.href + " #addressModal");
             },
             error: function (xhr) { }
         });
+        // jQuery("#addressModal").load(location.href + " #addressModal");
+
 
     });
 </script>
@@ -299,33 +214,30 @@
             text: "Once deleted, you will not be able to recover this imaginary file!",
             icon: "warning",
             buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: "{{ path('ajax_delete_shipping_address') }}",
-                        type: "GET",
-                        data: {
-                            id, abc
-                        },
-                        dataType: 'json',
-                        success: function (returns) {
-                            if (returns == '200') {
-                                swal("Success!", "Address deleted successfully", "success");
-                                jQuery(".return_address").load(location.href + " .return_address");
-                            } else if (returns == '500') {
-                                swal("Error!", "Something Went wrong", "error");
-                            }
+            dangerMode: true
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: "{{ path('ajax_delete_shipping_address') }}",
+                    type: "GET",
+                    data: {
+                        id,
+                        abc
+                    },
+                    dataType: 'json',
+                    success: function (returns) {
+                        if (returns == '200') {
+                            swal("Success!", "Address deleted successfully", "success");
+                            jQuery(".return_address").load(location.href + " .return_address");
+                        } else if (returns == '500') {
+                            swal("Error!", "Something Went wrong", "error");
+                        }
 
-                        },
-                        error: function (xhr) { }
-                    });
-                }
-            });
-
-
-
+                    },
+                    error: function (xhr) { }
+                });
+            }
+        });
     })
 </script>
 {% endblock %}
