@@ -73,6 +73,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: BookOrder::class)]
     private Collection $bookOrders;
 
+    #[ORM\Column(length: 255)]
+    private ?string $profile = null;
+
 
     public function __construct()
     {
@@ -346,6 +349,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $bookOrder->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(string $profile): static
+    {
+        $this->profile = $profile;
 
         return $this;
     }

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+{% block title %}My-account
+{% endblock %}
+{% block bootstrap %}
+{{parent()}}
+{% endblock %}
+{% block stylesheets %}
+{{parent()}}
+{% endblock %}
+{% block body %}
+<div class="row py-5 view-cart-items" style="background-color: rgb(231, 253, 253);">
+    <div class="col-md-3 py-5">
+        <div class="py-4 px-2 m-5 bg-white shadow-lg rounded-1 cart_items" style="width: 100%;">
+            <h4 class="shadow-lg py-4 m-3 rounded-3 text-white" style="background-color: darkcyan;">
+                <span style="margin-left:20px;">Bookworm pay</span><span class="border px-4 text-black rounded-3"
+                    style="margin-left:50px;background-color:rgb(156, 230, 230);">₹0</span>
+            </h4>
+            <div id="pp">
+
+                {% if user.profile == "" %}
+                <img src="{{path('image_show',{path:'profiles',file: 'no_profile.webp'})}}"
+                    alt="profile picture| BookWorm" class="shadow-lg new_img"
+                    style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
+                    itemprop="image">
+                {% else %}
+                <img src="{{path('image_show',{path:'profiles',file: user.profile})}}" alt="profile picture| BookWorm"
+                    class="shadow-lg new_img"
+                    style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
+                    itemprop="image">
+                {% endif %}
+                <form action="" id='myForm' method="post" enctype="multipart/form-data">
+                    <input type="file" id="p_pic" name="profile_pic" accept=".jpg,.jpeg,.png,.webp" mapped=false>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 py-5">
+        <div class="py-4 px-5 m-5 bg-white shadow-lg rounded-1 cart_items" style="width: 100%;">
+        </div>
+    </div>
+    {% endblock %}
+    {% block javascripts %}
+    {{parent()}}
+    <script>
+        $('#p_pic').change(function () {
+            var inputFile = $('#myForm')[0];
+            var data = new FormData(inputFile);
+            $.ajax({
+                url: "{{ path('ajax_profile_pic_upload')}}",
+                type: "POST",
+                data: data,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                cache: false,
+
+                success: function (returns) {
+                    $('#pp').html(returns);
+                },
+                error: function (xhr) { }
+            });
+        });
+
+    </script>
+
+    {% endblock %}

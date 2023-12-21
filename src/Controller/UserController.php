@@ -10,11 +10,15 @@ use App\Form\ShippingAddressType;
 use App\Form\UserType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserController extends AbstractController
 {
@@ -408,5 +412,75 @@ class UserController extends AbstractController
         ]);
         $response->setData($html);
         return $response;
+    }
+    #[Route('profile/pic/upload', name: 'ajax_profile_pic_upload')]
+    public function uploadProfilePic(Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger): JsonResponse
+    {
+        $response = new JsonResponse();
+        $em = $doctrine->getManager();
+        $user = $doctrine->getRepository("App\Entity\User")->findOneBy(['id' => $this->getUser()]);
+        $user_profile = $user->getProfile();
+
+        //another way without using sluggerInterface
+
+        // $file = $request->files->get('pro');
+        // // If a file was uploaded
+        // if (!is_null($file)) {
+
+        //     $newFilename=$file->getClientOriginalName();
+        //     $filename =$user->getEmail().'-'.uniqid().'-'.$newFilename."." . $file->getClientOriginalExtension();
+        //     $path = $this->getParameter('upload_directory') . "/profiles/";
+        //     $file->move($path, $filename); // move the file to a path
+        //     //    $status = array('status' => "success","fileUploaded" => true);
+        //     $user->setProfile($filename);
+        //     $em->persist($user);
+        //     $em->flush();
+        // }
+
+
+        //using sluggerInterface
+
+        /** @var UploadedFile $upload */
+        $upload = $request->files->get('profile_pic');
+
+        if ($upload) {
+            // if($user_profile!=''){
+            //     // explode('-',$user_profile);
+            //     $fileSystem = new Filesystem();
+            //     $fileSystem->remove($this->getParameter('upload_directory') . "/profiles/",
+            //     $user_profile);
+            // }
+            $originalFilename = pathinfo($upload->getClientOriginalName(), PATHINFO_FILENAME);
+            $Filename = $slugger->slug($originalFilename);
+            $newFilename = $user->getEmail() . '-' . uniqid() . '_' . $Filename . '.' . $upload->guessExtension();
+            try {
+
+                $upload->move(
+                    $this->getParameter('upload_directory') . "/profiles/",
+                    $newFilename
+                );
+            } catch (FileException $e) {
+            }
+            $user->setProfile($newFilename);
+            $em->persist($user);
+            $em->flush();
+        }
+
+        $html = $this->renderView('user/upload_new_profile_picture.html.twig', [
+            'picture' => $newFilename,
+            'user' => $user
+        ]);
+        $response->setData($html);
+        return $response;
+    }
+    #[Route('/my/account', name: 'my_account')]
+    public function myAccount(ManagerRegistry $doctrine): Response
+    {
+        $mr = $doctrine->getManager();
+        $user = $doctrine->getRepository("App\Entity\User")->findOneBy(['id' => $this->getUser()]);
+        return $this->render('user/my_account.html.twig', [
+            'controller_name' => 'UserController',
+            'user' => $user
+        ]);
     }
 }
