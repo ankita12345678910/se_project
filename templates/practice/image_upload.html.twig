@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        label {
+            width: 100%;
+            height: 300px;
+            padding: 10px;
+            background: red;
+            border: black;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="post" id="myForm" enctype="multipart/form-data">
+        <div id="apple">
+            <input type="file" name='mango[]' id="0" class="multipleImageUploader" accept="image/*">
+        </div>
+        <div id="sdf">
+
+        </div>
+        <button id="upload_pic">Upload</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('body').on('change', '.multipleImageUploader', function () {
+                var count = $('.xyz').length;
+                const file = this.files[0];
+                var fileName = this.files[0].name;
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function (event) {
+                        var imageLink = event.target.result;
+                        var currentId = count + 1;
+                        $('#apple').prepend(`<input type="file" name='mango[]' id='${currentId}' class='multipleImageUploader' accept="image/*">`);
+                        var prevId = "#" + count;
+                        var current = currentId - 1;
+                        $('#sdf').append(`
+                        <input type ="hidden" value ='${current}' class ='dog'>
+                        <img src='${imageLink}' class='xyz' style='width:100px;height:100px;'>`);
+                        $('#sdf').append(`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        })
+        $('body').on('click', '.xyz', function (e) {
+
+            var input_id = "#" + $(this).prev('input[type=hidden]').val();
+            $(input_id).remove()
+            $(this).remove();
+        });
+        $('body').on('click', '#upload_pic', function (e) {
+            e.preventDefault();
+            var valid = false;
+            $("input[type='file']").each(function () {
+                if ($(this).val() != '') {
+                    valid = true;
+                }
+            });
+            if (valid) {
+                var InputFiles = $('#myForm')[0];
+                var data = new FormData(InputFiles);
+                $.ajax({
+                    url: "{{path('ajax_profile')}}",
+                    type: "POST",
+                    data: data,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    success: function (returns) {
+                        $('#myForm').html(returns);
+                    },
+                    error: function (xhr) { }
+                });
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

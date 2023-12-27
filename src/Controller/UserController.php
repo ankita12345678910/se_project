@@ -454,7 +454,6 @@ class UserController extends AbstractController
             $Filename = $slugger->slug($originalFilename);
             $newFilename = $user->getEmail() . '-' . uniqid() . '_' . $Filename . '.' . $upload->guessExtension();
             try {
-
                 $upload->move(
                     $this->getParameter('upload_directory') . "/profiles/",
                     $newFilename
