@@ -60,14 +60,19 @@
 <div class="home-slider shadow-lg" style="margin-top: 5px;">
 	<ul id="slider">
 		<li>
-			<img src="https://source.unsplash.com/1700x500/?library,bookshelf" class="d-block w-100" alt="...">
+			<img src="https://images.pexels.com/photos/2249063/pexels-photo-2249063.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+				style="height: 400px;width: 1400px;" class="d-block w-100" alt="...">
 		</li>
 		<li>
-			<img src="https://source.unsplash.com/1700x500/?novel,articles" class="d-block w-100" alt="...">
+			<img src="https://images.pexels.com/photos/6654177/pexels-photo-6654177.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+				style="height: 400px;width: 1400px;" class="d-block w-100" alt="...">
 		</li>
 		<li>
-			<img src="https://source.unsplash.com/1700x500/?book,comic" class="d-block w-100" alt="...">
+			<img src="https://images.pexels.com/photos/8236200/pexels-photo-8236200.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+				style="height: 400px;width: 1400px;" class="d-block w-100" alt="...">
 		</li>
+
+
 	</ul>
 </div>
 {% endblock %}
@@ -237,13 +242,13 @@
 	<p style="text-align: center;font-size: 30px;font-family: cursive;color: yellow;"><b>Featured Author</b></p>
 	<br>
 	<div class="row owl-carousel owl-theme">
-		
+
 		{% for record in authors %}
 		<a href="{{path('author_list')}}">
 			<img src="{{path('image_show',{path:'authors',file: record.file})}}" alt="" class="shadow-lg author-image"
 				style="border: 4px solid rgb(157, 255, 0); height:140px; width:140px; -moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;margin-left: 50px;"
 				itemprop="image">
-				<br>
+			<br>
 			<p style="text-align: center;font-size: 15px;color: yellow;">{{record.name}}</p>
 		</a>
 
