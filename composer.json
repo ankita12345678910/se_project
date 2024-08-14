@@ -4,7 +4,9 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
+        "laminas/laminas-code": "^4.7.1", 
+        "friendsofphp/proxy-manager-lts": "^1.0.18",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^3.6",

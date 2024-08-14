@@ -1,6 +1,6 @@
 System requirement
 -------------------
-1. PHP(>=7.2.5)
+1. PHP(>=8)
 2. Mysql(>=8) or MariaDB(>=10)
 3. Composer(>=2.5)
 
