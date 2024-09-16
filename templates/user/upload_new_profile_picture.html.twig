@@ -1,34 +1,16 @@
-{% if user.profile == "" %}
-<img src="{{path('image_show',{path:'profiles',file: 'no_profile.webp'})}}" alt="profile picture| BookWorm"
-	class="shadow-lg new_img"
-	style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
-	itemprop="image">
-{% else %}
-<img src="{{path('image_show',{path:'profiles',file: picture})}}" alt="profile picture| BookWorm"
-	class="shadow-lg new_img"
-	style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
-	itemprop="image">
-{% endif %}
 <form action="" id='myForm' method="post" enctype="multipart/form-data">
-	<input type="file" id="p_pic" name="profile_pic" accept=".jpg,.jpeg,.png,.webp" mapped="false">
+    <label for="p_pic">
+        {% if user.profile is null %}
+            <img src="{{path('image_show',{path:'default',file: 'default.png'})}}"
+            alt="profile picture| BookWorm" class="shadow-lg new_img"
+            style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
+            itemprop="image">
+        {% else %}
+            <img src="{{path('image_show',{path:'profiles',file: user.profile})}}" alt="profile picture| BookWorm"
+            class="shadow-lg new_img"
+            style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
+            itemprop="image">
+        {% endif %}
+    </label>
+    <input type="file" id="p_pic" name="profile_pic" accept=".jpg,.jpeg,.png,.webp" style="display: none;" mapped=false>
 </form>
-<script>
-	$('#p_pic').change(function () {
-		var inputFile = $('#myForm')[0];
-		var data = new FormData(inputFile);
-		$.ajax({
-			url: "{{ path('ajax_profile_pic_upload') }}",
-			type: "POST",
-			data: data,
-			dataType: 'json',
-			contentType: false,
-			processData: false,
-			cache: false,
-
-			success: function (returns) {
-				$('#pp').html(returns);
-			},
-			error: function (xhr) { }
-		});
-	});
-</script>

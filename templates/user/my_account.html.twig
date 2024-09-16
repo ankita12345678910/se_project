@@ -17,19 +17,21 @@
             </h4>
             <div id="pp">
 
-                {% if user.profile is null %}
-                <img src="{{path('image_show',{path:'default',file: 'default.png'})}}"
-                    alt="profile picture| BookWorm" class="shadow-lg new_img"
-                    style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
-                    itemprop="image">
-                {% else %}
-                <img src="{{path('image_show',{path:'profiles',file: user.profile})}}" alt="profile picture| BookWorm"
-                    class="shadow-lg new_img"
-                    style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
-                    itemprop="image">
-                {% endif %}
                 <form action="" id='myForm' method="post" enctype="multipart/form-data">
-                    <input type="file" id="p_pic" name="profile_pic" accept=".jpg,.jpeg,.png,.webp" mapped=false>
+                    <label for="p_pic">
+                        {% if user.profile is null %}
+                        <img src="{{path('image_show',{path:'default',file: 'default.png'})}}"
+                            alt="profile picture| BookWorm" class="shadow-lg new_img"
+                            style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
+                            itemprop="image">
+                        {% else %}
+                        <img src="{{path('image_show',{path:'profiles',file: user.profile})}}" alt="profile picture| BookWorm"
+                            class="shadow-lg new_img"
+                            style="border: 4px solid rgb(165, 165, 163); height:100px; width:100px;margin-left: 100px;-moz-border-radius: 50px;-webkit-border-radius: 50px;border-radius: 50px;"
+                            itemprop="image">
+                        {% endif %}
+                    </label>
+                    <input type="file" id="p_pic" name="profile_pic" accept=".jpg,.jpeg,.png,.webp" style="display: none;" mapped=false>
                 </form>
 
             </div>
@@ -37,13 +39,48 @@
     </div>
     <div class="col-md-8 py-5">
         <div class="py-4 px-5 m-5 bg-white shadow-lg rounded-1 cart_items" style="width: 100%;">
+            <form action="">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label for="fname">First Name</label>
+                        <input type="text" id="fname" name="fname"
+                        class="form-control form-control form-control-lg" value="{{app.user.firstname}}" required />
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label for="lname">Last Name</label>
+                        <input type="text" id="lname" name="lname"
+                        class="form-control form-control form-control-lg" value="{{app.user.lastname}}" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label for="_email">Email</label>
+                        <input type="email" id="_email" name="email"
+                        class="form-control form-control form-control-lg" value="{{app.user.email}}" readonly />
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label for="_phone">Cellphone</label>
+                        <input type="text" id="_phone" name="phone"
+                        class="form-control form-control form-control-lg" value="{{app.user.Cellphone}}" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label for="address">Address</label>
+                        <textarea name="_address" id="address" cols="30" rows="5" class="form-control form-control form-control-lg" value="{{app.user.address}}" required></textarea>
+                    </div>
+                    <div class="col-md-6 mb-4 py-5">
+                        <input type="submit" class="rounded-2" value="update" style="height: 40px;width: 90px;background-color: darkcyan;color: azure ;border: white;">
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     {% endblock %}
     {% block javascripts %}
     {{parent()}}
     <script>
-        $('#p_pic').change(function () {
+        $('body').on('change','#pp',function () {
             var inputFile = $('#myForm')[0];
             var data = new FormData(inputFile);
             $.ajax({

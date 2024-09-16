@@ -53,7 +53,7 @@
 {% endblock %}
 
 {% block slider %}
-<div class="home-slider shadow-lg text-center"
+<div class="shadow-lg text-center"
 	style="margin-top: 85px;height: 60px;background-color: rgb(250, 182, 9);">
 	<h1 class="py-2" style="margin-top: 15px;font-family: cursive;">🐛The B👀kworm🐛</h1>
 </div>
@@ -71,118 +71,13 @@
 			<img src="https://images.pexels.com/photos/8236200/pexels-photo-8236200.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
 				style="height: 400px;width: 1400px;" class="d-block w-100" alt="...">
 		</li>
-
-
 	</ul>
 </div>
 {% endblock %}
 {% block body %}
 
-<!-- <div class="px-3 text-bg-light rounded-4">
-	<h2 class="pb-3 border-bottom px-5">Bengali books</h2>
-	<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-	<div class="multiple-card-slider">
-		<div id="carouselExampleControls" class="carousel" data-ride="carousel">
-			<div class="container rounded-2" style="background-color: silver">
-				<div class="carousel-inner">
-					{% for data in mango %}
-
-
-					<div class="col">
-						<div class="carousel-item apple active">
-							<div class="card h-100 overflow-hidden text-bg-light rounded-3 shadow-lg"
-								style=" width: 192px; height: 10rem;">
-								<img src="{{path('image_show',{path:'books',file: data.file})}}"
-									style=" width: 192px; height: 14rem">
-								<div class="card-body text-center">
-									<p class="card-text">{{data.title}}</p>
-									<small>
-										<s>$399</s>
-									</small>
-									<p class="card-text">Price:{{data.price}}</p>
-									<a href="{{path('web_book_details',{id: data.id})}}"
-										class="book_details btn btn-warning" title="book details"
-										data-toggle="tooltip">Explore
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					{% endfor %}
-				</div>
-			</div>
-			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-				data-bs-slide="prev">
-				<span class="carousel-control-prev-icon avb" aria-hidden="true" style=" width: 7vh;
-			height: 7vh;background-color: dimgray; border-radius: 50%;transform: translateY(-15%);"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-				data-bs-slide="next">
-				<span class="carousel-control-next-icon vbn" aria-hidden="true" style=" width: 7vh;
-			height: 7vh;background-color: dimgray; border-radius: 50%;transform: translateY(-15%);"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
-		</div>
-	</div>
-	<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-</div>
-<br>
-<div class="px-3 text-bg-light rounded-4">
-	<h2 class="pb-3 border-bottom px-5">English books</h2>
-	<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-	<div class="multiple-card-slider">
-		<div id="carouselExampleControls1" class="carousel" data-ride="carousel">
-			<div class="container rounded-2" style="background-color: silver">
-				<div class="carousel-inner">
-					{% for data in book %}
-
-
-					<div class="col">
-						<div class="carousel-item apple active">
-							<div class="card h-100 overflow-hidden text-bg-light rounded-3 shadow-lg"
-								style=" width: 192px; height: 10rem;">
-								<img src="{{path('image_show',{path:'books',file: data.file})}}"
-									style=" width: 192px; height: 14rem">
-								<div class="card-body text-center">
-									<p class="card-text">{{data.title}}</p>
-									<small>
-										<s>$399</s>
-									</small>
-									<p class="card-text">Price:{{data.price}}</p>
-									<a href="{{path('web_book_details',{id: data.id})}}"
-										class="book_details btn btn-warning" title="book details"
-										data-toggle="tooltip">Explore
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					{% endfor %}
-				</div>
-			</div>
-			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls1"
-				data-bs-slide="prev">
-				<span class="carousel-control-prev-icon avb" aria-hidden="true" style=" width: 7vh;
-			height: 7vh;background-color: dimgray; border-radius: 50%;transform: translateY(-15%);"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls1"
-				data-bs-slide="next">
-				<span class="carousel-control-next-icon vbn" aria-hidden="true" style=" width: 7vh;
-			height: 7vh;background-color: dimgray; border-radius: 50%;transform: translateY(-15%);"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
-		</div>
-	</div>
-	<div class="row row-cols-1 row-cols-lg-4  g-5 py-5"></div>
-</div> -->
-
-
-<div class="px-5 text-bg-light rounded-4">
-	<h2 class="pb-2 border-bottom px-5 py-4">English books</h2>
+<div class="px-5 text-bg-light rounded-4 book-section">
+	<h2 class="pb-2 border-bottom px-5 py-2">English books</h2>
 	<div class="container rounded-2" style="background-color: silver">
 		<div class="row owl-carousel owl-theme py-4 px-5" style="margin-left:2px">
 			{% for data in book %}
@@ -194,7 +89,7 @@
 					<div class="card-body text-center">
 						<p class="card-text">{{data.title}}</p>
 						<small>
-							<s>$399</s>
+							<s>₹{{data.price + 100}}</s>
 						</small>
 						<p class="card-text">Price:{{data.price}}</p>
 						<a href="{{path('web_book_details',{id: data.id})}}" class="book_details btn btn-warning"
@@ -281,60 +176,6 @@
 		$.scrollUp({ scrollDistance: 100, scrollSpeed: 500, scrollImg: true });
 	});
 </script>
-<!-- <script>
-	$(document).ready(function () {
-		$('.multiple-card-slider .carousel').each(function () {
-			var currentCarouselId = '#' + $(this).attr('id');
-			console.log(currentCarouselId);
-			const multipleItemCarousel = document.querySelector(currentCarouselId);
-			if (window.matchMedia("(min-width:576px)").matches) {
-				const carousel = new bootstrap.Carousel(multipleItemCarousel, {
-					interval: false,
-					wrap: false
-				})
-				var carouselWidth = $(currentCarouselId + ' .carousel-inner')[0].scrollWidth;
-				var carWidth = $(currentCarouselId + ' .carousel-item').width();
-				console.log(carWidth);
-				var scrollPosition = 0;
-
-				$(currentCarouselId + ' .carousel-control-next').on('click', function () {
-					// console.log(scrollPosition);
-
-				console.log(carouselWidth);
-
-					console.log(scrollPosition);
-					console.log(carouselWidth - (carWidth * 9));
-					if (scrollPosition < (carouselWidth - (carWidth * 9))) {
-						scrollPosition = scrollPosition + carWidth;
-						console.log(scrollPosition);
-						console.log(carouselWidth - (carWidth * 9));
-
-						$(currentCarouselId + ' .carousel-inner').animate({ scrollLeft: scrollPosition }, 700);
-					}
-					else {
-						$("#carouselExampleControls .carousel-inner").load(location.href + " #carouselExampleControls .carousel-inner");
-						$("#carouselExampleControls1 .carousel-inner").load(location.href + " #carouselExampleControls1 .carousel-inner");
-						scrollPosition = 0;
-					}
-				});
-
-				$(currentCarouselId + ' .carousel-control-prev').on('click', function () {
-
-					if (scrollPosition > 0) {
-
-						scrollPosition = scrollPosition - carWidth;
-						$(currentCarouselId + ' .carousel-inner').animate({ scrollLeft: scrollPosition }, 700);
-					}
-					else {
-						$("#carouselExampleControls .carousel-inner").load(location.href + " #carouselExampleControls .carousel-inner");
-						$("#carouselExampleControls1 .carousel-inner").load(location.href + " #carouselExampleControls1 .carousel-inner");
-					}
-				});
-			}
-		})
-	})
-
-</script> -->
 <script>
 	$('.owl-carousel').owlCarousel({
 		loop: false,

@@ -113,6 +113,17 @@
 		</div>
 	</main>
 	<!-- Footer -->
+	{% block box %}
+	<div style="height: 100px; background-color: chocolate; text-align: center; color: #f1e9e9; font-size: 20px; margin: 10px;display: flex; justify-content: center; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 40px;">
+        <span><i class="bi bi-truck" style="font-size:20px;"></i> Free Delivery</span> 
+        <span><i class="bi bi-cash-coin" style="font-size:20px;"></i> Cash on Delivery</span> 
+        <span><i class="bi bi-book" style="font-size:20px;"></i> Original Products</span>
+        <span><i class="bi bi-arrow-repeat" style="font-size:20px;"></i> Easy Replacement</span>    
+    </div>
+</div>
+
+	{% endblock %}
 	<footer class="text-center shadow-lg text-lg-start text-black" style="background-color:rgb(228, 251, 97);">
 		<!-- Section: Social media -->
 		<section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
@@ -334,7 +345,7 @@
 			</ul>
 		</div>
 	</nav>
-
+	
 
 	{% block javascripts %}
 	<!-- JavaScript Bundle with Popper -->

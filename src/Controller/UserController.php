@@ -444,12 +444,13 @@ class UserController extends AbstractController
         $upload = $request->files->get('profile_pic');
 
         if ($upload) {
-            // if($user_profile!=''){
-            //     // explode('-',$user_profile);
-            //     $fileSystem = new Filesystem();
-            //     $fileSystem->remove($this->getParameter('upload_directory') . "/profiles/",
-            //     $user_profile);
-            // }
+            $uploadDirectory = $this->getParameter('upload_directory') . "/profiles/";
+            if ($user_profile) {
+                $previousFilePath = $uploadDirectory . $user_profile;
+                if (file_exists($previousFilePath)) {
+                    unlink($previousFilePath);
+                }
+            }
             $originalFilename = pathinfo($upload->getClientOriginalName(), PATHINFO_FILENAME);
             $Filename = $slugger->slug($originalFilename);
             $newFilename = $user->getEmail() . '-' . uniqid() . '_' . $Filename . '.' . $upload->guessExtension();
